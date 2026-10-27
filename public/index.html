@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f3eb" />
+    <title>LiveWorld — Find what breaks. Test the fix.</title>
+    <meta
+      name="description"
+      content="Turn a tabletop into a small playable world. Investigate its bottlenecks and compare verified changes."
+    />
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="LiveWorld home"
+        ><img src="/mark.svg" alt="" width="34" height="34" /><span
+          >LiveWorld<span class="brand-dot">.</span></span
+        ></a
+      >
+      <span class="header-divider"></span
+      ><span class="workspace-name">The maker’s workbench</span>
+      <div class="header-right">
+        <span class="connection" id="connection"><i></i>Checking Meta</span
+        ><button
+          class="budget-chip"
+          id="budget-button"
+          title="Usage made by this app, not your account balance"
+        >
+          API spend <strong id="spend">$0.000</strong>
+        </button>
+      </div>
+    </header>
+    <main>
+      <div class="page-intro">
+        <div>
+          <div class="eyebrow">SMALL WORLDS. BETTER QUESTIONS.</div>
+          <h1>What happens if<span>…</span></h1>
+          <p>
+            Build a world. Find its breaking point. Put your next idea to the
+            test.
+          </p>
+        </div>
+        <button id="export" class="button secondary">
+          ↓ Export experiment
+        </button>
+      </div>
+      <div class="workbench">
+        <aside class="scene-panel panel">
+          <div class="panel-heading">
+            <span class="eyebrow">01 / YOUR WORLD</span
+            ><span class="tiny-tag" id="scene-tag">EXAMPLE</span>
+          </div>
+          <div class="scene-preview">
+            <canvas
+              id="table-preview"
+              aria-label="Tabletop layout preview"
+            ></canvas
+            ><img id="table-photo" alt="Your captured tabletop" hidden /><span
+              class="preview-caption"
+              id="preview-caption"
+              >A little valley, on your desk</span
+            >
+          </div>
+          <button class="button capture-button" id="capture">
+            ◎ Capture your table
+          </button>
+          <div class="or-label">
+            <span></span>or explore a starting world<span></span>
+          </div>
+          <label class="field-label" for="scenario">Starting world</label>
+          <select id="scenario">
+            <option value="bottleneck">The little valley</option>
+            <option value="disconnected">A missing crossing</option>
+            <option value="impossible">An impossible deadline</option>
+          </select>
+          <div class="objects-heading">
+            <h2>On the table</h2>
+            <span id="object-count"></span>
+          </div>
+          <div id="objects" class="object-list"></div>
+          <div id="object-detail" class="object-detail" hidden></div>
+          <div class="scene-note">
+            <span>↗</span>
+            <p>
+              Drag a building or a bridge to change the layout. Every edit
+              starts a fresh experiment.
+            </p>
+          </div>
+          <button id="reset-world" class="text-button">
+            ↺ Reset this world
+          </button>
+        </aside>
+        <section class="simulation-panel panel">
+          <div class="simulation-heading">
+            <div>
+              <span class="eyebrow">02 / WATCH IT WORK</span>
+              <h2 id="world-name">The little valley</h2>
+            </div>
+            <div class="view-switch" aria-label="World view">
+              <button id="view-world" class="active">World</button
+              ><button id="view-compare" disabled>A / B compare</button>
+            </div>
+          </div>
+          <div class="metrics" id="metrics"></div>
+          <div class="canvas-section" id="canvas-section">
+            <div class="world-pane">
+              <div class="world-caption">
+                <span><i class="branch-dot"></i>A · Original world</span
+                ><span id="policy-label">Nearest first</span>
+              </div>
+              <canvas
+                id="world-canvas"
+                aria-label="Interactive logistics simulation. Drag objects to edit the world."
+              ></canvas>
+            </div>
+            <div class="world-pane" id="candidate-pane" hidden>
+              <div class="world-caption">
+                <span
+                  ><i class="branch-dot alternative"></i>B · Proposed
+                  change</span
+                ><span id="candidate-label"></span>
+              </div>
+              <canvas
+                id="candidate-canvas"
+                aria-label="Proposed world from the same starting conditions"
+              ></canvas>
+            </div>
+          </div>
+          <div class="world-legend">
+            <span><i class="legend-dot water"></i>Water courier</span
+            ><span><i class="legend-dot home"></i>Household</span
+            ><span><i class="legend-dot queue"></i>Waiting at bridge</span
+            ><span class="replay-note">Same start · replayable results</span>
+          </div>
+          <div class="playback">
+            <button id="play" class="play-button" aria-label="Play simulation">
+              ▶</button
+            ><button
+              id="rewind"
+              class="icon-button"
+              aria-label="Rewind simulation"
+            >
+              ↶</button
+            ><input
+              id="timeline"
+              aria-label="Simulation turn"
+              type="range"
+              min="0"
+              max="120"
+              value="42"
+            /><span class="turn-label"
+              >Turn <strong id="turn">42</strong
+              ><span id="horizon"> / 120</span></span
+            ><select id="speed" aria-label="Playback speed">
+              <option value="1">1×</option>
+              <option value="2">2×</option>
+              <option value="4">4×</option>
+            </select>
+          </div>
+          <div class="experiment-strip">
+            <div>
+              <span class="eyebrow">THE QUESTION</span>
+              <p>Can every home get its water <em>on time?</em></p>
+            </div>
+            <div class="constraint-chips">
+              <span id="courier-count">6 couriers</span
+              ><span>1 change / trial</span><span>Same resources</span>
+            </div>
+          </div>
+          <div class="bottom-tabs">
+            <button class="active" data-tab="events">Event replay</button
+            ><button data-tab="households">Household results</button
+            ><span id="result-caption">Results across 120 turns</span>
+          </div>
+          <div id="event-log" class="event-log"></div>
+          <div id="household-results" class="household-results" hidden></div>
+        </section>
+        <aside class="playtest-panel panel">
+          <div class="panel-heading">
+            <span class="eyebrow">03 / FIND A BETTER WAY</span
+            ><span class="spark-mark">✳</span>
+          </div>
+          <h2>A curious playtester.</h2>
+          <p class="panel-copy">
+            Give Muse Spark a question. It tries a change, runs the world, and
+            checks what actually happened.
+          </p>
+          <label class="field-label" for="goal"
+            >What should we investigate?</label
+          >
+          <textarea id="goal" rows="5" maxlength="2000">
+Find a change that gets every home its water on time. Keep the same workers and resources. Only one edit per trial.</textarea>
+          <button id="playtest" class="button primary">
+            Find & test a fix <span>↗</span>
+          </button>
+          <p class="api-note">
+            Uses Meta API · up to 6 model turns · $10 phase cap
+          </p>
+          <div class="local-explore">
+            <span>Just exploring?</span
+            ><button id="local-sweep" class="text-button">
+              Try local changes →
+            </button>
+          </div>
+          <button id="recorded-example" class="recorded-button">
+            ↶ Replay a recorded Meta run <span>No new API calls</span>
+          </button>
+          <div
+            id="agent-activity"
+            class="agent-activity"
+            aria-live="polite"
+            hidden
+          ></div>
+          <div id="verdict" class="verdict" hidden></div>
+          <div class="trials-heading">
+            <h3>Tested ideas</h3>
+            <span id="trial-count">0</span>
+          </div>
+          <div id="trials" class="trials">
+            <div class="empty-trials">
+              <span>↗ ↘</span>
+              <p>A good idea earns its place<br />by surviving a test.</p>
+            </div>
+          </div>
+          <div class="verification-note">
+            <span>✓</span>
+            <p>
+              Success is checked by the simulator. The model can suggest a fix;
+              the world has the final say.
+            </p>
+          </div>
+        </aside>
+      </div>
+      <footer>
+        <span>Made for the worlds you haven’t built yet.</span
+        ><span>Powered by Meta <b>·</b> Muse Spark & SAM 3.1</span>
+      </footer>
+    </main>
+    <div class="toast" id="toast" role="status" hidden></div>
+    <dialog id="scan-dialog">
+      <div class="dialog-heading">
+        <div>
+          <span class="eyebrow">FROM YOUR TABLE TO YOUR WORLD</span>
+          <h2>Start with what’s in front of you.</h2>
+        </div>
+        <button id="close-scan" class="icon-button" aria-label="Close capture">
+          ×
+        </button>
+      </div>
+      <p class="dialog-copy">
+        Use a fixed, overhead view. Separate the objects on a plain surface. A
+        cup can be a well; a block can be a home.
+      </p>
+      <div class="capture-options">
+        <label class="button secondary file-button"
+          >↑ Choose a photo<input
+            id="photo-file"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            hidden /></label
+        ><button id="use-camera" class="button secondary">◎ Use camera</button
+        ><button id="take-photo" class="button secondary" hidden>
+          Capture frame
+        </button>
+      </div>
+      <video id="camera" autoplay playsinline muted hidden></video>
+      <div class="scan-workspace" id="scan-workspace" hidden>
+        <canvas
+          id="scan-preview"
+          aria-label="Captured photo with segmentation outlines"
+        ></canvas>
+        <div>
+          <h3>Review the roles</h3>
+          <p class="small-copy">
+            Roles are suggestions. Confirm them before building. Positions map
+            to a fixed grid; review the resulting layout.
+          </p>
+          <div id="scan-objects"></div>
+        </div>
+      </div>
+      <p id="scan-status" class="scan-status" aria-live="polite">
+        Your photo is sent to Meta only when you select “Find objects”.
+      </p>
+      <div class="dialog-actions">
+        <button id="scan-photo" class="button secondary" disabled>
+          Find objects · Meta API</button
+        ><button id="confirm-scan" class="button primary" disabled>
+          Build this world →
+        </button>
+      </div>
+    </dialog>
+    <dialog id="budget-dialog">
+      <div class="dialog-heading">
+        <h2>Your API budget</h2>
+        <button id="close-budget" class="icon-button" aria-label="Close budget">
+          ×
+        </button>
+      </div>
+      <div id="budget-details"></div>
+    </dialog>
+  </body>
+</html>

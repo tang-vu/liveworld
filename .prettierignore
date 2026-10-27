@@ -1,0 +1,6 @@
+node_modules/
+.liveworld/
+captures/
+.env*
+docs/*.jpg
+package-lock.json
