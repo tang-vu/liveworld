@@ -1,3 +1,5 @@
+import { validateSchedule } from "./mechanics.js";
+
 export const POLICIES = ["nearest", "balanced", "deadline"];
 export const WIDTH = 18;
 export const HEIGHT = 12;
@@ -84,6 +86,7 @@ export function validateWorld(input) {
       "obstacles",
       "rules",
       "provenance",
+      "events",
     ],
     "World",
   );
@@ -168,6 +171,8 @@ export function validateWorld(input) {
   integer(world.rules.bridgeCapacity, 1, 3, "Bridge capacity");
   integer(world.rules.productionInterval, 1, 12, "Production interval");
   integer(world.rules.horizon, 10, 240, "Horizon");
+  if (world.events !== undefined)
+    world.events = validateSchedule(world.events, world);
   if (world.provenance !== undefined) {
     const p = world.provenance;
     fields(

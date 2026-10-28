@@ -67,6 +67,11 @@ export async function runPlaytest(client, input, emit = () => {}) {
   )
     throw new Error("Enter a goal of 1–2000 characters.");
   const baseline = simulate(world);
+  const tools = structuredClone(agentTools);
+  const changeParameters = tools.find((t) => t.function.name === "test_change")
+    .function.parameters.properties;
+  changeParameters.bridge_id.enum = [...world.bridges.map((b) => b.id), null];
+  changeParameters.bridge_row.enum = [...Array(world.height).keys(), null];
   const experiments = [];
   const trace = [];
   const runId = randomUUID();
@@ -91,6 +96,8 @@ export async function runPlaytest(client, input, emit = () => {}) {
     },
     { role: "user", content: input.goal },
   ];
+  messages[0].content +=
+    "\nScheduled bridge closures and production pauses are part of the design and are LOCKED during every repair trial. Do not remove, shorten or alter them. Closure intervals are inclusive; occupants finish crossing, other couriers reroute or wait. Production pauses preserve stock and the production clock. For test_change: to change dispatch, set BOTH bridge_id and bridge_row to null. To move a bridge, set dispatch to null and provide an exact permitted bridge_id plus its ZERO-BASED bridge_row. Never combine both kinds of edit.";
   function evaluate(patch, label) {
     const changed = applyPatch(world, patch);
     if (!changed.edits) throw new Error("This proposal changes nothing.");
@@ -123,7 +130,7 @@ export async function runPlaytest(client, input, emit = () => {}) {
     });
     const response = await client.chat(messages, {
       maxOutput: 2048,
-      tools: { tools: agentTools, parallel_tool_calls: false },
+      tools: { tools, parallel_tool_calls: false },
     });
     const message = response.message;
     const calls = message.tool_calls ?? [];
@@ -235,7 +242,12 @@ export async function runPlaytest(client, input, emit = () => {}) {
         } else throw new Error("Unknown tool.");
       } catch (error) {
         result = { error: error.message };
-        publish({ type: "rejected", message: error.message });
+        publish({
+          type: "rejected",
+          message: error.message.includes("32-trial")
+            ? "The experiment's trial limit has been reached."
+            : "A proposal was rejected because it did not satisfy the experiment's constraints.",
+        });
       }
       messages.push({
         role: "tool",

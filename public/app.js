@@ -1,11 +1,11 @@
-import {
-  exampleWorld,
-  validateWorld,
-  applyPatch,
-  objectAt,
-} from "/shared/world.js";
+import { exampleWorld, validateWorld, applyPatch } from "/shared/world.js";
 import { simulate, evidence, compareRuns } from "/shared/engine.js";
-import { drawWorld, drawTablePreview, cellFromPointer } from "./render.js";
+import {
+  drawWorld,
+  drawTablePreview,
+  cellFromPointer,
+  pickObject,
+} from "./diorama.js";
 import { stabilizeObservation } from "/shared/tracking.js";
 import {
   PROJECT_FORMAT,
@@ -14,10 +14,13 @@ import {
   makeCheckpoint,
   verifyTrial,
   describeWorldChanges,
+  worldSignature,
 } from "/shared/project.js";
 import { applyRuleChange, ruleChangeFromForm } from "/shared/rules.js";
 import { loadAutosave, saveAutosave } from "./storage.js";
 import { experimentReport } from "./report.js";
+import { describeEvent } from "/shared/mechanics.js";
+import { createReplayClip, replayFormat } from "./replay-clip.js";
 
 const $ = (id) => document.getElementById(id);
 const escape = (text) =>
@@ -43,18 +46,24 @@ const state = {
   speed: 1,
   busy: false,
   comparing: false,
+  soloCandidate: false,
+  dragCell: null,
+  studyStep: null,
   trials: [],
   candidate: null,
   result: null,
   status: null,
   scanImage: null,
   scanResult: null,
+  scanSelected: null,
   camera: null,
   name: "My LiveWorld",
   photo: null,
   checkpoints: [],
 };
 let restoredProject = null;
+let clipRecording = null;
+let clipUrls = [];
 try {
   const saved = await loadAutosave();
   if (saved) {
@@ -189,6 +198,21 @@ async function api(path, body) {
     throw new Error(result.error ?? "The operation could not be completed.");
   return result;
 }
+function updateLiveControls() {
+  const unavailable =
+    !state.status?.configured || Boolean(state.status.budget?.blocked);
+  const reason = state.status?.budget?.blocked
+    ? "Live calls are paused. Recorded studies and local changes are available."
+    : "Live Meta is unavailable. Explore the recorded playtest or try local changes.";
+  for (const id of ["playtest", "compile-rules", "scan-photo"]) {
+    $(id).disabled =
+      state.busy || unavailable || (id === "scan-photo" && !state.scanImage);
+    $(id).title = unavailable ? reason : "";
+  }
+  document.querySelector(".api-note").textContent = unavailable
+    ? reason
+    : "Live Meta request · protected by your app budget";
+}
 async function refreshStatus() {
   try {
     state.status = await api("/api/status");
@@ -215,10 +239,11 @@ async function refreshStatus() {
     $("manage-access").hidden = !state.status.accessRequired;
     $("budget-details").innerHTML =
       `<dl><dt>Recorded API cost estimate</dt><dd>$${b.spentUsd.toFixed(5)}</dd><dt>Held for pending calls</dt><dd>$${b.heldUsd.toFixed(4)}</dd><dt>Current phase cap</dt><dd>$${b.phaseBudgetUsd}</dd><dt>Project budget</dt><dd>$${b.totalBudgetUsd}</dd><dt>Protected reserve</dt><dd>$${b.reserveUsd}</dd><dt>Requests recorded</dt><dd>${b.requests}</dd></dl><p>${escape(b.scope)}</p><p>Token costs use published Standard rates without cache discounts. Unknown charges are held conservatively. The app pauses if a charge cannot be confirmed.</p>${b.blocked ? `<p><strong>${escape(b.blocked)}</strong></p>` : ""}`;
-    document.querySelector(".api-note").textContent =
-      `Uses Meta API · up to 6 model turns · $${b.phaseBudgetUsd} phase cap`;
+    updateLiveControls();
   } catch {
+    state.status = null;
     $("connection").textContent = "Backend unavailable";
+    updateLiveControls();
   }
 }
 function openLiveAccess() {
@@ -235,6 +260,12 @@ function openLiveAccess() {
 }
 async function ensureLiveAccess() {
   await refreshStatus();
+  if (!state.status?.configured || state.status.budget?.blocked) {
+    toast(
+      "Live Meta is unavailable. Recorded studies and local changes are ready to explore.",
+    );
+    return false;
+  }
   if (state.status?.accessRequired && !state.status.authorized) {
     openLiveAccess();
     return false;
@@ -286,6 +317,7 @@ function setBusy(busy) {
     "open-project",
     "save-project",
     "export",
+    "open-clip",
     "save-checkpoint",
     "compare-checkpoint",
     "edit-rules",
@@ -294,6 +326,14 @@ function setBusy(busy) {
     "apply-candidate",
     "project-name",
     "checkpoints",
+    "capture-hero",
+    "open-study",
+    "design-hero",
+    "preview-event",
+    "clear-events",
+    "rule-prompt-flood",
+    "rule-prompt-pause",
+    "recorded-rule",
   ])
     $(id).disabled = busy;
   $("scan-photo").disabled = busy || !state.scanImage;
@@ -302,6 +342,12 @@ function setBusy(busy) {
   $("playtest").textContent = busy
     ? "Testing the world…"
     : "Find & test a fix ↗";
+  document.querySelectorAll("[data-study]").forEach((button) => {
+    button.disabled = busy;
+  });
+  $("clear-events").disabled = busy || !state.world.events?.length;
+  $("rule-prompt-flood").disabled = busy || !state.world.bridges.length;
+  updateLiveControls();
 }
 function commitWorld(world, { photo = state.photo, remember = true } = {}) {
   if (state.busy) return;
@@ -314,6 +360,8 @@ function commitWorld(world, { photo = state.photo, remember = true } = {}) {
   state.trials = [];
   state.result = null;
   state.comparing = false;
+  state.soloCandidate = false;
+  state.studyStep = null;
   state.playing = false;
   state.tick = 0;
   $("verdict").hidden = true;
@@ -350,9 +398,186 @@ function renderObjects() {
     $("object-detail").innerHTML =
       `<strong>${escape(selected.label ?? selected.id)}</strong><br>Cell ${selected.x + 1}, ${selected.y + 1}${selected.demand ? `<br>${selected.demand} water · deadline turn ${selected.deadline}` : ""}<br>Drag on the world to move.`;
 }
+function drawMechanics() {
+  const a = state.world.events ?? [],
+    b = state.candidate?.world.events ?? [];
+  const both = state.comparing && state.candidate;
+  const worlds = both
+    ? JSON.stringify(a) === JSON.stringify(b)
+      ? [{ label: "A / B · LOCKED SCHEDULE", world: state.world }]
+      : [
+          { label: "A · ORIGINAL SCHEDULE", world: state.world },
+          { label: "B · PROPOSED SCHEDULE", world: state.candidate.world },
+        ]
+    : [
+        {
+          label: state.soloCandidate
+            ? "B · PROPOSED SCHEDULE"
+            : "A · WORLD SCHEDULE",
+          world: state.soloCandidate ? state.candidate.world : state.world,
+        },
+      ];
+  const phases = worlds.map((row) => ({
+    label: row.label,
+    events: (row.world.events ?? []).map((e) => ({
+      ...e,
+      phase:
+        state.tick < e.from
+          ? "upcoming"
+          : state.tick < e.to + 1
+            ? "active"
+            : "ended",
+    })),
+  }));
+  const signature = JSON.stringify(phases);
+  $("mechanics-strip").hidden = !phases.some((row) => row.events.length);
+  if (drawMechanics.signature === signature) return;
+  drawMechanics.signature = signature;
+  $("mechanics-strip").innerHTML =
+    worlds
+      .map(
+        (row, i) =>
+          '<div class="mechanic-row"><span class="eyebrow">' +
+          row.label +
+          "</span><div>" +
+          ((row.world.events ?? [])
+            .map(
+              (e, j) =>
+                '<span class="mechanic-pill ' +
+                phases[i].events[j].phase +
+                '"><i></i>' +
+                escape(describeEvent(e, row.world)) +
+                "<small>" +
+                phases[i].events[j].phase +
+                "</small></span>",
+            )
+            .join("") ||
+            '<span class="no-mechanics">No scheduled events</span>') +
+          "</div></div>",
+      )
+      .join("") +
+    '<button class="text-button" data-edit-mechanics>Edit schedule ↗</button>';
+}
+function renderRuleSchedule() {
+  const kind = $("event-kind").value;
+  const targets =
+    kind === "bridge_closed" ? state.world.bridges : [state.world.source];
+  $("event-target").innerHTML = targets
+    .map(
+      (o) =>
+        '<option value="' +
+        escape(o.id) +
+        '">' +
+        escape(o.label ?? o.id) +
+        "</option>",
+    )
+    .join("");
+  $("preview-event").disabled = state.busy || !targets.length;
+  $("clear-events").disabled = state.busy || !state.world.events?.length;
+  $("rule-prompt-flood").disabled = state.busy || !state.world.bridges.length;
+  $("events-list").innerHTML =
+    (state.world.events ?? [])
+      .map(
+        (e) =>
+          '<div class="scheduled-rule">' +
+          escape(describeEvent(e, state.world)) +
+          "</div>",
+      )
+      .join("") ||
+    '<p class="small-copy">No timed events. Add a rule to stress-test this design.</p>';
+  $("event-from").max = state.world.rules.horizon;
+  $("event-to").max = state.world.rules.horizon;
+}
+$("event-kind").addEventListener("change", renderRuleSchedule);
+$("preview-event").addEventListener("click", () => {
+  if (state.busy) return;
+  try {
+    const event = {
+      id: "event-" + crypto.randomUUID(),
+      kind: $("event-kind").value,
+      targetId: $("event-target").value,
+      from: Number($("event-from").value),
+      to: Number($("event-to").value),
+    };
+    const { world } = applyRuleChange(state.world, {
+      events: [...(state.world.events ?? []), event],
+    });
+    previewWorld(world, {
+      kind: "rules",
+      source: "manual",
+      label: describeEvent(event, world),
+    });
+    $("rules-dialog").close();
+    state.tick = event.from;
+    draw();
+  } catch (error) {
+    $("rule-status").textContent = error.message;
+  }
+});
+$("clear-events").addEventListener("click", () => {
+  if (state.busy) return;
+  try {
+    const { world } = applyRuleChange(state.world, { events: [] });
+    previewWorld(world, {
+      kind: "rules",
+      source: "manual",
+      label: "Remove scheduled mechanics",
+    });
+    $("rules-dialog").close();
+  } catch (error) {
+    $("rule-status").textContent = error.message;
+  }
+});
+$("rule-prompt-flood").addEventListener("click", () => {
+  const b =
+    state.world.bridges.find((b) => b.id === "bridge-north") ??
+    state.world.bridges[0];
+  if (!b) return;
+  const name =
+    b.id === "bridge-north"
+      ? "north bridge"
+      : b.label
+        ? b.label + " (ID " + b.id + ")"
+        : b.id;
+  $("rule-instruction").value =
+    "Close the " +
+    name +
+    " from turn " +
+    Math.ceil(state.world.rules.horizon * 0.2) +
+    " through turn " +
+    Math.ceil(state.world.rules.horizon * 0.42) +
+    ". Keep all other rules and scheduled events unchanged.";
+  $("rule-instruction").focus();
+});
+$("rule-prompt-pause").addEventListener("click", () => {
+  $("rule-instruction").value =
+    "Pause the well's production from turn " +
+    Math.ceil(state.world.rules.horizon * 0.2) +
+    " through turn " +
+    Math.ceil(state.world.rules.horizon * 0.35) +
+    ". Keep existing water and every other rule unchanged.";
+  $("rule-instruction").focus();
+});
+
+function isValleyStudy() {
+  return (
+    state.result?.source === "recorded-meta-run" &&
+    worldSignature(state.world) === worldSignature(exampleWorld())
+  );
+}
 function renderMetrics() {
   const a = state.run.metrics;
   const b = state.candidate?.run.metrics;
+  $("stage-score").innerHTML = b
+    ? `<span>${a.onTime}</span> → ${b.onTime}<span>/${b.demand}</span>`
+    : `${a.onTime}<span>/${a.demand}</span>`;
+  $("stage-score-label").textContent = b
+    ? "on time · A → B · full runs"
+    : "on time · full run";
+  $("stage-score").classList.toggle(
+    "worse",
+    Boolean(b && b.onTime / b.demand < a.onTime / a.demand),
+  );
   const metric = (label, value, suffix, change, warning = false) =>
     `<div class="metric"><div class="metric-label">${label}</div><div class="metric-value${warning ? " orange" : ""}">${value}<small>${suffix}</small></div><div class="metric-change ${change?.good ? "good" : change?.bad ? "bad" : ""}">${change?.text ?? "Original world · full replay"}</div></div>`;
   $("metrics").innerHTML =
@@ -369,20 +594,28 @@ function renderMetrics() {
         : null,
     ) +
     metric(
-      "Units missing their deadline",
-      b ? b.lateUnits : a.lateUnits,
-      "units",
+      (b ?? a).pendingUnits
+        ? "Late or awaiting deadline"
+        : "Units missing their deadline",
       b
+        ? b.lateUnits + (b.pendingUnits ?? 0)
+        : a.lateUnits + (a.pendingUnits ?? 0),
+      "units",
+      (b ?? a).pendingUnits
         ? {
-            text:
-              a.lateUnits === b.lateUnits
-                ? "Same as original"
-                : `${Math.abs(a.lateUnits - b.lateUnits)} ${a.lateUnits > b.lateUnits ? "fewer" : "more"} than original`,
-            good: b.lateUnits < a.lateUnits,
-            bad: b.lateUnits > a.lateUnits,
+            text: `${(b ?? a).lateUnits} late · ${(b ?? a).pendingUnits} awaiting deadline`,
           }
-        : null,
-      (b ?? a).lateUnits > 0,
+        : b
+          ? {
+              text:
+                a.lateUnits === b.lateUnits
+                  ? "Same as original"
+                  : `${Math.abs(a.lateUnits - b.lateUnits)} ${a.lateUnits > b.lateUnits ? "fewer" : "more"} than original`,
+              good: b.lateUnits < a.lateUnits,
+              bad: b.lateUnits > a.lateUnits,
+            }
+          : null,
+      (b ?? a).lateUnits + ((b ?? a).pendingUnits ?? 0) > 0,
     ) +
     metric(
       "Waiting at bridges",
@@ -405,6 +638,12 @@ function renderEvents() {
       "unreachable",
       "all_delivered",
       "bridge_queue",
+      "bridge_closed",
+      "bridge_opened",
+      "bridge_closed_wait",
+      "production_paused",
+      "production_resumed",
+      "reroute",
     ].includes(e.type),
   );
   $("event-log").innerHTML =
@@ -439,11 +678,12 @@ function renderTrials() {
         : comparison.improved
           ? "IMPROVED"
           : "NO IMPROVEMENT";
-      return `<button class="trial-card${state.candidate?.id === t.id ? " selected" : ""}" data-trial="${escape(t.id)}"><span class="trial-top"><span>${escape(t.id.toUpperCase())}</span><span class="trial-badge${comparison.improved || comparison.goalMet ? "" : " failed"}">${label}</span></span><strong>${escape(t.label)}</strong><span class="trial-stats"><span>${t.evidence.metrics.onTime}/${t.evidence.metrics.demand} on time</span><span>${t.evidence.metrics.waitTicks} waiting turns</span></span></button>`;
+      return `<button class="trial-card${state.candidate?.id === t.id ? " selected" : ""}" data-trial="${escape(t.id)}"><span class="trial-top"><span>TRIAL ${String(state.trials.indexOf(t) + 1).padStart(2, "0")}</span><span class="trial-badge${comparison.improved || comparison.goalMet ? "" : " failed"}">${label}</span></span><strong>${escape(t.label)}</strong><span class="trial-stats"><span>${t.evidence.metrics.onTime}/${t.evidence.metrics.demand} on time</span><span>${t.evidence.metrics.waitTicks} waiting turns</span></span></button>`;
     })
     .join("");
 }
 function render() {
+  if (!state.candidate) state.soloCandidate = false;
   $("world-name").textContent = state.world.name;
   $("policy-label").textContent = policyLabel[state.world.rules.dispatch];
   $("scene-tag").textContent =
@@ -461,7 +701,9 @@ function render() {
     : "1 change / trial";
   $("resource-constraint").textContent = designPreview
     ? "Review rule differences"
-    : "Same resources";
+    : state.world.events?.length
+      ? "Resources + schedule locked"
+      : "Same resources";
   $("replay-note").textContent =
     state.candidate && !state.candidate.comparison.sameSeed
       ? "Different seeds · inspect inputs"
@@ -477,8 +719,20 @@ function render() {
   $("result-caption").textContent =
     `${state.candidate ? "B" : "A"} · Results across ${(state.candidate?.world ?? state.world).rules.horizon} turns`;
   $("view-compare").disabled = !state.candidate;
+  $("view-candidate").disabled = !state.candidate;
   $("view-compare").classList.toggle("active", state.comparing);
-  $("view-world").classList.toggle("active", !state.comparing);
+  $("view-world").classList.toggle(
+    "active",
+    !state.comparing && !state.soloCandidate,
+  );
+  $("view-candidate").classList.toggle("active", state.soloCandidate);
+  $("world-caption-label").innerHTML = state.soloCandidate
+    ? '<i class="branch-dot alternative"></i>B · Proposed world'
+    : '<i class="branch-dot"></i>A · Original world';
+  $("policy-label").textContent =
+    policyLabel[
+      (state.soloCandidate ? state.candidate.world : state.world).rules.dispatch
+    ];
   $("candidate-pane").hidden = !state.comparing;
   $("canvas-section").classList.toggle("comparing", state.comparing);
   $("candidate-label").textContent = state.candidate?.label.slice(0, 36) ?? "";
@@ -498,6 +752,25 @@ function render() {
           ? "Saved layout · photo not stored"
           : "Your table · confirmed roles"
         : "A little valley, on your desk";
+  const visiblePhoto = state.soloCandidate
+    ? (state.candidate.photo ?? state.photo)
+    : state.photo;
+  $("source-photo").hidden = !visiblePhoto;
+  if (visiblePhoto) $("source-photo").src = visiblePhoto;
+  else $("source-photo").removeAttribute("src");
+  document.querySelector(".source-icon").hidden = Boolean(visiblePhoto);
+  $("source-caption").textContent =
+    state.world.provenance?.type === "synthetic"
+      ? "AI-generated tabletop input · confirmed roles"
+      : state.world.provenance?.type === "photo"
+        ? "Your tabletop · confirmed roles"
+        : "An authored example world";
+  $("study-controls").hidden = !isValleyStudy();
+  document.querySelectorAll("[data-study]").forEach((button) => {
+    const active = button.dataset.study === state.studyStep;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
   const checkpointId = $("checkpoints").value;
   $("checkpoints").innerHTML = state.checkpoints.length
     ? state.checkpoints
@@ -511,9 +784,13 @@ function render() {
     $("checkpoints").value = checkpointId;
   $("compare-checkpoint").disabled = state.busy || !state.checkpoints.length;
   $("change-preview").hidden = !state.candidate;
+  $("change-instruction").hidden = !state.candidate?.instruction;
   if (state.candidate) {
+    $("change-instruction").textContent = state.candidate.instruction
+      ? `“${state.candidate.instruction}”`
+      : "";
     $("change-title").textContent =
-      `${state.candidate.kind === "rules" ? "Designer rule preview" : "Changes from A to B"}${state.candidate.source === "imported" ? " · imported, recomputed" : ""}`;
+      `${state.candidate.kind === "rules" ? "Designer rule preview" : "Changes from A to B"}${state.candidate.source === "imported" ? " · imported, recomputed" : state.candidate.source === "recorded-meta-design" ? " · recorded Meta proposal" : ""}`;
     const changes = describeWorldChanges(state.world, state.candidate.world);
     $("change-list").innerHTML = (
       changes.length ? changes : ["No layout or rule differences."]
@@ -528,12 +805,27 @@ function render() {
   requestAnimationFrame(draw);
 }
 function draw() {
+  const shownWorld = state.soloCandidate ? state.candidate.world : state.world;
+  const shownRun = state.soloCandidate ? state.candidate.run : state.run;
+  const changedIds = state.candidate
+    ? state.candidate.world.bridges
+        .filter((b) =>
+          state.world.bridges.some((a) => a.id === b.id && a.y !== b.y),
+        )
+        .map((b) => b.id)
+    : [];
   drawWorld(
     $("world-canvas"),
-    state.world,
-    state.run,
+    shownWorld,
+    shownRun,
     state.tick,
     state.selected,
+    state.soloCandidate,
+    {
+      changedIds: state.soloCandidate || state.comparing ? changedIds : [],
+      originBridges: state.soloCandidate ? state.world.bridges : [],
+      dragCell: state.dragCell,
+    },
   );
   if (state.comparing && state.candidate)
     drawWorld(
@@ -543,18 +835,60 @@ function draw() {
       state.tick,
       state.selected,
       true,
+      { changedIds, originBridges: state.world.bridges },
     );
   if (!$("table-preview").hidden)
     drawTablePreview($("table-preview"), state.world);
   $("timeline").value = Math.round(state.tick);
   $("turn").textContent = Math.round(state.tick);
   $("play").textContent = state.playing ? "Ⅱ" : "▶";
+  $("play").setAttribute(
+    "aria-label",
+    state.playing ? "Pause simulation" : "Play simulation",
+  );
+  drawMechanics();
+  const t = Math.floor(state.tick);
+  const frame = shownRun.frames[Math.min(t, shownRun.frames.length - 1)];
+  const failureRun = state.comparing ? state.run : shownRun;
+  const failure = failureRun.events.find((e) =>
+    ["deadline_missed", "unreachable"].includes(e.type),
+  );
+  $("jump-event").disabled = !failure;
+  $("jump-event").textContent = failure
+    ? `Inspect ${state.comparing ? "A’s " : ""}first failure ↗`
+    : "All deadlines met";
+  $("signal-kicker").textContent = state.comparing
+    ? "SYNCHRONIZED REPLAY · A / B"
+    : `${state.soloCandidate ? "B" : "A"} · REPLAY AT TURN ${String(t).padStart(3, "0")}`;
+  const latestMiss = shownRun.events.findLast(
+    (e) => e.type === "deadline_missed" && e.tick <= t,
+  );
+  $("signal-text").textContent = state.comparing
+    ? `Turn ${t}: A has delivered ${state.run.frames[Math.min(t, state.run.frames.length - 1)].delivered}/${state.run.metrics.demand} water; B has delivered ${state.candidate.run.frames[Math.min(t, state.candidate.run.frames.length - 1)].delivered}/${state.candidate.run.metrics.demand}.`
+    : (latestMiss?.message ??
+      `At this turn, ${frame.delivered}/${shownRun.metrics.demand} water units have arrived. ${frame.agents.filter((a) => a.waiting).length} couriers are waiting at a crossing.`);
 }
-function selectTrial(id) {
+function selectTrial(id, { focus = false } = {}) {
   const t = state.trials.find((t) => t.id === id);
   if (!t) return;
   state.candidate = { ...t, run: simulate(t.world) };
-  state.comparing = true;
+  const narrow = matchMedia("(max-width: 560px)").matches;
+  state.comparing = !narrow;
+  state.soloCandidate = narrow;
+  if (focus) {
+    const failure = state.run.events.find(
+      (e) => e.type === "deadline_missed" || e.type === "unreachable",
+    );
+    state.tick =
+      failure?.tick ??
+      Math.min(
+        state.world.rules.horizon,
+        state.candidate.run.metrics.completedAt ??
+          Math.floor(state.world.rules.horizon / 2),
+      );
+    state.selected = failure?.houseId ?? null;
+    state.playing = false;
+  }
   state.tick = Math.min(
     state.tick,
     Math.max(state.world.rules.horizon, t.world.rules.horizon),
@@ -575,7 +909,7 @@ function selectTrial(id) {
     $("verdict").append(
       title,
       document.createTextNode(
-        `${t.evidence.metrics.onTime}/${t.evidence.metrics.demand} water units on time in B. Review the changes before applying. ${t.source === "imported" ? "Imported inputs; results recomputed locally." : t.kind === "rules" && t.source === "meta" ? "Meta translated the instruction; the simulator checked the outcome." : "Computed locally from the confirmed layout and rules."}`,
+        `${t.evidence.metrics.onTime}/${t.evidence.metrics.demand} water units on time in B. Review the changes before applying. ${t.source === "imported" ? "Imported inputs; results recomputed locally." : t.source === "recorded-meta-design" ? "Recorded Meta rule proposal; the simulator recomputed the outcome. No new API calls." : t.kind === "rules" && t.source === "meta" ? "Meta translated the instruction; the simulator checked the outcome." : "Computed locally from the confirmed layout and rules."}`,
       ),
     );
     $("verdict").hidden = false;
@@ -618,6 +952,19 @@ function previewWorld(
   });
   state.trials = [...state.trials.slice(-31), trial];
   selectTrial(trial.id);
+  if (kind === "rules") {
+    const changedEvent = (world.events ?? []).find(
+      (e) =>
+        !(state.world.events ?? []).some(
+          (old) => JSON.stringify(old) === JSON.stringify(e),
+        ),
+    );
+    if (changedEvent) {
+      state.tick = changedEvent.from;
+      state.selected = changedEvent.targetId;
+      draw();
+    }
+  }
 }
 function displayVerdict(result, local = false) {
   const title = {
@@ -628,8 +975,10 @@ function displayVerdict(result, local = false) {
       ? "This idea did not improve the result."
       : "No verified fix found in these trials.",
   }[result.verdict];
-  const text =
-    result.verdict === "goal_met"
+  const currentMetrics = state.candidate?.run.metrics ?? state.run.metrics;
+  const text = currentMetrics.pendingUnits
+    ? `The replay ends with ${currentMetrics.pendingUnits} deliveries still awaiting their deadlines. Extend the horizon to verify them.`
+    : result.verdict === "goal_met"
       ? "Every requested water unit arrived by its deadline with the same resources."
       : result.verdict === "improved"
         ? "This trial improved the measured result. Some deadlines are still missed."
@@ -693,13 +1042,51 @@ $("speed").addEventListener("change", (e) => {
 });
 $("view-world").addEventListener("click", () => {
   state.comparing = false;
+  state.soloCandidate = false;
+  render();
+});
+$("world-zoom").addEventListener("change", (e) => {
+  $("world-canvas").dataset.zoom = e.target.value;
+  $("candidate-canvas").dataset.zoom = e.target.value;
+  draw();
+});
+$("view-candidate").addEventListener("click", () => {
+  if (!state.candidate) return;
+  state.comparing = false;
+  state.soloCandidate = true;
   render();
 });
 $("view-compare").addEventListener("click", () => {
   if (state.candidate) {
     state.comparing = true;
+    state.soloCandidate = false;
     render();
   }
+});
+$("jump-event").addEventListener("click", () => {
+  const run = state.soloCandidate ? state.candidate.run : state.run;
+  const e = run.events.find((e) =>
+    ["deadline_missed", "unreachable"].includes(e.type),
+  );
+  if (!e) return;
+  state.tick = e.tick;
+  state.selected = e.houseId ?? null;
+  state.playing = false;
+  renderObjects();
+  draw();
+});
+$("show-inspector").addEventListener("click", () =>
+  $("scene-dialog").showModal(),
+);
+$("close-scene").addEventListener("click", () => $("scene-dialog").close());
+$("capture-hero").addEventListener("click", () => $("capture").click());
+$("design-hero").addEventListener("click", () => $("edit-rules").click());
+$("mechanics-strip").addEventListener("click", (event) => {
+  if (event.target.closest("[data-edit-mechanics]")) $("edit-rules").click();
+});
+document.querySelector(".project-menu").addEventListener("click", (e) => {
+  if (e.target.closest("button, a"))
+    document.querySelector(".project-menu").open = false;
 });
 $("trials").addEventListener("click", (e) => {
   const card = e.target.closest("[data-trial]");
@@ -731,8 +1118,11 @@ $("close-budget").addEventListener("click", () => $("budget-dialog").close());
 let dragged = null;
 $("world-canvas").addEventListener("pointerdown", (e) => {
   if (state.busy) return;
-  const cell = cellFromPointer($("world-canvas"), state.world, e);
-  const object = objectAt(state.world, cell.x, cell.y);
+  if (state.soloCandidate)
+    return toast(
+      "Switch to Original to edit. Apply the proposal to make it your working world.",
+    );
+  const object = pickObject($("world-canvas"), state.world, e);
   if (object) {
     state.selected = object.id;
     dragged = { id: object.id, startX: e.clientX, startY: e.clientY };
@@ -741,11 +1131,18 @@ $("world-canvas").addEventListener("pointerdown", (e) => {
     draw();
   }
 });
+$("world-canvas").addEventListener("pointermove", (e) => {
+  if (!dragged) return;
+  state.dragCell = cellFromPointer($("world-canvas"), state.world, e);
+  draw();
+});
 $("world-canvas").addEventListener("pointerup", (e) => {
   if (!dragged) return;
+  state.dragCell = null;
   const drag = dragged;
   dragged = null;
-  if (Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) < 4) return;
+  if (Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) < 4)
+    return draw();
   const cell = cellFromPointer($("world-canvas"), state.world, e);
   const world = structuredClone(state.world);
   const object = [
@@ -764,10 +1161,13 @@ $("world-canvas").addEventListener("pointerup", (e) => {
     toast("Layout changed. A fresh replay is ready.");
   } catch (error) {
     toast(error.message);
+    draw();
   }
 });
 $("world-canvas").addEventListener("pointercancel", () => {
   dragged = null;
+  state.dragCell = null;
+  draw();
 });
 
 $("local-sweep").addEventListener("click", () => {
@@ -826,7 +1226,7 @@ $("local-sweep").addEventListener("click", () => {
       seed: state.world.seed,
     },
   };
-  if (best) selectTrial(best.id);
+  if (best) selectTrial(best.id, { focus: true });
   else render();
   displayVerdict(state.result, true);
   $("agent-activity").hidden = true;
@@ -895,7 +1295,8 @@ $("playtest").addEventListener("click", async () => {
             kind: "agent",
             source: "meta",
           }));
-          if (event.result.best) selectTrial(event.result.best.id);
+          if (event.result.best)
+            selectTrial(event.result.best.id, { focus: true });
           else render();
           displayVerdict(event.result);
         }
@@ -997,6 +1398,7 @@ $("compare-checkpoint").addEventListener("click", () => {
     label: "Current world vs saved checkpoint",
     photo: current.photo,
   });
+  $("scene-dialog").close();
 });
 $("apply-candidate").addEventListener("click", () => {
   if (!state.candidate || state.busy) return;
@@ -1006,6 +1408,7 @@ $("apply-candidate").addEventListener("click", () => {
 });
 
 $("edit-rules").addEventListener("click", () => {
+  $("scene-dialog").close();
   for (const [key, value] of Object.entries(state.world.rules))
     $("rule-" + key).value = value;
   $("household-fields").innerHTML = state.world.houses
@@ -1015,6 +1418,15 @@ $("edit-rules").addEventListener("click", () => {
     )
     .join("");
   $("rule-status").textContent = "Manual previews use no API credit.";
+  renderRuleSchedule();
+  $("event-from").value = Math.max(
+    1,
+    Math.ceil(state.world.rules.horizon * 0.2),
+  );
+  $("event-to").value = Math.max(
+    1,
+    Math.ceil(state.world.rules.horizon * 0.42),
+  );
   $("rules-dialog").showModal();
 });
 $("close-rules").addEventListener("click", () => $("rules-dialog").close());
@@ -1083,10 +1495,12 @@ $("compile-rules").addEventListener("click", async () => {
   }
 });
 
-$("recorded-example").addEventListener("click", async () => {
+async function loadRecordedStudy(step = "repair") {
   if (state.busy) return;
+  setBusy(true);
   try {
     const result = await api("/examples/valley-playtest.json");
+    setBusy(false);
     commitWorld(result.startingWorld);
     for (const trial of result.experiments) {
       const world = applyPatch(state.world, trial.patch).world;
@@ -1101,16 +1515,14 @@ $("recorded-example").addEventListener("click", async () => {
       trial.comparison = compareRuns(state.run, run);
       trial.evidence = evidence(run);
     }
-    state.result = result;
+    state.result = { ...result, source: "recorded-meta-run" };
     state.trials = result.experiments.map((t) => ({
       ...t,
       kind: "agent",
       source: "recorded-meta-run",
     }));
     state.photo = null;
-    selectTrial(result.best.id);
-    state.tick = state.candidate.run.metrics.completedAt ?? 94;
-    draw();
+    showStudyStep(step);
     autosave();
     $("agent-activity").hidden = true;
     toast(
@@ -1118,11 +1530,199 @@ $("recorded-example").addEventListener("click", async () => {
     );
   } catch (error) {
     toast(error.message);
+  } finally {
+    setBusy(false);
+  }
+}
+function showStudyStep(step) {
+  if (state.busy || !isValleyStudy()) return;
+  state.studyStep = step;
+  state.playing = false;
+  if (step === "baseline") {
+    state.candidate = null;
+    state.comparing = false;
+    state.soloCandidate = false;
+    const first = state.run.events.find((e) => e.type === "deadline_missed");
+    state.tick = first?.tick ?? 0;
+    state.selected = first?.houseId ?? null;
+    $("verdict").hidden = true;
+  } else {
+    const trial =
+      step === "hypothesis"
+        ? state.trials.find((t) => t.patch?.dispatch === "balanced")
+        : state.trials.find(
+            (t) =>
+              t.id ===
+              (state.result.best?.id ??
+                state.trials.find((trial) => trial.comparison.goalMet)?.id),
+          );
+    if (!trial) return;
+    selectTrial(trial.id);
+    if (step === "hypothesis") {
+      state.soloCandidate = true;
+      state.comparing = false;
+      const first = state.candidate.run.events.find(
+        (e) => e.type === "deadline_missed",
+      );
+      state.tick = first?.tick ?? 0;
+      state.selected = first?.houseId ?? null;
+    } else {
+      state.tick =
+        state.candidate.run.metrics.completedAt ?? state.world.rules.horizon;
+      state.selected = trial.patch?.bridgeMoves?.[0]?.id ?? null;
+    }
+  }
+  render();
+  autosave();
+}
+$("recorded-example").addEventListener("click", () => loadRecordedStudy());
+$("open-study").addEventListener("click", () => loadRecordedStudy("baseline"));
+$("recorded-rule").addEventListener("click", async () => {
+  if (state.busy) return;
+  setBusy(true);
+  try {
+    const record = await api("/examples/closed-crossing-design.json");
+    const world = applyRuleChange(record.startingWorld, record.proposal).world;
+    const run = simulate(world);
+    if (JSON.stringify(evidence(run)) !== JSON.stringify(record.evidence))
+      throw new Error(
+        "The recorded rule experiment does not match this simulator.",
+      );
+    setBusy(false);
+    commitWorld(record.startingWorld, { photo: null });
+    state.name = "A crossing that closes";
+    $("project-name").value = state.name;
+    state.result = {
+      source: "recorded-meta-design",
+      model: record.model,
+      goal: record.instruction,
+      summary: record.explanation,
+    };
+    previewWorld(world, {
+      kind: "rules",
+      label: "Close the north bridge · turns 25–50",
+      source: "recorded-meta-design",
+      model: record.model,
+      instruction: record.instruction,
+    });
+    $("rules-dialog").close();
+    toast(
+      "Recorded Meta rule experiment loaded. Every result was recomputed; no new API calls.",
+    );
+    autosave();
+  } catch (error) {
+    $("rule-status").textContent = error.message;
+  } finally {
+    setBusy(false);
   }
 });
 
+function clearClipDownloads() {
+  for (const url of clipUrls) URL.revokeObjectURL(url);
+  clipUrls = [];
+  for (const id of ["download-clip", "download-clip-project"]) {
+    $(id).hidden = true;
+    $(id).removeAttribute("href");
+  }
+}
+function clipControls(recording) {
+  for (const id of ["clip-mode", "clip-duration", "clip-start", "clip-end"])
+    $(id).disabled = recording;
+  $("record-clip").disabled = recording || !replayFormat();
+  $("cancel-clip").hidden = !recording;
+}
+$("open-clip").addEventListener("click", () => {
+  if (state.busy) return;
+  state.playing = false;
+  draw();
+  clearClipDownloads();
+  document.querySelector(".project-menu").open = false;
+  const end = Math.max(
+    state.world.rules.horizon,
+    state.candidate?.world.rules.horizon ?? 0,
+  );
+  $("clip-mode").value = state.candidate ? "compare" : "original";
+  for (const option of $("clip-mode").options)
+    option.disabled = option.value !== "original" && !state.candidate;
+  $("clip-start").value = 0;
+  $("clip-end").value = end;
+  $("clip-start").max = end - 1;
+  $("clip-end").max = end;
+  $("clip-canvas").hidden = true;
+  $("clip-progress").hidden = true;
+  $("clip-status").textContent = replayFormat()
+    ? "Your project and comparison stay unchanged."
+    : "Replay video is unavailable in this browser. Project and HTML evidence exports still work.";
+  clipControls(false);
+  $("clip-dialog").showModal();
+});
+$("record-clip").addEventListener("click", async () => {
+  if (clipRecording) return;
+  clearClipDownloads();
+  try {
+    $("clip-canvas").hidden = false;
+    $("clip-progress").hidden = false;
+    $("clip-progress").value = 0;
+    $("clip-status").textContent = "Preparing the replay frames…";
+    clipControls(true);
+    let lastPercent = -1;
+    clipRecording = createReplayClip(
+      $("clip-canvas"),
+      projectSnapshot(),
+      {
+        mode: $("clip-mode").value,
+        duration: $("clip-duration").value,
+        start: $("clip-start").value,
+        end: $("clip-end").value,
+      },
+      (progress) => {
+        const percent = Math.floor(progress * 100);
+        if (percent === lastPercent) return;
+        lastPercent = percent;
+        $("clip-progress").value = progress;
+        $("clip-status").textContent =
+          `Rendering ${percent}% · 30 frames per second · no API usage`;
+      },
+    );
+    const result = await clipRecording.done;
+    const videoUrl = URL.createObjectURL(result.blob);
+    const projectUrl = URL.createObjectURL(
+      new Blob([JSON.stringify(result.project, null, 2)], {
+        type: "application/json",
+      }),
+    );
+    clipUrls = [videoUrl, projectUrl];
+    const label = `liveworld-replay-${$("clip-mode").value}-${$("clip-start").value}-${$("clip-end").value}-${$("clip-duration").value}s`;
+    $("download-clip").href = videoUrl;
+    $("download-clip").download = `${label}.${result.extension}`;
+    $("download-clip").hidden = false;
+    $("download-clip-project").href = projectUrl;
+    $("download-clip-project").download = `${label}.json`;
+    $("download-clip-project").hidden = false;
+    $("clip-status").textContent =
+      `Ready · 1920 × 1080 · ${(result.blob.size / 1_000_000).toFixed(1)} MB · silent engine replay. Download the inputs to reproduce it.`;
+    $("clip-progress").value = 1;
+  } catch (error) {
+    $("clip-status").textContent = error.message;
+  } finally {
+    clipRecording = null;
+    clipControls(false);
+  }
+});
+$("cancel-clip").addEventListener("click", () => clipRecording?.cancel());
+$("close-clip").addEventListener("click", () => $("clip-dialog").close());
+$("clip-dialog").addEventListener("close", () => clipRecording?.cancel());
+document
+  .querySelectorAll("[data-study]")
+  .forEach((button) =>
+    button.addEventListener("click", () => showStudyStep(button.dataset.study)),
+  );
+
 // Camera capture is user initiated. Photos stay in the browser until Find objects.
-$("capture").addEventListener("click", () => $("scan-dialog").showModal());
+$("capture").addEventListener("click", () => {
+  $("scene-dialog").close();
+  $("scan-dialog").showModal();
+});
 function stopCamera() {
   state.camera?.getTracks().forEach((t) => t.stop());
   state.camera = null;
@@ -1160,14 +1760,20 @@ function loadImage(source, width, height, provenance = { type: "photo" }) {
     provenance,
   };
   state.scanResult = null;
+  state.scanSelected = null;
+  $("scan-input-options").open = false;
+  $("scan-input-summary").textContent = "Change image or try another example";
   $("scan-workspace").hidden = false;
   $("scan-objects").replaceChildren();
   $("confirm-scan").disabled = true;
-  $("scan-photo").disabled = false;
+  updateLiveControls();
   $("scan-status").textContent =
     provenance.type === "synthetic"
       ? "AI-generated test input ready. Find objects sends it to Muse Spark and SAM 3.1."
       : "Photo ready. Find objects sends this image to Muse Spark and SAM 3.1.";
+  if (!state.world.provenance?.objects?.length)
+    $("scan-status").textContent +=
+      " Building a new table starts with default game rules; your current world is kept as a checkpoint.";
   drawScan();
 }
 for (const variant of ["a", "b"]) {
@@ -1234,7 +1840,8 @@ function drawScan() {
   canvas.height = height;
   const ctx = canvas.getContext("2d");
   ctx.drawImage(bitmap, 0, 0);
-  for (const object of state.scanResult?.objects ?? []) {
+  $("scan-overlay-options").hidden = !state.scanResult;
+  for (const [index, object] of (state.scanResult?.objects ?? []).entries()) {
     const color = {
       source: "#387f9d",
       house: "#658b42",
@@ -1242,7 +1849,7 @@ function drawScan() {
       obstacle: "#8d8271",
       ignore: "#999999",
     }[object.role];
-    if (object.mask) {
+    if (object.mask && $("scan-show-masks").checked) {
       const m = object.mask;
       ctx.save();
       ctx.translate(m.bounds.left, m.bounds.top);
@@ -1250,21 +1857,37 @@ function drawScan() {
         (m.bounds.right - m.bounds.left) / m.width,
         (m.bounds.bottom - m.bounds.top) / m.height,
       );
-      ctx.fillStyle = color + "55";
-      ctx.fill(new Path2D(m.path));
+      const path = new Path2D(m.path);
+      ctx.fillStyle = color + (state.scanSelected === index ? "88" : "55");
+      ctx.fill(path);
+      ctx.strokeStyle = color;
+      ctx.lineWidth =
+        (Math.max(2, width / 400) * m.width) / (m.bounds.right - m.bounds.left);
+      ctx.stroke(path);
       ctx.restore();
     }
     const b = object.box;
-    ctx.strokeStyle = color;
-    ctx.lineWidth = Math.max(2, width / 300);
-    ctx.strokeRect(b.left, b.top, b.right - b.left, b.bottom - b.top);
-    ctx.font = `${Math.max(12, width / 48)}px Arial`;
+    if ($("scan-show-boxes").checked) {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = Math.max(2, width / 400);
+      ctx.setLineDash([width / 160, width / 240]);
+      ctx.strokeRect(b.left, b.top, b.right - b.left, b.bottom - b.top);
+      ctx.setLineDash([]);
+    }
+    const radius = Math.max(12, width / 75);
+    const x = Math.max(radius, Math.min(width - radius, b.left));
+    const y = Math.max(radius, b.top - radius * 0.3);
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
     ctx.fillStyle = color;
-    ctx.fillText(
-      `${object.label} · ${object.role}`,
-      b.left,
-      Math.max(18, b.top - 6),
-    );
+    ctx.fill();
+    ctx.font = `600 ${radius}px Arial`;
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(index + 1, x, y);
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
   }
 }
 $("scan-photo").addEventListener("click", async () => {
@@ -1279,7 +1902,7 @@ $("scan-photo").addEventListener("click", async () => {
     $("scan-objects").innerHTML = state.scanResult.objects
       .map(
         (o, i) =>
-          `<label class="scan-object-row"><span>${escape(o.label)}${o.segmented ? " ✓" : ""}</span><select data-scan-index="${i}" aria-label="Role for ${escape(o.label)}">${["source", "house", "bridge", "obstacle", "ignore"].map((role) => `<option${o.role === role ? " selected" : ""}>${role}</option>`).join("")}</select></label>`,
+          `<label class="scan-object-row" data-scan-row="${i}"><span><b>${i + 1}</b>${escape(o.label)}${o.segmented ? " ✓" : ""}</span><select data-scan-index="${i}" aria-label="Role for ${escape(o.label)}">${["source", "house", "bridge", "obstacle", "ignore"].map((role) => `<option${o.role === role ? " selected" : ""}>${role}</option>`).join("")}</select></label>`,
       )
       .join("");
     drawScan();
@@ -1290,7 +1913,7 @@ $("scan-photo").addEventListener("click", async () => {
     $("scan-status").textContent = error.message;
   } finally {
     setBusy(false);
-    $("scan-photo").disabled = !state.scanImage;
+    updateLiveControls();
     $("confirm-scan").disabled = !state.scanResult?.objects.length;
     refreshStatus();
   }
@@ -1299,6 +1922,15 @@ $("scan-objects").addEventListener("change", (e) => {
   const index = e.target.dataset.scanIndex;
   if (index !== undefined) {
     state.scanResult.objects[Number(index)].role = e.target.value;
+    drawScan();
+  }
+});
+for (const id of ["scan-show-masks", "scan-show-boxes"])
+  $(id).addEventListener("change", drawScan);
+$("scan-objects").addEventListener("focusin", (e) => {
+  const row = e.target.closest("[data-scan-row]");
+  if (row) {
+    state.scanSelected = Number(row.dataset.scanRow);
     drawScan();
   }
 });
@@ -1312,7 +1944,9 @@ function worldFromScan() {
     throw new Error("Assign exactly one source and at least one house.");
   if (objects.filter((o) => o.role === "bridge").length > 4)
     throw new Error("Use at most four bridges.");
-  const world = structuredClone(state.world);
+  const world = state.world.provenance?.objects?.length
+    ? structuredClone(state.world)
+    : exampleWorld();
   world.name =
     state.scanImage.provenance.type === "synthetic"
       ? "Synthetic tabletop world"
@@ -1433,19 +2067,22 @@ $("confirm-scan").addEventListener("click", () => {
 
 let previousTime = 0;
 function animate(time) {
-  if (state.playing && time - previousTime > 140 / state.speed) {
+  if (state.playing && previousTime) {
     const horizon = Math.max(
       state.world.rules.horizon,
       state.candidate?.world.rules.horizon ?? 0,
     );
-    state.tick = Math.min(state.tick + 1, horizon);
+    state.tick = Math.min(
+      state.tick + (Math.min(time - previousTime, 80) * state.speed) / 140,
+      horizon,
+    );
     if (state.tick >= horizon) {
       state.playing = false;
       autosave();
     }
     draw();
-    previousTime = time;
   }
+  previousTime = time;
   requestAnimationFrame(animate);
 }
 new ResizeObserver(() => draw()).observe($("canvas-section"));

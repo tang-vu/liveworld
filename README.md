@@ -2,11 +2,11 @@
 
 **Build a world on your desk. Find what breaks. Test the fix.**
 
-LiveWorld is a tabletop prototyping and playtesting workbench for small logistics games. Arrange ordinary objects, confirm their roles, and turn them into a playable 2D world. Ask a Meta-powered agent to investigate missed deadlines, test constrained changes, and compare the results from the same starting state.
+LiveWorld is a tabletop playtest studio for small logistics games. Turn objects and design intent into a playable system, see what breaks, and compare a measured repair. Muse Spark interprets supported rules and investigates experiments; SAM segments the objects; the simulator checks what actually happens.
 
 Built by Tang Vu for the Meta Global AI Developer Hackathon 2026, Indie Developer track.
 
-![LiveWorld workbench showing a recorded Meta playtest and a verified A/B comparison](docs/workbench.jpg)
+![LiveWorld studio: synchronized worlds show one bridge change taking delivery from 20 to 24 units on time](docs/studio-comparison.jpg)
 
 **[Watch the three-minute demo](public/demo/liveworld-demo.mp4)** · [Recording details and transcript](demo/README.md) · [Submission draft](docs/submission.md)
 
@@ -40,7 +40,7 @@ If a configured `.env.local` already exists, preserve it rather than copying ove
 4. Compare a tested candidate against the original. Every trial starts from the original world; changes do not accumulate between trials.
 5. Select **Use B as my world** to continue building from a candidate. A is retained as a checkpoint. Save the project or export evidence to retain the inputs and measurements.
 
-**Replay a recorded Meta run** loads an actual Muse Spark experiment without making new API calls. Every trial's measurements are recomputed in the browser before display. It is explicitly labelled as a recording; it is not presented as a live model call.
+**Explore a verified playtest** walks through three parts of a recorded Meta experiment: the original bottleneck, a plausible failed hypothesis, and a verified repair. Every trial is recomputed locally. **Write a game rule → Explore a recorded rule experiment** loads a second study: a timed bridge closure compiled by Meta. Neither walkthrough makes new API calls. Their recording labels stay visible.
 
 The default scene is an authored example, not a general benchmark. Changing the dispatch policy to balanced service is a plausible failed proposal. Moving the south bridge to zero-based row 6 meets the example's deadlines while increasing bridge waiting time: the comparison preserves that tradeoff.
 
@@ -66,9 +66,18 @@ This prototype uses image-relative coordinates snapped to a fixed 18×12 grid wi
 
 **Evidence** exports the original experiment JSON or a standalone HTML report with A/B measurements, a change list and household results. The corresponding project file contains replayable inputs.
 
-**Edit the game rules** supports manual changes without API usage, or a natural-language instruction compiled by Muse Spark into a constrained proposal. Supported fields are dispatch, couriers, bridge capacity, production interval, simulation horizon, household demand and deadlines. Code validates the proposal and recomputes outcomes. Unsupported mechanics are reported rather than silently approximated. Review B before applying; creator rule changes are labelled separately from resource-constrained playtest fixes.
+**Write a game rule** supports manual editing or a natural-language instruction compiled by Muse Spark into a constrained proposal. Supported settings are dispatch, couriers, bridge capacity, production interval, simulation horizon, household demand and deadlines. Two timed mechanics make the design executable:
 
-A rescan preserves your current rules, matches nearby objects of the same role and opens as a comparison against A. Apply only after reviewing the changes. To inspect the recorded generated-image pair without making calls, choose **Capture your table → Replay recorded A/B capture**. This is explicitly a replay of saved Meta outputs, not a live camera demonstration.
+- **Close an existing bridge** during an inclusive turn interval. New trips avoid it; approaching couriers reroute or wait; couriers already on it finish crossing.
+- **Pause the well's production** during an inclusive interval. Existing water remains available and the original production clock is retained.
+
+Up to six scheduled events are supported. Code validates targets, intervals and overlaps. The instruction and exact changes remain visible in B before application. Unsupported or ambiguous requests are reported without partially applying their other changes. These are discrete game mechanics, not physical flood or fluid simulation. Creator rule changes are distinct from constrained playtest repairs.
+
+![Recorded Meta rule proposal: only B closes its north crossing on turns 25–50](docs/studio-mechanics.jpg)
+
+In the bundled closure study, on-time delivery changes from 20/24 to 16/24. A subsequent recorded Meta playtest improves it to 22/24 with the schedule locked; it remains **not solved**. Open the [design project](public/examples/closed-crossing-project.json) or [repair project](public/examples/closed-crossing-repairs-project.json) and recompute their outcomes with `node scripts/check-mechanics.mjs`.
+
+A fresh photo world starts with the example game rules. Rescanning an existing photo world preserves its rules, matches nearby objects of the same role and opens as a comparison against A. Apply only after reviewing the changes. To inspect the recorded generated-image pair without making calls, choose **Capture your table → Replay recorded A/B capture**. This is explicitly a replay of saved Meta outputs, not a live camera demonstration.
 
 ## Agent and verification
 
@@ -77,6 +86,12 @@ Muse Spark can inspect baseline events, call `test_change` for a hypothesis, and
 The simulator independently computes paths, movement, bridge queues, water accounting, deliveries, deadlines, and the final verdict. A model's written claim cannot change the verified success flag. The best candidate means the best among evaluated candidates, not a globally optimal solution. An unsuccessful limited search is not proof of impossibility.
 
 The agent uses at most 6 model turns and 32 distinct simulated candidates per run. A bounded search reports whether it covered its selected search space. Local simulation does not use API credits.
+
+## Share a playable experiment
+
+**Project → Export replay clip** renders a silent 1920×1080 WebM at 30 fps, using the studio's renderer and independently recomputed simulation frames. Choose an original, proposed or synchronized A/B view, a turn range and a 12, 20 or 30-second duration. Download the video and its replay inputs. Export makes no model calls and preserves the project.
+
+This optional feature needs a browser with WebCodecs video encoding support, such as a recent Chromium browser. Rendering speed depends on the device; the file's frame timing is explicit, so slower export does not reduce its frame rate. Project JSON and HTML evidence exports remain available when video encoding is unavailable. Media packaging uses the unmodified, locally bundled Mediabunny library; see [third-party notices](THIRD_PARTY_NOTICES.md).
 
 ## Budget controls
 
@@ -99,6 +114,19 @@ npm run check:config
 
 These commands make no paid requests. Tests cover deterministic replays, resource conservation, bridge capacity, disconnected worlds, impossible deadlines, patch constraints, independent verification, and budget failure cases.
 
+Replay the bundled evidence without API usage:
+
+```sh
+node scripts/check-generated-pair.mjs
+node scripts/check-mechanics.mjs
+node scripts/evaluate-rules.mjs
+node scripts/check-agent-evidence.mjs
+```
+
+The October 28 rule evaluation used six predeclared English instructions on renamed authored layouts, one attempt each. All six matched the expected semantics or refused the unsupported/ambiguous request, at an app-estimated cost of $0.028595. This small integration check is not a general accuracy benchmark. The [saved inputs and responses](public/examples/rule-evaluation.json) can be independently replayed; `--live` explicitly makes six new paid requests.
+
+A separate [agent integration record](public/examples/agent-id-check.json) exercises non-default bridge IDs. It contains 22 trials through three Meta requests, verifies a 24/24-on-time candidate and retains a rejected proposal in the trace. This is one authored scenario, not a general success-rate claim.
+
 `node scripts/smoke-meta.mjs` is a separate, explicitly paid one-request connectivity check, using the same budget gate.
 
 `node scripts/check-playtest.mjs` is a separate, explicitly paid HTTP integration check against a running local backend. It runs the real Meta agent and independently replays every returned patch. The October 28 check evaluated 22 trials and verified a 24/24-on-time candidate through five Meta requests; that run's local cost estimate was $0.032478. This is one observed run, not a general success-rate claim.
@@ -109,7 +137,7 @@ These commands make no paid requests. Tests cover deterministic replays, resourc
 
 - `shared/`: world validation, constrained patches, pathfinding, simulation, measurements.
 - `src/`: Meta integration, agent loop, persistent budget ledger.
-- `public/`: workbench, canvas renderer, capture and role review.
+- `public/`: studio, canvas renderer, replay exporter, capture and role review.
 - `server.mjs`: loopback-only HTTP backend. It does not serve environment files or private usage records.
 - `tests/`: offline tests; no real API key required.
 - `scripts/`: evaluation and configuration checks.
@@ -117,6 +145,8 @@ These commands make no paid requests. Tests cover deterministic replays, resourc
 ## Event scope and references
 
 This repository was started during the hackathon on October 27, 2026. Its simulator, workbench, budget controls, and agent integration were developed for this project. It does not reuse Keryx code. Existing platform capabilities are Meta's models and the official `@meta-sam/parser` dependency; generated segmentation masks are model outputs.
+
+Third-party media packaging code is identified in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md); it is not claimed as an original contribution.
 
 The verification design was informed by Meta's [legal-agent workshop](https://github.com/meta-models/legal-agent-workshop), particularly checks outside agent control and replayable experiments. Workshop application code and legal-case assets are not copied here.
 

@@ -4,7 +4,7 @@ import { exampleWorld, applyPatch } from "../shared/world.js";
 import { simulate, compareRuns } from "../shared/engine.js";
 
 // Explicitly paid end-to-end check. Run against an already-started local backend.
-const base = "http://127.0.0.1:4173";
+const base = process.env.LIVEWORLD_BASE_URL ?? "http://127.0.0.1:4173";
 const status = await (await fetch(base + "/api/status")).json();
 if (
   !status.configured ||
@@ -15,6 +15,16 @@ if (
     "Start an enabled local backend before this paid integration check.",
   );
 const world = exampleWorld();
+if (process.argv.includes("--renamed")) {
+  Object.assign(world.bridges[0], {
+    id: "crossing-upper",
+    label: "Upper crossing",
+  });
+  Object.assign(world.bridges[1], {
+    id: "crossing-meadow",
+    label: "Meadowbridge",
+  });
+}
 const baseline = simulate(world);
 const response = await fetch(base + "/api/playtest", {
   method: "POST",

@@ -1,0 +1,3221 @@
+{
+  "format": "liveworld-rule-evaluation-v1",
+  "recordedAt": "2026-10-28T11:02:18.347Z",
+  "scope": "Six predeclared English instructions, one attempt each, on renamed authored layouts. No prompt changes or retries within this evaluation. Not a general accuracy, camera, or creator-productivity benchmark.",
+  "model": "muse-spark-1.3",
+  "cases": [
+    {
+      "id": "named-closure",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "spring",
+          "label": "Spring",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "crossing-upper",
+            "x": 8,
+            "y": 2,
+            "label": "Upper crossing"
+          },
+          {
+            "id": "crossing-meadow",
+            "x": 8,
+            "y": 9,
+            "label": "Meadowbridge"
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine Gate",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "instruction": "From turn eighteen through thirty-three, keep Upper crossing closed. Everything else stays the same.",
+      "expected": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "spring",
+          "label": "Spring",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "crossing-upper",
+            "x": 8,
+            "y": 2,
+            "label": "Upper crossing"
+          },
+          {
+            "id": "crossing-meadow",
+            "x": 8,
+            "y": 9,
+            "label": "Meadowbridge"
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine Gate",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        },
+        "events": [
+          {
+            "id": "new",
+            "kind": "bridge_closed",
+            "targetId": "crossing-upper",
+            "from": 18,
+            "to": 33
+          }
+        ]
+      },
+      "result": {
+        "supported": true,
+        "explanation": "Closing Upper crossing (crossing-upper) from turn 18 through 33 inclusive. All other rules unchanged.",
+        "instruction": "From turn eighteen through thirty-three, keep Upper crossing closed. Everything else stays the same.",
+        "proposal": {
+          "rules": {
+            "bridgeCapacity": null,
+            "couriers": null,
+            "dispatch": null,
+            "horizon": null,
+            "productionInterval": null
+          },
+          "allHouseholds": {
+            "deadline": null,
+            "demand": null
+          },
+          "households": [],
+          "events": [
+            {
+              "from": 18,
+              "id": "e1",
+              "kind": "bridge_closed",
+              "targetId": "crossing-upper",
+              "to": 33
+            }
+          ]
+        },
+        "world": {
+          "version": 1,
+          "name": "The little valley",
+          "width": 18,
+          "height": 12,
+          "seed": 271026,
+          "river": {
+            "x": 8,
+            "width": 2
+          },
+          "source": {
+            "id": "spring",
+            "label": "Spring",
+            "x": 3,
+            "y": 5
+          },
+          "bridges": [
+            {
+              "id": "crossing-upper",
+              "x": 8,
+              "y": 2,
+              "label": "Upper crossing"
+            },
+            {
+              "id": "crossing-meadow",
+              "x": 8,
+              "y": 9,
+              "label": "Meadowbridge"
+            }
+          ],
+          "houses": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "x": 5,
+              "y": 2,
+              "demand": 4,
+              "deadline": 38
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "x": 4,
+              "y": 9,
+              "demand": 4,
+              "deadline": 45
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "x": 12,
+              "y": 2,
+              "demand": 4,
+              "deadline": 58
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "x": 14,
+              "y": 5,
+              "demand": 4,
+              "deadline": 66
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "x": 12,
+              "y": 9,
+              "demand": 4,
+              "deadline": 72
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "x": 16,
+              "y": 9,
+              "demand": 4,
+              "deadline": 94
+            }
+          ],
+          "obstacles": [
+            {
+              "id": "stone-1",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "stone-2",
+              "x": 12,
+              "y": 6
+            }
+          ],
+          "rules": {
+            "dispatch": "nearest",
+            "couriers": 6,
+            "bridgeCapacity": 1,
+            "productionInterval": 2,
+            "horizon": 120
+          },
+          "provenance": {
+            "type": "example",
+            "confirmed": true
+          },
+          "events": [
+            {
+              "from": 18,
+              "id": "e1",
+              "kind": "bridge_closed",
+              "targetId": "crossing-upper",
+              "to": 33
+            }
+          ]
+        },
+        "changes": [
+          {
+            "id": "events",
+            "field": "events",
+            "before": [],
+            "after": [
+              {
+                "from": 18,
+                "id": "e1",
+                "kind": "bridge_closed",
+                "targetId": "crossing-upper",
+                "to": 33
+              }
+            ],
+            "label": "Scheduled mechanics"
+          }
+        ],
+        "evidence": {
+          "metrics": {
+            "demand": 24,
+            "delivered": 24,
+            "onTime": 14,
+            "lateUnits": 10,
+            "unmetUnits": 0,
+            "coverage": 1,
+            "worstCoverage": 1,
+            "waitTicks": 52,
+            "completedAt": 108,
+            "unreachable": [],
+            "allOnTime": false,
+            "allDelivered": true,
+            "closureWaitTicks": 0,
+            "productionPausedTurns": 0
+          },
+          "households": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 4,
+              "deadline": 38,
+              "firstDelivery": 5
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 4,
+              "deadline": 45,
+              "firstDelivery": 13
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 1,
+              "deadline": 58,
+              "firstDelivery": 47
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 0,
+              "deadline": 66,
+              "firstDelivery": 74
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 4,
+              "deadline": 72,
+              "firstDelivery": 31
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 1,
+              "deadline": 94,
+              "firstDelivery": 48
+            }
+          ],
+          "significantEvents": [
+            {
+              "tick": 18,
+              "type": "bridge_closed",
+              "eventId": "e1",
+              "targetId": "crossing-upper",
+              "message": "Upper crossing closed · turns 18–33"
+            },
+            {
+              "tick": 24,
+              "type": "reroute",
+              "agentId": "courier-4",
+              "houseId": "h3",
+              "message": "A courier rerouted around a closed bridge."
+            },
+            {
+              "tick": 34,
+              "type": "bridge_opened",
+              "eventId": "e1",
+              "targetId": "crossing-upper",
+              "message": "Upper crossing reopened."
+            },
+            {
+              "tick": 58,
+              "type": "deadline_missed",
+              "houseId": "h3",
+              "missing": 3,
+              "message": "Pine Gate missed its deadline by 3 water unit(s)."
+            },
+            {
+              "tick": 66,
+              "type": "deadline_missed",
+              "houseId": "h4",
+              "missing": 4,
+              "message": "Cedar missed its deadline by 4 water unit(s)."
+            },
+            {
+              "tick": 94,
+              "type": "deadline_missed",
+              "houseId": "h6",
+              "missing": 3,
+              "message": "Hilltop missed its deadline by 3 water unit(s)."
+            },
+            {
+              "tick": 108,
+              "type": "all_delivered",
+              "message": "Every household has received its requested water."
+            }
+          ],
+          "bridgeQueues": [
+            ["crossing-meadow", 9],
+            ["crossing-upper", 4]
+          ],
+          "scheduledMechanics": [
+            {
+              "from": 18,
+              "id": "e1",
+              "kind": "bridge_closed",
+              "targetId": "crossing-upper",
+              "to": 33
+            }
+          ],
+          "routePhases": [
+            {
+              "tick": 0,
+              "reachableHomes": 6
+            },
+            {
+              "tick": 18,
+              "reachableHomes": 6
+            },
+            {
+              "tick": 34,
+              "reachableHomes": 6
+            }
+          ]
+        },
+        "comparison": {
+          "improved": false,
+          "goalMet": false,
+          "lateUnitsReduced": -6,
+          "unmetUnitsReduced": 0,
+          "waitTicksReduced": -36,
+          "sameSeed": true,
+          "verifiedBy": "deterministic-engine-v1"
+        },
+        "model": "muse-spark-1.3",
+        "designId": "79d41df8-e419-492e-b3e7-035b3c19cd67",
+        "createdAt": "2026-10-28T11:01:59.203Z",
+        "startingWorld": {
+          "version": 1,
+          "name": "The little valley",
+          "width": 18,
+          "height": 12,
+          "seed": 271026,
+          "river": {
+            "x": 8,
+            "width": 2
+          },
+          "source": {
+            "id": "spring",
+            "label": "Spring",
+            "x": 3,
+            "y": 5
+          },
+          "bridges": [
+            {
+              "id": "crossing-upper",
+              "x": 8,
+              "y": 2,
+              "label": "Upper crossing"
+            },
+            {
+              "id": "crossing-meadow",
+              "x": 8,
+              "y": 9,
+              "label": "Meadowbridge"
+            }
+          ],
+          "houses": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "x": 5,
+              "y": 2,
+              "demand": 4,
+              "deadline": 38
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "x": 4,
+              "y": 9,
+              "demand": 4,
+              "deadline": 45
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "x": 12,
+              "y": 2,
+              "demand": 4,
+              "deadline": 58
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "x": 14,
+              "y": 5,
+              "demand": 4,
+              "deadline": 66
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "x": 12,
+              "y": 9,
+              "demand": 4,
+              "deadline": 72
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "x": 16,
+              "y": 9,
+              "demand": 4,
+              "deadline": 94
+            }
+          ],
+          "obstacles": [
+            {
+              "id": "stone-1",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "stone-2",
+              "x": 12,
+              "y": 6
+            }
+          ],
+          "rules": {
+            "dispatch": "nearest",
+            "couriers": 6,
+            "bridgeCapacity": 1,
+            "productionInterval": 2,
+            "horizon": 120
+          },
+          "provenance": {
+            "type": "example",
+            "confirmed": true
+          }
+        }
+      },
+      "passed": true,
+      "error": null,
+      "elapsedMs": 3013
+    },
+    {
+      "id": "retain-existing-schedule",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "spring",
+          "label": "Spring",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "crossing-upper",
+            "x": 8,
+            "y": 2,
+            "label": "Upper crossing"
+          },
+          {
+            "id": "crossing-meadow",
+            "x": 8,
+            "y": 9,
+            "label": "Meadowbridge"
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine Gate",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        },
+        "events": [
+          {
+            "id": "existing-closure",
+            "kind": "bridge_closed",
+            "targetId": "crossing-meadow",
+            "from": 28,
+            "to": 42
+          }
+        ]
+      },
+      "instruction": "Pause Spring production on turns seven through eleven; preserve current scheduled events and every other setting.",
+      "expected": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "spring",
+          "label": "Spring",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "crossing-upper",
+            "x": 8,
+            "y": 2,
+            "label": "Upper crossing"
+          },
+          {
+            "id": "crossing-meadow",
+            "x": 8,
+            "y": 9,
+            "label": "Meadowbridge"
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine Gate",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        },
+        "events": [
+          {
+            "id": "existing-closure",
+            "kind": "bridge_closed",
+            "targetId": "crossing-meadow",
+            "from": 28,
+            "to": 42
+          },
+          {
+            "id": "existing-pause",
+            "kind": "production_paused",
+            "targetId": "spring",
+            "from": 7,
+            "to": 11
+          }
+        ]
+      },
+      "result": {
+        "supported": true,
+        "explanation": "Added a production pause for Spring on turns 7-11 inclusive. Kept the existing Meadowbridge closure and left all other settings unchanged.",
+        "instruction": "Pause Spring production on turns seven through eleven; preserve current scheduled events and every other setting.",
+        "proposal": {
+          "rules": {
+            "bridgeCapacity": null,
+            "couriers": null,
+            "dispatch": null,
+            "horizon": null,
+            "productionInterval": null
+          },
+          "allHouseholds": {
+            "deadline": null,
+            "demand": null
+          },
+          "households": [],
+          "events": [
+            {
+              "from": 28,
+              "id": "existing-closure",
+              "kind": "bridge_closed",
+              "targetId": "crossing-meadow",
+              "to": 42
+            },
+            {
+              "from": 7,
+              "id": "pause-1",
+              "kind": "production_paused",
+              "targetId": "spring",
+              "to": 11
+            }
+          ]
+        },
+        "world": {
+          "version": 1,
+          "name": "The little valley",
+          "width": 18,
+          "height": 12,
+          "seed": 271026,
+          "river": {
+            "x": 8,
+            "width": 2
+          },
+          "source": {
+            "id": "spring",
+            "label": "Spring",
+            "x": 3,
+            "y": 5
+          },
+          "bridges": [
+            {
+              "id": "crossing-upper",
+              "x": 8,
+              "y": 2,
+              "label": "Upper crossing"
+            },
+            {
+              "id": "crossing-meadow",
+              "x": 8,
+              "y": 9,
+              "label": "Meadowbridge"
+            }
+          ],
+          "houses": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "x": 5,
+              "y": 2,
+              "demand": 4,
+              "deadline": 38
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "x": 4,
+              "y": 9,
+              "demand": 4,
+              "deadline": 45
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "x": 12,
+              "y": 2,
+              "demand": 4,
+              "deadline": 58
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "x": 14,
+              "y": 5,
+              "demand": 4,
+              "deadline": 66
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "x": 12,
+              "y": 9,
+              "demand": 4,
+              "deadline": 72
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "x": 16,
+              "y": 9,
+              "demand": 4,
+              "deadline": 94
+            }
+          ],
+          "obstacles": [
+            {
+              "id": "stone-1",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "stone-2",
+              "x": 12,
+              "y": 6
+            }
+          ],
+          "rules": {
+            "dispatch": "nearest",
+            "couriers": 6,
+            "bridgeCapacity": 1,
+            "productionInterval": 2,
+            "horizon": 120
+          },
+          "provenance": {
+            "type": "example",
+            "confirmed": true
+          },
+          "events": [
+            {
+              "from": 28,
+              "id": "existing-closure",
+              "kind": "bridge_closed",
+              "targetId": "crossing-meadow",
+              "to": 42
+            },
+            {
+              "from": 7,
+              "id": "pause-1",
+              "kind": "production_paused",
+              "targetId": "spring",
+              "to": 11
+            }
+          ]
+        },
+        "changes": [
+          {
+            "id": "events",
+            "field": "events",
+            "before": [
+              {
+                "id": "existing-closure",
+                "kind": "bridge_closed",
+                "targetId": "crossing-meadow",
+                "from": 28,
+                "to": 42
+              }
+            ],
+            "after": [
+              {
+                "from": 28,
+                "id": "existing-closure",
+                "kind": "bridge_closed",
+                "targetId": "crossing-meadow",
+                "to": 42
+              },
+              {
+                "from": 7,
+                "id": "pause-1",
+                "kind": "production_paused",
+                "targetId": "spring",
+                "to": 11
+              }
+            ],
+            "label": "Scheduled mechanics"
+          }
+        ],
+        "evidence": {
+          "metrics": {
+            "demand": 24,
+            "delivered": 24,
+            "onTime": 18,
+            "lateUnits": 6,
+            "unmetUnits": 0,
+            "coverage": 1,
+            "worstCoverage": 1,
+            "waitTicks": 32,
+            "completedAt": 103,
+            "unreachable": [],
+            "allOnTime": false,
+            "allDelivered": true,
+            "closureWaitTicks": 0,
+            "productionPausedTurns": 5
+          },
+          "households": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 4,
+              "deadline": 38,
+              "firstDelivery": 5
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 4,
+              "deadline": 45,
+              "firstDelivery": 19
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 4,
+              "deadline": 58,
+              "firstDelivery": 34
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 2,
+              "deadline": 66,
+              "firstDelivery": 47
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 4,
+              "deadline": 72,
+              "firstDelivery": 65
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 0,
+              "deadline": 94,
+              "firstDelivery": 97
+            }
+          ],
+          "significantEvents": [
+            {
+              "tick": 7,
+              "type": "production_paused",
+              "eventId": "pause-1",
+              "targetId": "spring",
+              "message": "Spring production paused · turns 7–11"
+            },
+            {
+              "tick": 12,
+              "type": "production_resumed",
+              "eventId": "pause-1",
+              "targetId": "spring",
+              "message": "The well resumed its production schedule."
+            },
+            {
+              "tick": 28,
+              "type": "bridge_closed",
+              "eventId": "existing-closure",
+              "targetId": "crossing-meadow",
+              "message": "Meadowbridge closed · turns 28–42"
+            },
+            {
+              "tick": 43,
+              "type": "bridge_opened",
+              "eventId": "existing-closure",
+              "targetId": "crossing-meadow",
+              "message": "Meadowbridge reopened."
+            },
+            {
+              "tick": 66,
+              "type": "deadline_missed",
+              "houseId": "h4",
+              "missing": 2,
+              "message": "Cedar missed its deadline by 2 water unit(s)."
+            },
+            {
+              "tick": 94,
+              "type": "deadline_missed",
+              "houseId": "h6",
+              "missing": 4,
+              "message": "Hilltop missed its deadline by 4 water unit(s)."
+            },
+            {
+              "tick": 103,
+              "type": "all_delivered",
+              "message": "Every household has received its requested water."
+            }
+          ],
+          "bridgeQueues": [
+            ["crossing-upper", 4],
+            ["crossing-meadow", 4]
+          ],
+          "scheduledMechanics": [
+            {
+              "from": 28,
+              "id": "existing-closure",
+              "kind": "bridge_closed",
+              "targetId": "crossing-meadow",
+              "to": 42
+            },
+            {
+              "from": 7,
+              "id": "pause-1",
+              "kind": "production_paused",
+              "targetId": "spring",
+              "to": 11
+            }
+          ],
+          "routePhases": [
+            {
+              "tick": 0,
+              "reachableHomes": 6
+            },
+            {
+              "tick": 28,
+              "reachableHomes": 6
+            },
+            {
+              "tick": 43,
+              "reachableHomes": 6
+            }
+          ]
+        },
+        "comparison": {
+          "improved": false,
+          "goalMet": false,
+          "lateUnitsReduced": -2,
+          "unmetUnitsReduced": 0,
+          "waitTicksReduced": -10,
+          "sameSeed": true,
+          "verifiedBy": "deterministic-engine-v1"
+        },
+        "model": "muse-spark-1.3",
+        "designId": "89493683-38a4-4789-adfd-c243d16121eb",
+        "createdAt": "2026-10-28T11:02:03.674Z",
+        "startingWorld": {
+          "version": 1,
+          "name": "The little valley",
+          "width": 18,
+          "height": 12,
+          "seed": 271026,
+          "river": {
+            "x": 8,
+            "width": 2
+          },
+          "source": {
+            "id": "spring",
+            "label": "Spring",
+            "x": 3,
+            "y": 5
+          },
+          "bridges": [
+            {
+              "id": "crossing-upper",
+              "x": 8,
+              "y": 2,
+              "label": "Upper crossing"
+            },
+            {
+              "id": "crossing-meadow",
+              "x": 8,
+              "y": 9,
+              "label": "Meadowbridge"
+            }
+          ],
+          "houses": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "x": 5,
+              "y": 2,
+              "demand": 4,
+              "deadline": 38
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "x": 4,
+              "y": 9,
+              "demand": 4,
+              "deadline": 45
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "x": 12,
+              "y": 2,
+              "demand": 4,
+              "deadline": 58
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "x": 14,
+              "y": 5,
+              "demand": 4,
+              "deadline": 66
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "x": 12,
+              "y": 9,
+              "demand": 4,
+              "deadline": 72
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "x": 16,
+              "y": 9,
+              "demand": 4,
+              "deadline": 94
+            }
+          ],
+          "obstacles": [
+            {
+              "id": "stone-1",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "stone-2",
+              "x": 12,
+              "y": 6
+            }
+          ],
+          "rules": {
+            "dispatch": "nearest",
+            "couriers": 6,
+            "bridgeCapacity": 1,
+            "productionInterval": 2,
+            "horizon": 120
+          },
+          "provenance": {
+            "type": "example",
+            "confirmed": true
+          },
+          "events": [
+            {
+              "id": "existing-closure",
+              "kind": "bridge_closed",
+              "targetId": "crossing-meadow",
+              "from": 28,
+              "to": 42
+            }
+          ]
+        }
+      },
+      "passed": true,
+      "error": null,
+      "elapsedMs": 4429
+    },
+    {
+      "id": "remove-one-event",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "spring",
+          "label": "Spring",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "crossing-upper",
+            "x": 8,
+            "y": 2,
+            "label": "Upper crossing"
+          },
+          {
+            "id": "crossing-meadow",
+            "x": 8,
+            "y": 9,
+            "label": "Meadowbridge"
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine Gate",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        },
+        "events": [
+          {
+            "id": "existing-closure",
+            "kind": "bridge_closed",
+            "targetId": "crossing-meadow",
+            "from": 28,
+            "to": 42
+          },
+          {
+            "id": "existing-pause",
+            "kind": "production_paused",
+            "targetId": "spring",
+            "from": 7,
+            "to": 11
+          }
+        ]
+      },
+      "instruction": "Remove the closure of Meadowbridge; keep the production pause and all numerical settings.",
+      "expected": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "spring",
+          "label": "Spring",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "crossing-upper",
+            "x": 8,
+            "y": 2,
+            "label": "Upper crossing"
+          },
+          {
+            "id": "crossing-meadow",
+            "x": 8,
+            "y": 9,
+            "label": "Meadowbridge"
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine Gate",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        },
+        "events": [
+          {
+            "id": "existing-pause",
+            "kind": "production_paused",
+            "targetId": "spring",
+            "from": 7,
+            "to": 11
+          }
+        ]
+      },
+      "result": {
+        "supported": true,
+        "explanation": "Removed the Meadowbridge closure (crossing-meadow 28-42) and kept the production pause and all numerical settings unchanged.",
+        "instruction": "Remove the closure of Meadowbridge; keep the production pause and all numerical settings.",
+        "proposal": {
+          "rules": {
+            "bridgeCapacity": null,
+            "couriers": null,
+            "dispatch": null,
+            "horizon": null,
+            "productionInterval": null
+          },
+          "allHouseholds": {
+            "deadline": null,
+            "demand": null
+          },
+          "households": [],
+          "events": [
+            {
+              "from": 7,
+              "id": "existing-pause",
+              "kind": "production_paused",
+              "targetId": "spring",
+              "to": 11
+            }
+          ]
+        },
+        "world": {
+          "version": 1,
+          "name": "The little valley",
+          "width": 18,
+          "height": 12,
+          "seed": 271026,
+          "river": {
+            "x": 8,
+            "width": 2
+          },
+          "source": {
+            "id": "spring",
+            "label": "Spring",
+            "x": 3,
+            "y": 5
+          },
+          "bridges": [
+            {
+              "id": "crossing-upper",
+              "x": 8,
+              "y": 2,
+              "label": "Upper crossing"
+            },
+            {
+              "id": "crossing-meadow",
+              "x": 8,
+              "y": 9,
+              "label": "Meadowbridge"
+            }
+          ],
+          "houses": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "x": 5,
+              "y": 2,
+              "demand": 4,
+              "deadline": 38
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "x": 4,
+              "y": 9,
+              "demand": 4,
+              "deadline": 45
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "x": 12,
+              "y": 2,
+              "demand": 4,
+              "deadline": 58
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "x": 14,
+              "y": 5,
+              "demand": 4,
+              "deadline": 66
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "x": 12,
+              "y": 9,
+              "demand": 4,
+              "deadline": 72
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "x": 16,
+              "y": 9,
+              "demand": 4,
+              "deadline": 94
+            }
+          ],
+          "obstacles": [
+            {
+              "id": "stone-1",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "stone-2",
+              "x": 12,
+              "y": 6
+            }
+          ],
+          "rules": {
+            "dispatch": "nearest",
+            "couriers": 6,
+            "bridgeCapacity": 1,
+            "productionInterval": 2,
+            "horizon": 120
+          },
+          "provenance": {
+            "type": "example",
+            "confirmed": true
+          },
+          "events": [
+            {
+              "from": 7,
+              "id": "existing-pause",
+              "kind": "production_paused",
+              "targetId": "spring",
+              "to": 11
+            }
+          ]
+        },
+        "changes": [
+          {
+            "id": "events",
+            "field": "events",
+            "before": [
+              {
+                "id": "existing-closure",
+                "kind": "bridge_closed",
+                "targetId": "crossing-meadow",
+                "from": 28,
+                "to": 42
+              },
+              {
+                "id": "existing-pause",
+                "kind": "production_paused",
+                "targetId": "spring",
+                "from": 7,
+                "to": 11
+              }
+            ],
+            "after": [
+              {
+                "from": 7,
+                "id": "existing-pause",
+                "kind": "production_paused",
+                "targetId": "spring",
+                "to": 11
+              }
+            ],
+            "label": "Scheduled mechanics"
+          }
+        ],
+        "evidence": {
+          "metrics": {
+            "demand": 24,
+            "delivered": 24,
+            "onTime": 18,
+            "lateUnits": 6,
+            "unmetUnits": 0,
+            "coverage": 1,
+            "worstCoverage": 1,
+            "waitTicks": 12,
+            "completedAt": 105,
+            "unreachable": [],
+            "allOnTime": false,
+            "allDelivered": true,
+            "closureWaitTicks": 0,
+            "productionPausedTurns": 5
+          },
+          "households": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 4,
+              "deadline": 38,
+              "firstDelivery": 5
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 4,
+              "deadline": 45,
+              "firstDelivery": 19
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 4,
+              "deadline": 58,
+              "firstDelivery": 34
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 0,
+              "deadline": 66,
+              "firstDelivery": 69
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 4,
+              "deadline": 72,
+              "firstDelivery": 43
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "demand": 4,
+              "delivered": 4,
+              "onTime": 2,
+              "deadline": 94,
+              "firstDelivery": 91
+            }
+          ],
+          "significantEvents": [
+            {
+              "tick": 7,
+              "type": "production_paused",
+              "eventId": "existing-pause",
+              "targetId": "spring",
+              "message": "Spring production paused · turns 7–11"
+            },
+            {
+              "tick": 12,
+              "type": "production_resumed",
+              "eventId": "existing-pause",
+              "targetId": "spring",
+              "message": "The well resumed its production schedule."
+            },
+            {
+              "tick": 66,
+              "type": "deadline_missed",
+              "houseId": "h4",
+              "missing": 4,
+              "message": "Cedar missed its deadline by 4 water unit(s)."
+            },
+            {
+              "tick": 94,
+              "type": "deadline_missed",
+              "houseId": "h6",
+              "missing": 2,
+              "message": "Hilltop missed its deadline by 2 water unit(s)."
+            },
+            {
+              "tick": 105,
+              "type": "all_delivered",
+              "message": "Every household has received its requested water."
+            }
+          ],
+          "bridgeQueues": [
+            ["crossing-upper", 4],
+            ["crossing-meadow", 2]
+          ],
+          "scheduledMechanics": [
+            {
+              "from": 7,
+              "id": "existing-pause",
+              "kind": "production_paused",
+              "targetId": "spring",
+              "to": 11
+            }
+          ],
+          "routePhases": [
+            {
+              "tick": 0,
+              "reachableHomes": 6
+            }
+          ]
+        },
+        "comparison": {
+          "improved": true,
+          "goalMet": false,
+          "lateUnitsReduced": 0,
+          "unmetUnitsReduced": 0,
+          "waitTicksReduced": 20,
+          "sameSeed": true,
+          "verifiedBy": "deterministic-engine-v1"
+        },
+        "model": "muse-spark-1.3",
+        "designId": "8383de37-99ce-42ae-9c76-6bf91af9ea87",
+        "createdAt": "2026-10-28T11:02:06.319Z",
+        "startingWorld": {
+          "version": 1,
+          "name": "The little valley",
+          "width": 18,
+          "height": 12,
+          "seed": 271026,
+          "river": {
+            "x": 8,
+            "width": 2
+          },
+          "source": {
+            "id": "spring",
+            "label": "Spring",
+            "x": 3,
+            "y": 5
+          },
+          "bridges": [
+            {
+              "id": "crossing-upper",
+              "x": 8,
+              "y": 2,
+              "label": "Upper crossing"
+            },
+            {
+              "id": "crossing-meadow",
+              "x": 8,
+              "y": 9,
+              "label": "Meadowbridge"
+            }
+          ],
+          "houses": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "x": 5,
+              "y": 2,
+              "demand": 4,
+              "deadline": 38
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "x": 4,
+              "y": 9,
+              "demand": 4,
+              "deadline": 45
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "x": 12,
+              "y": 2,
+              "demand": 4,
+              "deadline": 58
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "x": 14,
+              "y": 5,
+              "demand": 4,
+              "deadline": 66
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "x": 12,
+              "y": 9,
+              "demand": 4,
+              "deadline": 72
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "x": 16,
+              "y": 9,
+              "demand": 4,
+              "deadline": 94
+            }
+          ],
+          "obstacles": [
+            {
+              "id": "stone-1",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "stone-2",
+              "x": 12,
+              "y": 6
+            }
+          ],
+          "rules": {
+            "dispatch": "nearest",
+            "couriers": 6,
+            "bridgeCapacity": 1,
+            "productionInterval": 2,
+            "horizon": 120
+          },
+          "provenance": {
+            "type": "example",
+            "confirmed": true
+          },
+          "events": [
+            {
+              "id": "existing-closure",
+              "kind": "bridge_closed",
+              "targetId": "crossing-meadow",
+              "from": 28,
+              "to": 42
+            },
+            {
+              "id": "existing-pause",
+              "kind": "production_paused",
+              "targetId": "spring",
+              "from": 7,
+              "to": 11
+            }
+          ]
+        }
+      },
+      "passed": true,
+      "error": null,
+      "elapsedMs": 2642
+    },
+    {
+      "id": "specific-house-override",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "spring",
+          "label": "Spring",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "crossing-upper",
+            "x": 8,
+            "y": 2,
+            "label": "Upper crossing"
+          },
+          {
+            "id": "crossing-meadow",
+            "x": 8,
+            "y": 9,
+            "label": "Meadowbridge"
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine Gate",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        },
+        "events": [
+          {
+            "id": "existing-closure",
+            "kind": "bridge_closed",
+            "targetId": "crossing-meadow",
+            "from": 28,
+            "to": 42
+          },
+          {
+            "id": "existing-pause",
+            "kind": "production_paused",
+            "targetId": "spring",
+            "from": 7,
+            "to": 11
+          }
+        ]
+      },
+      "instruction": "Use eight couriers; set every home’s demand to three except Pine Gate, which should need five. Keep deadlines and schedules unchanged.",
+      "expected": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "spring",
+          "label": "Spring",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "crossing-upper",
+            "x": 8,
+            "y": 2,
+            "label": "Upper crossing"
+          },
+          {
+            "id": "crossing-meadow",
+            "x": 8,
+            "y": 9,
+            "label": "Meadowbridge"
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 3,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 3,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine Gate",
+            "x": 12,
+            "y": 2,
+            "demand": 5,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 3,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 3,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 3,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        },
+        "events": [
+          {
+            "id": "existing-closure",
+            "kind": "bridge_closed",
+            "targetId": "crossing-meadow",
+            "from": 28,
+            "to": 42
+          },
+          {
+            "id": "existing-pause",
+            "kind": "production_paused",
+            "targetId": "spring",
+            "from": 7,
+            "to": 11
+          }
+        ]
+      },
+      "result": {
+        "supported": true,
+        "explanation": "Set couriers to 8, set all homes demand to 3 with Pine Gate overridden to 5, deadlines and scheduled events unchanged.",
+        "instruction": "Use eight couriers; set every home’s demand to three except Pine Gate, which should need five. Keep deadlines and schedules unchanged.",
+        "proposal": {
+          "rules": {
+            "bridgeCapacity": null,
+            "couriers": 8,
+            "dispatch": null,
+            "horizon": null,
+            "productionInterval": null
+          },
+          "allHouseholds": {
+            "deadline": null,
+            "demand": 3
+          },
+          "households": [
+            {
+              "deadline": null,
+              "demand": 5,
+              "id": "h3"
+            }
+          ],
+          "events": null
+        },
+        "world": {
+          "version": 1,
+          "name": "The little valley",
+          "width": 18,
+          "height": 12,
+          "seed": 271026,
+          "river": {
+            "x": 8,
+            "width": 2
+          },
+          "source": {
+            "id": "spring",
+            "label": "Spring",
+            "x": 3,
+            "y": 5
+          },
+          "bridges": [
+            {
+              "id": "crossing-upper",
+              "x": 8,
+              "y": 2,
+              "label": "Upper crossing"
+            },
+            {
+              "id": "crossing-meadow",
+              "x": 8,
+              "y": 9,
+              "label": "Meadowbridge"
+            }
+          ],
+          "houses": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "x": 5,
+              "y": 2,
+              "demand": 3,
+              "deadline": 38
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "x": 4,
+              "y": 9,
+              "demand": 3,
+              "deadline": 45
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "x": 12,
+              "y": 2,
+              "demand": 5,
+              "deadline": 58
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "x": 14,
+              "y": 5,
+              "demand": 3,
+              "deadline": 66
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "x": 12,
+              "y": 9,
+              "demand": 3,
+              "deadline": 72
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "x": 16,
+              "y": 9,
+              "demand": 3,
+              "deadline": 94
+            }
+          ],
+          "obstacles": [
+            {
+              "id": "stone-1",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "stone-2",
+              "x": 12,
+              "y": 6
+            }
+          ],
+          "rules": {
+            "dispatch": "nearest",
+            "couriers": 8,
+            "bridgeCapacity": 1,
+            "productionInterval": 2,
+            "horizon": 120
+          },
+          "provenance": {
+            "type": "example",
+            "confirmed": true
+          },
+          "events": [
+            {
+              "id": "existing-closure",
+              "kind": "bridge_closed",
+              "targetId": "crossing-meadow",
+              "from": 28,
+              "to": 42
+            },
+            {
+              "id": "existing-pause",
+              "kind": "production_paused",
+              "targetId": "spring",
+              "from": 7,
+              "to": 11
+            }
+          ]
+        },
+        "changes": [
+          {
+            "id": "rules",
+            "field": "couriers",
+            "before": 6,
+            "after": 8,
+            "label": "couriers"
+          },
+          {
+            "id": "h1",
+            "field": "demand",
+            "before": 4,
+            "after": 3,
+            "label": "Orchard"
+          },
+          {
+            "id": "h2",
+            "field": "demand",
+            "before": 4,
+            "after": 3,
+            "label": "Meadow"
+          },
+          {
+            "id": "h3",
+            "field": "demand",
+            "before": 4,
+            "after": 3,
+            "label": "Pine Gate"
+          },
+          {
+            "id": "h4",
+            "field": "demand",
+            "before": 4,
+            "after": 3,
+            "label": "Cedar"
+          },
+          {
+            "id": "h5",
+            "field": "demand",
+            "before": 4,
+            "after": 3,
+            "label": "Willow"
+          },
+          {
+            "id": "h6",
+            "field": "demand",
+            "before": 4,
+            "after": 3,
+            "label": "Hilltop"
+          },
+          {
+            "id": "h3",
+            "field": "demand",
+            "before": 3,
+            "after": 5,
+            "label": "Pine Gate"
+          }
+        ],
+        "evidence": {
+          "metrics": {
+            "demand": 20,
+            "delivered": 20,
+            "onTime": 20,
+            "lateUnits": 0,
+            "unmetUnits": 0,
+            "coverage": 1,
+            "worstCoverage": 1,
+            "waitTicks": 59,
+            "completedAt": 84,
+            "unreachable": [],
+            "allOnTime": true,
+            "allDelivered": true,
+            "closureWaitTicks": 0,
+            "productionPausedTurns": 5
+          },
+          "households": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "demand": 3,
+              "delivered": 3,
+              "onTime": 3,
+              "deadline": 38,
+              "firstDelivery": 5
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "demand": 3,
+              "delivered": 3,
+              "onTime": 3,
+              "deadline": 45,
+              "firstDelivery": 17
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "demand": 5,
+              "delivered": 5,
+              "onTime": 5,
+              "deadline": 58,
+              "firstDelivery": 30
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "demand": 3,
+              "delivered": 3,
+              "onTime": 3,
+              "deadline": 66,
+              "firstDelivery": 50
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "demand": 3,
+              "delivered": 3,
+              "onTime": 3,
+              "deadline": 72,
+              "firstDelivery": 59
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "demand": 3,
+              "delivered": 3,
+              "onTime": 3,
+              "deadline": 94,
+              "firstDelivery": 77
+            }
+          ],
+          "significantEvents": [
+            {
+              "tick": 7,
+              "type": "production_paused",
+              "eventId": "existing-pause",
+              "targetId": "spring",
+              "message": "Spring production paused · turns 7–11"
+            },
+            {
+              "tick": 12,
+              "type": "production_resumed",
+              "eventId": "existing-pause",
+              "targetId": "spring",
+              "message": "The well resumed its production schedule."
+            },
+            {
+              "tick": 28,
+              "type": "bridge_closed",
+              "eventId": "existing-closure",
+              "targetId": "crossing-meadow",
+              "message": "Meadowbridge closed · turns 28–42"
+            },
+            {
+              "tick": 43,
+              "type": "bridge_opened",
+              "eventId": "existing-closure",
+              "targetId": "crossing-meadow",
+              "message": "Meadowbridge reopened."
+            },
+            {
+              "tick": 84,
+              "type": "all_delivered",
+              "message": "Every household has received its requested water."
+            }
+          ],
+          "bridgeQueues": [
+            ["crossing-upper", 11],
+            ["crossing-meadow", 3]
+          ],
+          "scheduledMechanics": [
+            {
+              "id": "existing-closure",
+              "kind": "bridge_closed",
+              "targetId": "crossing-meadow",
+              "from": 28,
+              "to": 42
+            },
+            {
+              "id": "existing-pause",
+              "kind": "production_paused",
+              "targetId": "spring",
+              "from": 7,
+              "to": 11
+            }
+          ],
+          "routePhases": [
+            {
+              "tick": 0,
+              "reachableHomes": 6
+            },
+            {
+              "tick": 28,
+              "reachableHomes": 6
+            },
+            {
+              "tick": 43,
+              "reachableHomes": 6
+            }
+          ]
+        },
+        "comparison": {
+          "improved": true,
+          "goalMet": true,
+          "lateUnitsReduced": 6,
+          "unmetUnitsReduced": 0,
+          "waitTicksReduced": -27,
+          "sameSeed": true,
+          "verifiedBy": "deterministic-engine-v1"
+        },
+        "model": "muse-spark-1.3",
+        "designId": "83e8f1c1-ef46-44c5-9752-fb9e954f81a8",
+        "createdAt": "2026-10-28T11:02:09.022Z",
+        "startingWorld": {
+          "version": 1,
+          "name": "The little valley",
+          "width": 18,
+          "height": 12,
+          "seed": 271026,
+          "river": {
+            "x": 8,
+            "width": 2
+          },
+          "source": {
+            "id": "spring",
+            "label": "Spring",
+            "x": 3,
+            "y": 5
+          },
+          "bridges": [
+            {
+              "id": "crossing-upper",
+              "x": 8,
+              "y": 2,
+              "label": "Upper crossing"
+            },
+            {
+              "id": "crossing-meadow",
+              "x": 8,
+              "y": 9,
+              "label": "Meadowbridge"
+            }
+          ],
+          "houses": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "x": 5,
+              "y": 2,
+              "demand": 4,
+              "deadline": 38
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "x": 4,
+              "y": 9,
+              "demand": 4,
+              "deadline": 45
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "x": 12,
+              "y": 2,
+              "demand": 4,
+              "deadline": 58
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "x": 14,
+              "y": 5,
+              "demand": 4,
+              "deadline": 66
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "x": 12,
+              "y": 9,
+              "demand": 4,
+              "deadline": 72
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "x": 16,
+              "y": 9,
+              "demand": 4,
+              "deadline": 94
+            }
+          ],
+          "obstacles": [
+            {
+              "id": "stone-1",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "stone-2",
+              "x": 12,
+              "y": 6
+            }
+          ],
+          "rules": {
+            "dispatch": "nearest",
+            "couriers": 6,
+            "bridgeCapacity": 1,
+            "productionInterval": 2,
+            "horizon": 120
+          },
+          "provenance": {
+            "type": "example",
+            "confirmed": true
+          },
+          "events": [
+            {
+              "id": "existing-closure",
+              "kind": "bridge_closed",
+              "targetId": "crossing-meadow",
+              "from": 28,
+              "to": 42
+            },
+            {
+              "id": "existing-pause",
+              "kind": "production_paused",
+              "targetId": "spring",
+              "from": 7,
+              "to": 11
+            }
+          ]
+        }
+      },
+      "passed": true,
+      "error": null,
+      "elapsedMs": 2710
+    },
+    {
+      "id": "unsupported-mixed-request",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "spring",
+          "label": "Spring",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "crossing-upper",
+            "x": 8,
+            "y": 2,
+            "label": "Upper crossing"
+          },
+          {
+            "id": "crossing-meadow",
+            "x": 8,
+            "y": 9,
+            "label": "Meadowbridge"
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine Gate",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "instruction": "Use seven couriers and make bridges close automatically whenever the water level rises.",
+      "unsupported": true,
+      "result": {
+        "supported": false,
+        "explanation": "Set couriers to 7. Automatic closures triggered by water level are not supported as fixed-schedule events, so that part was not applied.",
+        "unsupported": [
+          "automatic bridge closure whenever water level rises - conditional/physics trigger without fixed interval"
+        ],
+        "designId": "bb8da8b9-2434-4ad6-92f7-bdc7c7f1c2dd",
+        "createdAt": "2026-10-28T11:02:14.486Z",
+        "startingWorld": {
+          "version": 1,
+          "name": "The little valley",
+          "width": 18,
+          "height": 12,
+          "seed": 271026,
+          "river": {
+            "x": 8,
+            "width": 2
+          },
+          "source": {
+            "id": "spring",
+            "label": "Spring",
+            "x": 3,
+            "y": 5
+          },
+          "bridges": [
+            {
+              "id": "crossing-upper",
+              "x": 8,
+              "y": 2,
+              "label": "Upper crossing"
+            },
+            {
+              "id": "crossing-meadow",
+              "x": 8,
+              "y": 9,
+              "label": "Meadowbridge"
+            }
+          ],
+          "houses": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "x": 5,
+              "y": 2,
+              "demand": 4,
+              "deadline": 38
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "x": 4,
+              "y": 9,
+              "demand": 4,
+              "deadline": 45
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "x": 12,
+              "y": 2,
+              "demand": 4,
+              "deadline": 58
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "x": 14,
+              "y": 5,
+              "demand": 4,
+              "deadline": 66
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "x": 12,
+              "y": 9,
+              "demand": 4,
+              "deadline": 72
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "x": 16,
+              "y": 9,
+              "demand": 4,
+              "deadline": 94
+            }
+          ],
+          "obstacles": [
+            {
+              "id": "stone-1",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "stone-2",
+              "x": 12,
+              "y": 6
+            }
+          ],
+          "rules": {
+            "dispatch": "nearest",
+            "couriers": 6,
+            "bridgeCapacity": 1,
+            "productionInterval": 2,
+            "horizon": 120
+          },
+          "provenance": {
+            "type": "example",
+            "confirmed": true
+          }
+        }
+      },
+      "passed": true,
+      "error": null,
+      "elapsedMs": 5450
+    },
+    {
+      "id": "ambiguous-event",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "spring",
+          "label": "Spring",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "crossing-upper",
+            "x": 8,
+            "y": 2,
+            "label": "Upper crossing"
+          },
+          {
+            "id": "crossing-meadow",
+            "x": 8,
+            "y": 9,
+            "label": "Meadowbridge"
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine Gate",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "instruction": "Close a bridge during the storm, keeping everything else unchanged.",
+      "unsupported": true,
+      "result": {
+        "supported": false,
+        "explanation": "Could not close a bridge because no specific bridge and no storm turns were given, so nothing was changed.",
+        "unsupported": [
+          "bridge closure: ambiguous which bridge and unspecified storm interval"
+        ],
+        "designId": "e92d6d0b-44dc-4840-b0dc-745699e4ba52",
+        "createdAt": "2026-10-28T11:02:18.329Z",
+        "startingWorld": {
+          "version": 1,
+          "name": "The little valley",
+          "width": 18,
+          "height": 12,
+          "seed": 271026,
+          "river": {
+            "x": 8,
+            "width": 2
+          },
+          "source": {
+            "id": "spring",
+            "label": "Spring",
+            "x": 3,
+            "y": 5
+          },
+          "bridges": [
+            {
+              "id": "crossing-upper",
+              "x": 8,
+              "y": 2,
+              "label": "Upper crossing"
+            },
+            {
+              "id": "crossing-meadow",
+              "x": 8,
+              "y": 9,
+              "label": "Meadowbridge"
+            }
+          ],
+          "houses": [
+            {
+              "id": "h1",
+              "label": "Orchard",
+              "x": 5,
+              "y": 2,
+              "demand": 4,
+              "deadline": 38
+            },
+            {
+              "id": "h2",
+              "label": "Meadow",
+              "x": 4,
+              "y": 9,
+              "demand": 4,
+              "deadline": 45
+            },
+            {
+              "id": "h3",
+              "label": "Pine Gate",
+              "x": 12,
+              "y": 2,
+              "demand": 4,
+              "deadline": 58
+            },
+            {
+              "id": "h4",
+              "label": "Cedar",
+              "x": 14,
+              "y": 5,
+              "demand": 4,
+              "deadline": 66
+            },
+            {
+              "id": "h5",
+              "label": "Willow",
+              "x": 12,
+              "y": 9,
+              "demand": 4,
+              "deadline": 72
+            },
+            {
+              "id": "h6",
+              "label": "Hilltop",
+              "x": 16,
+              "y": 9,
+              "demand": 4,
+              "deadline": 94
+            }
+          ],
+          "obstacles": [
+            {
+              "id": "stone-1",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "stone-2",
+              "x": 12,
+              "y": 6
+            }
+          ],
+          "rules": {
+            "dispatch": "nearest",
+            "couriers": 6,
+            "bridgeCapacity": 1,
+            "productionInterval": 2,
+            "horizon": 120
+          },
+          "provenance": {
+            "type": "example",
+            "confirmed": true
+          }
+        }
+      },
+      "passed": true,
+      "error": null,
+      "elapsedMs": 3843
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 6,
+    "metaRequests": 6,
+    "estimatedUsd": 0.028595,
+    "heldUsd": 0
+  }
+}

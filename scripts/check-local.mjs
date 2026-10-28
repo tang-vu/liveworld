@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { get, request } from "node:http";
 import { exampleWorld } from "../shared/world.js";
 
-const base = "http://127.0.0.1:4173";
+const base = process.env.LIVEWORLD_BASE_URL ?? "http://127.0.0.1:4173";
 const page = await fetch(base, { headers: { "Sec-Fetch-Site": "cross-site" } });
 assert.equal(page.status, 200);
 assert.match(await page.text(), /LiveWorld/);

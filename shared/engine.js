@@ -1,4 +1,5 @@
 import { validateWorld } from "./world.js";
+import { activeMechanics, describeEvent } from "./mechanics.js";
 
 const key = (p) => `${p.x},${p.y}`;
 export function bridgeAt(world, point) {
@@ -7,7 +8,7 @@ export function bridgeAt(world, point) {
   return world.bridges.find((b) => b.y === point.y) ?? null;
 }
 
-export function findPath(world, start, end) {
+export function findPath(world, start, end, { closedBridgeIds = [] } = {}) {
   const blocked = new Set(world.obstacles.map(key));
   const queue = [{ x: start.x, y: start.y }];
   const visited = new Map([[key(start), null]]);
@@ -41,7 +42,8 @@ export function findPath(world, start, end) {
         continue;
       const water =
         next.x >= world.river.x && next.x < world.river.x + world.river.width;
-      if (water && !bridgeAt(world, next)) continue;
+      const bridge = water ? bridgeAt(world, next) : null;
+      if (water && (!bridge || closedBridgeIds.includes(bridge.id))) continue;
       visited.set(nk, current);
       queue.push(next);
     }
@@ -78,6 +80,27 @@ export function simulate(input) {
   let produced = 0;
   let waitTicks = 0;
   let completedAt = null;
+  const scheduled = Boolean(world.events?.length);
+  let mechanics = activeMechanics(world, 0);
+  let closureWaitTicks = 0;
+  let productionPausedTurns = 0;
+  const routeCache = new Map([["", paths]]);
+  const routeChanges = [{ tick: 0, routes: Object.fromEntries(paths) }];
+  let previousClosureKey = "";
+  const routesFor = (closedBridgeIds) => {
+    const signature = closedBridgeIds.join(",");
+    if (!routeCache.has(signature))
+      routeCache.set(
+        signature,
+        new Map(
+          houses.map((h) => [
+            h.id,
+            findPath(world, world.source, h, { closedBridgeIds }),
+          ]),
+        ),
+      );
+    return routeCache.get(signature);
+  };
   const event = (tick, type, data) => events.push({ tick, type, ...data });
   for (const house of houses)
     if (!paths.get(house.id))
@@ -93,6 +116,13 @@ export function simulate(input) {
       produced,
       delivered: houses.reduce((sum, h) => sum + h.delivered, 0),
       waitTicks,
+      ...(scheduled
+        ? {
+            closedBridgeIds: [...mechanics.closedBridgeIds],
+            productionPaused: mechanics.productionPaused,
+            closureWaitTicks,
+          }
+        : {}),
       houses: houses.map((h) => ({
         id: h.id,
         delivered: h.delivered,
@@ -112,7 +142,41 @@ export function simulate(input) {
   }
   snapshot(0);
   for (let tick = 1; tick <= world.rules.horizon; tick++) {
-    if ((tick - 1) % world.rules.productionInterval === 0) {
+    mechanics = activeMechanics(world, tick);
+    const currentPaths = routesFor(mechanics.closedBridgeIds);
+    const closureKey = mechanics.closedBridgeIds.join(",");
+    if (closureKey !== previousClosureKey) {
+      routeChanges.push({ tick, routes: Object.fromEntries(currentPaths) });
+      previousClosureKey = closureKey;
+    }
+    for (const rule of world.events ?? []) {
+      if (tick === rule.from)
+        event(tick, rule.kind, {
+          eventId: rule.id,
+          targetId: rule.targetId,
+          message: describeEvent(rule, world),
+        });
+      if (tick === rule.to + 1)
+        event(
+          tick,
+          rule.kind === "bridge_closed"
+            ? "bridge_opened"
+            : "production_resumed",
+          {
+            eventId: rule.id,
+            targetId: rule.targetId,
+            message:
+              rule.kind === "bridge_closed"
+                ? `${world.bridges.find((b) => b.id === rule.targetId)?.label ?? rule.targetId} reopened.`
+                : "The well resumed its production schedule.",
+          },
+        );
+    }
+    if (mechanics.productionPaused) productionPausedTurns++;
+    if (
+      !mechanics.productionPaused &&
+      (tick - 1) % world.rules.productionInterval === 0
+    ) {
       stock++;
       produced++;
     }
@@ -120,11 +184,11 @@ export function simulate(input) {
       a.waiting = false;
       if (a.state === "idle" && stock > 0) {
         const choices = houses.filter(
-          (h) => h.delivered + h.inTransit < h.demand && paths.get(h.id),
+          (h) => h.delivered + h.inTransit < h.demand && currentPaths.get(h.id),
         );
         choices.sort((a, b) => {
-          const ad = paths.get(a.id).length - 1;
-          const bd = paths.get(b.id).length - 1;
+          const ad = currentPaths.get(a.id).length - 1;
+          const bd = currentPaths.get(b.id).length - 1;
           if (world.rules.dispatch === "balanced") {
             const balance =
               (a.delivered + a.inTransit) / a.demand -
@@ -142,16 +206,51 @@ export function simulate(input) {
           chosen.inTransit++;
           a.state = "outbound";
           a.houseId = chosen.id;
-          a.path = paths.get(chosen.id);
+          a.path = currentPaths.get(chosen.id);
           a.step = 0;
           event(tick, "dispatch", { agentId: a.id, houseId: chosen.id });
         }
       }
       if (a.state === "idle") continue;
-      const next = a.path[a.step + 1];
+      let next = a.path[a.step + 1];
       if (next) {
-        const bridge = bridgeAt(world, next);
+        let bridge = bridgeAt(world, next);
         const currentBridge = bridgeAt(world, a);
+        if (
+          bridge &&
+          mechanics.closedBridgeIds.includes(bridge.id) &&
+          currentBridge?.id !== bridge.id
+        ) {
+          const destination =
+            a.state === "outbound"
+              ? houses.find((h) => h.id === a.houseId)
+              : world.source;
+          const route = findPath(world, a, destination, mechanics);
+          if (!route || route.length < 2) {
+            a.waiting = true;
+            waitTicks++;
+            closureWaitTicks++;
+            if (
+              !frames[tick - 1]?.agents.find((other) => other.id === a.id)
+                ?.waiting
+            )
+              event(tick, "bridge_closed_wait", {
+                agentId: a.id,
+                bridgeId: bridge.id,
+                message: `A courier is waiting for ${bridge.label ?? bridge.id} to reopen.`,
+              });
+            continue;
+          }
+          a.path = route;
+          a.step = 0;
+          next = route[1];
+          bridge = bridgeAt(world, next);
+          event(tick, "reroute", {
+            agentId: a.id,
+            houseId: a.houseId,
+            message: `A courier rerouted around a closed bridge.`,
+          });
+        }
         const occupants = bridge
           ? agents.filter(
               (other) =>
@@ -196,7 +295,11 @@ export function simulate(input) {
             message: `${h.label} received water${tick > h.deadline ? " after its deadline" : ""}.`,
           });
           a.state = "returning";
-          a.path = [...a.path].reverse();
+          a.path = [
+            ...(scheduled
+              ? (currentPaths.get(h.id) ?? paths.get(h.id))
+              : a.path),
+          ].reverse();
           a.step = 0;
         } else {
           a.state = "idle";
@@ -224,11 +327,14 @@ export function simulate(input) {
   const demand = houses.reduce((sum, h) => sum + h.demand, 0);
   const delivered = houses.reduce((sum, h) => sum + h.delivered, 0);
   const onTime = houses.reduce((sum, h) => sum + h.onTime, 0);
+  const pendingUnits = houses
+    .filter((h) => h.deadline > world.rules.horizon)
+    .reduce((sum, h) => sum + h.demand - h.delivered, 0);
   const metrics = {
     demand,
     delivered,
     onTime,
-    lateUnits: demand - onTime,
+    lateUnits: demand - onTime - pendingUnits,
     unmetUnits: demand - delivered,
     coverage: delivered / demand,
     worstCoverage: Math.min(...houses.map((h) => h.delivered / h.demand)),
@@ -237,6 +343,8 @@ export function simulate(input) {
     unreachable: houses.filter((h) => !paths.get(h.id)).map((h) => h.id),
     allOnTime: onTime === demand,
     allDelivered: delivered === demand,
+    ...(pendingUnits ? { pendingUnits } : {}),
+    ...(scheduled ? { closureWaitTicks, productionPausedTurns } : {}),
   };
   return {
     world,
@@ -245,6 +353,7 @@ export function simulate(input) {
     frames,
     events,
     routes: Object.fromEntries(paths),
+    ...(scheduled ? { routeChanges } : {}),
   };
 }
 
@@ -280,15 +389,35 @@ export function evidence(run) {
       firstDelivery: h.firstDelivery,
     })),
     significantEvents: run.events.filter((e) =>
-      ["deadline_missed", "unreachable", "all_delivered"].includes(e.type),
+      [
+        "deadline_missed",
+        "unreachable",
+        "all_delivered",
+        "bridge_closed",
+        "bridge_opened",
+        "production_paused",
+        "production_resumed",
+        "reroute",
+      ].includes(e.type),
     ),
     bridgeQueues: Object.entries(
       run.events
-        .filter((e) => e.type === "bridge_queue")
+        .filter(
+          (e) => e.type === "bridge_queue" || e.type === "bridge_closed_wait",
+        )
         .reduce((all, e) => {
           all[e.bridgeId] = (all[e.bridgeId] ?? 0) + 1;
           return all;
         }, {}),
     ),
+    ...(run.world.events?.length
+      ? {
+          scheduledMechanics: run.world.events,
+          routePhases: run.routeChanges.map((phase) => ({
+            tick: phase.tick,
+            reachableHomes: Object.values(phase.routes).filter(Boolean).length,
+          })),
+        }
+      : {}),
   };
 }

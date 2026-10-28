@@ -1,111 +1,137 @@
 {
-  "format": "liveworld-demo-render-v1",
+  "format": "liveworld-demo-render-v2",
   "durationSeconds": 179.988021,
   "width": 1920,
   "height": 1080,
+  "frameRate": "30/1",
+  "frames": 5399,
+  "videoSha256": "1cb74c7d5f4750252f86ec39ad20f80d7519b9ec912b9ef6226c70c49046ff65",
   "disclosures": [
-    "Edited capture of the actual application",
+    "Actual application UI captures and native simulation replay exports",
     "AI-generated tabletop input images",
-    "Recorded Meta playtests are labelled as replays",
-    "Synthetic English narration"
+    "Recorded Meta outputs labelled and recomputed",
+    "Local synthetic English narration"
   ],
   "scenes": [
     {
-      "id": "01-table",
-      "seconds": 15,
-      "frames": 17,
-      "captureSeconds": 5.171,
-      "narrationSeconds": 14.027029,
-      "tempo": 1
-    },
-    {
-      "id": "02-segmentation",
-      "seconds": 20,
-      "frames": 7,
-      "captureSeconds": 5.565,
-      "narrationSeconds": 15.886757,
-      "tempo": 1
-    },
-    {
-      "id": "03-world",
-      "seconds": 16,
-      "frames": 68,
-      "captureSeconds": 16.024,
-      "narrationSeconds": 16.006667,
-      "tempo": 1.046187385620915
-    },
-    {
-      "id": "04-rescan",
-      "seconds": 19,
-      "frames": 82,
-      "captureSeconds": 19.131,
-      "narrationSeconds": 17.211429,
-      "tempo": 1
-    },
-    {
-      "id": "05-baseline",
-      "seconds": 15,
-      "frames": 64,
-      "captureSeconds": 15.07,
-      "narrationSeconds": 14.887256,
-      "tempo": 1.0410668531468532
-    },
-    {
-      "id": "06-failed-trial",
-      "seconds": 15,
-      "frames": 63,
-      "captureSeconds": 15.001,
-      "narrationSeconds": 15.15619,
-      "tempo": 1.0598734265734266
-    },
-    {
-      "id": "07-verified-fix",
-      "seconds": 20,
-      "frames": 85,
-      "captureSeconds": 19.117,
-      "narrationSeconds": 18.706122,
-      "tempo": 1
-    },
-    {
-      "id": "08-rule-instruction",
-      "seconds": 10,
-      "frames": 20,
-      "captureSeconds": 4.206,
-      "narrationSeconds": 9.412472,
-      "tempo": 1.01209376344086
-    },
-    {
-      "id": "09-rule-preview",
-      "seconds": 13,
-      "frames": 13,
-      "captureSeconds": 9.573,
-      "narrationSeconds": 11.767256,
-      "tempo": 1
-    },
-    {
-      "id": "10-checkpoint",
-      "seconds": 15,
-      "frames": 26,
-      "captureSeconds": 6.12,
-      "narrationSeconds": 11.992336,
-      "tempo": 1
-    },
-    {
-      "id": "11-project",
+      "id": "01-hook",
       "seconds": 12,
-      "frames": 36,
-      "captureSeconds": 7.124,
-      "narrationSeconds": 12.277234,
-      "tempo": 1.0864808849557521
+      "source": "01-hook.webm",
+      "shots": null,
+      "sourceType": "native-replay-export",
+      "sourceSha256": "be42b9acc6a69768109c9f1047345d8bc07a78030eb8de7b060e8696791d9465",
+      "sourceFrames": 360,
+      "sourceFrameRate": "30/1",
+      "narrationSeconds": 11.212562,
+      "tempo": 1
     },
     {
-      "id": "12-evidence",
+      "id": "02-table",
       "seconds": 10,
-      "frames": 26,
-      "captureSeconds": 5.113,
-      "narrationSeconds": 10.087302,
-      "tempo": 1.0846561290322578
+      "source": "02-table.jpg",
+      "shots": null,
+      "sourceType": "CUA-screenshot",
+      "sourceSha256": "2268275c0473c9835989d67f3c9042a56173b7daa8a0b2bba6d9ddfefad98fd3",
+      "sourceFrames": 1,
+      "sourceFrameRate": "25/1",
+      "narrationSeconds": 8.258231,
+      "tempo": 1
+    },
+    {
+      "id": "03-segmentation",
+      "seconds": 14,
+      "source": "03-segmentation.jpg",
+      "shots": ["03-segmentation.jpg", "03-world.jpg"],
+      "sourceType": "CUA-screenshot",
+      "sourceSha256": "73e0ba81502e3886593f48441a48fa784185951945f75c73c50cce6f49f48669",
+      "sourceFrames": 2,
+      "sourceFrameRate": "25/1",
+      "narrationSeconds": 14.581723,
+      "tempo": 1.0801276296296296
+    },
+    {
+      "id": "04-world",
+      "seconds": 18,
+      "source": "03-baseline.webm",
+      "shots": null,
+      "sourceType": "native-replay-export",
+      "sourceSha256": "f2db8f8464f49ef89d12fa2e12ba1f9429d4c6833d39bcc1c580d287d657d251",
+      "sourceFrames": 600,
+      "sourceFrameRate": "30/1",
+      "narrationSeconds": 16.946848,
+      "tempo": 1
+    },
+    {
+      "id": "05-hypothesis",
+      "seconds": 18,
+      "source": "05-failed.webm",
+      "shots": null,
+      "sourceType": "native-replay-export",
+      "sourceSha256": "0a2828f20bc777cc1a4ae60fe48090f09cf94867df7799992d5981b60ab2a1fc",
+      "sourceFrames": 600,
+      "sourceFrameRate": "30/1",
+      "narrationSeconds": 17.551383,
+      "tempo": 1.0029361714285716
+    },
+    {
+      "id": "06-repair",
+      "seconds": 24,
+      "source": "06-repair.webm",
+      "shots": null,
+      "sourceType": "native-replay-export",
+      "sourceSha256": "f495ddf310b3b04f55d79cc45832615d41b7fe669bd4181ec4f5ac7a2da9e63d",
+      "sourceFrames": 900,
+      "sourceFrameRate": "30/1",
+      "narrationSeconds": 21.400998,
+      "tempo": 1
+    },
+    {
+      "id": "07-rule",
+      "seconds": 22,
+      "source": "07-rule.webm",
+      "shots": null,
+      "sourceType": "native-replay-export",
+      "sourceSha256": "e0a49cd286ef5b619e0b4f48ccf30dcd76f029cd9438c4e7c4aeef6e8b92dd4a",
+      "sourceFrames": 900,
+      "sourceFrameRate": "30/1",
+      "narrationSeconds": 22.03093,
+      "tempo": 1.0246944186046512
+    },
+    {
+      "id": "08-adaptation",
+      "seconds": 18,
+      "source": "08-adaptation.webm",
+      "shots": null,
+      "sourceType": "native-replay-export",
+      "sourceSha256": "f28ead1ba108ac6a2bb66c4c091a062cd38acb09b559eb5f6359bb18c8bccab9",
+      "sourceFrames": 600,
+      "sourceFrameRate": "30/1",
+      "narrationSeconds": 18.161633,
+      "tempo": 1.0378075999999998
+    },
+    {
+      "id": "09-share",
+      "seconds": 24,
+      "source": "09-share.jpg",
+      "shots": ["09-project.jpg", "09-reopened.jpg", "09-share.jpg"],
+      "sourceType": "CUA-screenshot",
+      "sourceSha256": "a231a177651935c6b2258f56186f75014f1b406b9b6fc2447d85188bba6f53c9",
+      "sourceFrames": 3,
+      "sourceFrameRate": "25/1",
+      "narrationSeconds": 20.420408,
+      "tempo": 1
+    },
+    {
+      "id": "10-close",
+      "seconds": 20,
+      "source": "10-close.webm",
+      "shots": null,
+      "sourceType": "native-replay-export",
+      "sourceSha256": "5ad8783a38aedb1f8b177dc14bd736033e92f481032786fb1065795d7dd4c5a4",
+      "sourceFrames": 600,
+      "sourceFrameRate": "30/1",
+      "narrationSeconds": 19.555692,
+      "tempo": 1.002856
     }
-  ],
-  "videoSha256": "a43e70b3eb2e395c54d4c02c366bc21d0a0f16598741a5cd80e8c92dda2753d3"
+  ]
 }

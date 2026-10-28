@@ -8,35 +8,34 @@ LiveWorld turns objects on a desk into a small playable logistics world. A cup c
 
 Muse Spark proposes object roles and locations; SAM 3.1 supplies the segmentation masks. The creator reviews those suggestions. Muse Spark also translates supported rule instructions into validated proposals and acts as a playtester, inspecting traces and running constrained experiments. A deterministic simulator computes every delivery, missed deadline and queue. The model cannot certify its own success.
 
-Creators can rescan a changed tabletop, compare A and B, apply a candidate, return to checkpoints and save a portable project. Imported trials are recomputed. Evidence exports retain the inputs and measurements for review.
+Creators can rescan a changed tabletop, schedule a bridge closure or production pause, compare A and B, apply a candidate, return to checkpoints and save a portable project. Imported trials are recomputed. Evidence exports retain the inputs and measurements; the studio can also render a 1080p replay clip with its reproducible inputs.
 
 This prototype has not been validated in a creator study. Its photo mapping uses a fixed grid and heuristic object matching, rather than metric reconstruction. The included generated images are labelled synthetic; they are not real camera tests.
 
 ## What was built during the event
 
-This repository began on October 27, 2026. The world format, simulator, workbench, photo-to-grid mapping, object tracking, Meta API integration, agent tools, rule proposal validation, project persistence, evidence exports and budget controls were developed for LiveWorld during the event. No Keryx application code is included.
+This repository began on October 27, 2026. The world format, simulator, studio, angled canvas renderer, photo-to-grid mapping, object tracking, Meta API integration, agent tools, timed mechanics, rule validation, project persistence, evidence exports, replay composition and budget controls were developed for LiveWorld during the event. No Keryx application code is included.
 
-Meta provides Muse Spark, SAM 3.1 and the official `@meta-sam/parser` dependency. The tabletop example images are generated test assets; their prompts and limitations are recorded in `public/examples/generated-inputs.json`. Existing models and dependencies are not original project contributions.
+Meta provides Muse Spark, SAM 3.1 and the official `@meta-sam/parser` dependency. The tabletop example images are generated test assets; their prompts and limitations are recorded in `public/examples/generated-inputs.json`. Replay media packaging uses the unmodified Mediabunny library, identified in `THIRD_PARTY_NOTICES.md`. Existing models and dependencies are not original project contributions.
 
 ## Reproducible examples
 
 1. **Authored valley playtest.** Replay the recorded Meta run. Balanced dispatch is a failed proposal: 14 of 24 units arrive on time, compared with 20 originally. Moving the south bridge to zero-based row 6 produces 24 of 24 on time. Bridge waiting increases from 16 to 22 turns. The app retains that tradeoff.
 2. **Generated photo A/B.** Capture dialog → Replay recorded A/B capture. The saved outputs came from real Muse Spark and SAM requests on generated inputs. All 11 identities are retained, ten grid positions are unchanged and one bridge moves from row 10 to row 7. On-time delivery remains 20/24; waiting falls from 22 to 10 turns and completion from 99 to 91. This is an improvement in waiting, not a deadline success.
-3. **Designer rule change.** Edit the game rules → describe “Use eight couriers. Keep all other rules unchanged.” Review the exact proposal before applying. This changes the design constraints; it must not be presented as a same-resource agent fix.
+3. **Timed rule design.** Write a game rule → Explore a recorded rule experiment. Muse Spark compiled “Close the north bridge from turn 25 through turn 50.” Only B gains that schedule. On-time delivery falls from 20/24 to 16/24; this is a creator design change, not a repair. The recorded playtest under the closure reaches 22/24 with the same schedule, and remains not solved. Open `public/examples/closed-crossing-repairs-project.json` to inspect it.
+4. **Rule interpretation check.** Six predeclared English requests on renamed authored layouts, one attempt each: all six matched the expected semantics or refused the unsupported/ambiguous request. The saved evaluation includes cases for retaining an existing schedule, removing one event, and overriding a named home. This is a small integration evaluation, not a general accuracy benchmark.
 
 The recorded runs are explicitly labelled and do not call Meta again. Use the live buttons to run new inference. Each paid operation goes through the same local budget ledger.
 
-## Three-minute demo outline
+## What the reviewer can inspect
 
-| Time      | Show                                                             | Narration point                                                                                                               |
-| --------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| 0:00–0:15 | Tabletop photo beside its playable layout                        | “I built LiveWorld to test small game systems with objects already on my desk.” Identify generated input visibly if used.     |
-| 0:15–0:45 | Capture, actual Meta masks and role review                       | Explain Spark proposes meaning, SAM segments and the creator confirms. Condense waiting with a visible time-cut label.        |
-| 0:45–1:15 | Rescan A/B and exact change list                                 | Move one crossing. Compare measured effects and show a drawback if one exists.                                                |
-| 1:15–2:00 | An agent's failed trial, trace inspection and verified candidate | Use the authored valley example. Label recordings. Show 20/24 → 14/24 → 24/24 with the same six couriers and fixed deadlines. |
-| 2:00–2:25 | Natural-language rule proposal and preview                       | Separate creator rule editing from constrained agent fixes. The simulator, not model prose, produces the outcome.             |
-| 2:25–2:45 | Apply B, checkpoint, save and reopen                             | Show that the experiment can be reproduced rather than being a one-time animation.                                            |
-| 2:45–3:00 | Evidence and scope                                               | State the target user, what is working, and the fixed-camera limitation. End on the product.                                  |
+- The original and proposed worlds replay in sync, with full-run outcomes distinguished from current-turn deliveries.
+- Failed proposals remain visible. Success is calculated by code, and a limited search is not called globally optimal.
+- `search_one_edit` is a systematic simulation search. Meta interprets design intent and orchestrates the supported tools; the solver's contribution is explicit.
+- A project file can be opened without a key; imported success claims are discarded and recomputed.
+- Local budget accounting reserves before inference, retains usage across restarts and stops after an uncertain charge. It does not replace the provider's billing controls.
+
+The recording follows a complete design/playtest loop. Its exact scenes and timings are in `demo/storyboard.json`; native replay frames and actual UI screenshots are identified separately in the render manifest.
 
 ## Items required before submission
 

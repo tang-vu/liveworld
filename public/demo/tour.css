@@ -4,6 +4,12 @@ body {
   margin: auto;
   padding: 30px 40px;
 }
+.review-links {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin: 28px 0;
+}
 header {
   display: flex;
   justify-content: space-between;

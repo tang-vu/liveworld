@@ -1,5 +1,6 @@
 import { normalizeProject, describeWorldChanges } from "../shared/project.js";
 import { simulate } from "../shared/engine.js";
+import { describeEvent } from "../shared/mechanics.js";
 
 const escape = (value) =>
   String(value).replace(
@@ -28,6 +29,28 @@ export function experimentReport(input) {
     ],
   ];
   const changes = trial ? describeWorldChanges(project.world, trial.world) : [];
+  if (a.metrics.pendingUnits || b?.metrics.pendingUnits)
+    rows.push([
+      "Awaiting a future deadline",
+      a.metrics.pendingUnits ?? 0,
+      b?.metrics.pendingUnits ?? 0,
+    ]);
+  if (a.world.events?.length || b?.world.events?.length) {
+    rows.push([
+      "Waiting for closed bridges",
+      a.metrics.closureWaitTicks ?? 0,
+      b?.metrics.closureWaitTicks ?? 0,
+    ]);
+    rows.push([
+      "Production paused turns",
+      a.metrics.productionPausedTurns ?? 0,
+      b?.metrics.productionPausedTurns ?? 0,
+    ]);
+  }
+  const schedule = (world) =>
+    (world.events ?? [])
+      .map((e) => `<li>${escape(describeEvent(e, world))}</li>`)
+      .join("") || "<li>No scheduled mechanics.</li>";
   const inputDescription = (world) =>
     world.provenance?.type === "synthetic"
       ? "AI-generated synthetic tabletop; not a real camera capture"
@@ -44,6 +67,7 @@ export function experimentReport(input) {
   <p>${escape(project.world.name)}${trial ? ` · B: ${escape(trial.label)}` : ""}</p>
   <p>Input A: <strong>${inputDescription(project.world)}</strong>${trial ? `. Input B: <strong>${inputDescription(trial.world)}</strong>` : ""}. Outcomes below were recomputed by the deterministic simulator when this report was exported.</p>
   ${embeddedPhoto(project.photo, project.world)}
+  ${project.world.events?.length || trial?.world.events?.length ? `<h2>Playable schedule</h2><h3>A · Original</h3><ul>${schedule(project.world)}</ul>${trial ? `<h3>B · Candidate</h3><ul>${schedule(trial.world)}</ul>` : ""}<p>Intervals include both endpoint turns. Existing bridge occupants finish crossing; new routes avoid closed bridges where possible. Production pauses retain stock and preserve the production clock.</p>` : ""}
   <h2>Measured outcome</h2><table><thead><tr><th>Measurement</th><th>A · Original</th>${b ? "<th>B · Candidate</th>" : ""}</tr></thead><tbody>${rows.map(([label, av, bv]) => `<tr><td>${label}</td><td>${escape(av)}</td>${b ? `<td>${escape(bv)}</td>` : ""}</tr>`).join("")}</tbody></table>
   ${trial ? `<h2>What changed</h2><ul>${(changes.length ? changes : ["No layout or rule differences."]).map((text) => `<li>${escape(text)}</li>`).join("")}</ul><p>Trial source: ${escape(trial.source)}. ${["agent", "local"].includes(trial.kind) ? "The playtest patch is constrained to one bridge move or one dispatch change." : "This is a creator design comparison. Resources, demand or deadlines may differ; inspect the listed changes."}</p>${embeddedPhoto(trial.photo, trial.world)}` : ""}
   <h2>Household results${b ? " · B" : ""}</h2><table><tr><th>Home</th><th>On time / demand</th><th>Delivered</th><th>Deadline</th></tr>${(b ?? a).houses.map((h) => `<tr><td>${escape(h.label)}</td><td>${h.onTime} / ${h.demand}</td><td>${h.delivered}</td><td>${h.deadline}</td></tr>`).join("")}</table>

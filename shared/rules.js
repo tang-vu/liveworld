@@ -17,7 +17,11 @@ function object(value, allowed, label) {
 
 export function applyRuleChange(input, proposal) {
   const world = validateWorld(input);
-  object(proposal, ["rules", "allHouseholds", "households"], "Rule change");
+  object(
+    proposal,
+    ["rules", "allHouseholds", "households", "events"],
+    "Rule change",
+  );
   const changes = [];
   const update = (target, field, value, label, id) => {
     if (value === undefined || value === null || target[field] === value)
@@ -56,6 +60,19 @@ export function applyRuleChange(input, proposal) {
       for (const field of householdFields)
         update(house, field, change[field], house.label ?? house.id, house.id);
     }
+  }
+  if (
+    proposal.events != null &&
+    JSON.stringify(proposal.events) !== JSON.stringify(world.events ?? [])
+  ) {
+    changes.push({
+      id: "events",
+      field: "events",
+      before: world.events ?? [],
+      after: proposal.events,
+      label: "Scheduled mechanics",
+    });
+    world.events = proposal.events;
   }
   if (!changes.length)
     throw new Error("This proposal does not change any rules.");

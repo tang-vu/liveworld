@@ -3,7 +3,7 @@
   <meta charset="utf-8" /><meta
     name="viewport"
     content="width=device-width,initial-scale=1"
-  /><title>Valley courier study — LiveWorld experiment</title>
+  /><title>The valley — a reproducible experiment — LiveWorld experiment</title>
   <style>
     body {
       font:
@@ -65,9 +65,9 @@
       }
     }
   </style>
-  <small>LIVEWORLD · REPLAYABLE EXPERIMENT · 2026-10-28T08:25:30.125Z</small>
-  <h1>Valley courier study</h1>
-  <p>The little valley · B: Move north bridge to row 4</p>
+  <small>LIVEWORLD · REPLAYABLE EXPERIMENT · 2026-10-28T11:27:20.618Z</small>
+  <h1>The valley — a reproducible experiment</h1>
+  <p>The little valley · B: Move bridge-south to row 7</p>
   <p>
     Input A: <strong>Authored example world</strong>. Input B:
     <strong>Authored example world</strong>. Outcomes below were recomputed by
@@ -86,7 +86,7 @@
     <tbody>
       <tr>
         <td>On-time water</td>
-        <td>24</td>
+        <td>20</td>
         <td>24</td>
       </tr>
       <tr>
@@ -96,7 +96,7 @@
       </tr>
       <tr>
         <td>Late water units</td>
-        <td>0</td>
+        <td>4</td>
         <td>0</td>
       </tr>
       <tr>
@@ -106,19 +106,19 @@
       </tr>
       <tr>
         <td>Bridge waiting turns</td>
-        <td>18</td>
-        <td>10</td>
+        <td>16</td>
+        <td>22</td>
       </tr>
       <tr>
         <td>Completion turn</td>
-        <td>75</td>
-        <td>75</td>
+        <td>100</td>
+        <td>94</td>
       </tr>
     </tbody>
   </table>
   <h2>What changed</h2>
   <ul>
-    <li>bridge-north: cell 9, 3 → 9, 4</li>
+    <li>bridge-south: cell 9, 10 → 9, 7</li>
   </ul>
   <p>
     Trial source: imported. The playtest patch is constrained to one bridge move
@@ -275,7 +275,7 @@
     ],
     &quot;rules&quot;: {
       &quot;dispatch&quot;: &quot;nearest&quot;,
-      &quot;couriers&quot;: 8,
+      &quot;couriers&quot;: 6,
       &quot;bridgeCapacity&quot;: 1,
       &quot;productionInterval&quot;: 2,
       &quot;horizon&quot;: 120
@@ -305,12 +305,12 @@
       {
         &quot;id&quot;: &quot;bridge-north&quot;,
         &quot;x&quot;: 8,
-        &quot;y&quot;: 3
+        &quot;y&quot;: 2
       },
       {
         &quot;id&quot;: &quot;bridge-south&quot;,
         &quot;x&quot;: 8,
-        &quot;y&quot;: 9
+        &quot;y&quot;: 6
       }
     ],
     &quot;houses&quot;: [
@@ -377,7 +377,7 @@
     ],
     &quot;rules&quot;: {
       &quot;dispatch&quot;: &quot;nearest&quot;,
-      &quot;couriers&quot;: 8,
+      &quot;couriers&quot;: 6,
       &quot;bridgeCapacity&quot;: 1,
       &quot;productionInterval&quot;: 2,
       &quot;horizon&quot;: 120

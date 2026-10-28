@@ -1,0 +1,291 @@
+{
+  "format": "liveworld-meta-design-record-v1",
+  "source": "recorded-meta-design",
+  "recordedAt": "2026-10-28T10:23:53.622Z",
+  "designId": "37f1733b-f9dd-49a7-a5bb-2b067ad9e300",
+  "model": "muse-spark-1.3",
+  "instruction": "Close the north bridge from turn 25 through turn 50. Keep all other rules and scheduled events unchanged.",
+  "startingWorld": {
+    "version": 1,
+    "name": "The little valley",
+    "width": 18,
+    "height": 12,
+    "seed": 271026,
+    "river": {
+      "x": 8,
+      "width": 2
+    },
+    "source": {
+      "id": "well",
+      "label": "The well",
+      "x": 3,
+      "y": 5
+    },
+    "bridges": [
+      {
+        "id": "bridge-north",
+        "x": 8,
+        "y": 2
+      },
+      {
+        "id": "bridge-south",
+        "x": 8,
+        "y": 9
+      }
+    ],
+    "houses": [
+      {
+        "id": "h1",
+        "label": "Orchard",
+        "x": 5,
+        "y": 2,
+        "demand": 4,
+        "deadline": 38
+      },
+      {
+        "id": "h2",
+        "label": "Meadow",
+        "x": 4,
+        "y": 9,
+        "demand": 4,
+        "deadline": 45
+      },
+      {
+        "id": "h3",
+        "label": "Pine",
+        "x": 12,
+        "y": 2,
+        "demand": 4,
+        "deadline": 58
+      },
+      {
+        "id": "h4",
+        "label": "Cedar",
+        "x": 14,
+        "y": 5,
+        "demand": 4,
+        "deadline": 66
+      },
+      {
+        "id": "h5",
+        "label": "Willow",
+        "x": 12,
+        "y": 9,
+        "demand": 4,
+        "deadline": 72
+      },
+      {
+        "id": "h6",
+        "label": "Hilltop",
+        "x": 16,
+        "y": 9,
+        "demand": 4,
+        "deadline": 94
+      }
+    ],
+    "obstacles": [
+      {
+        "id": "stone-1",
+        "x": 6,
+        "y": 5
+      },
+      {
+        "id": "stone-2",
+        "x": 12,
+        "y": 6
+      }
+    ],
+    "rules": {
+      "dispatch": "nearest",
+      "couriers": 6,
+      "bridgeCapacity": 1,
+      "productionInterval": 2,
+      "horizon": 120
+    },
+    "provenance": {
+      "type": "example",
+      "confirmed": true
+    }
+  },
+  "proposal": {
+    "rules": {
+      "bridgeCapacity": null,
+      "couriers": null,
+      "dispatch": null,
+      "horizon": null,
+      "productionInterval": null
+    },
+    "allHouseholds": {
+      "deadline": null,
+      "demand": null
+    },
+    "households": [],
+    "events": [
+      {
+        "from": 25,
+        "id": "event-1",
+        "kind": "bridge_closed",
+        "targetId": "bridge-north",
+        "to": 50
+      }
+    ]
+  },
+  "explanation": "Added scheduled closure of bridge-north from turn 25 through 50. All other rules unchanged.",
+  "evidence": {
+    "metrics": {
+      "demand": 24,
+      "delivered": 24,
+      "onTime": 16,
+      "lateUnits": 8,
+      "unmetUnits": 0,
+      "coverage": 1,
+      "worstCoverage": 1,
+      "waitTicks": 34,
+      "completedAt": 117,
+      "unreachable": [],
+      "allOnTime": false,
+      "allDelivered": true,
+      "closureWaitTicks": 0,
+      "productionPausedTurns": 0
+    },
+    "households": [
+      {
+        "id": "h1",
+        "label": "Orchard",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 4,
+        "deadline": 38,
+        "firstDelivery": 5
+      },
+      {
+        "id": "h2",
+        "label": "Meadow",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 4,
+        "deadline": 45,
+        "firstDelivery": 13
+      },
+      {
+        "id": "h3",
+        "label": "Pine",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 4,
+        "deadline": 58,
+        "firstDelivery": 28
+      },
+      {
+        "id": "h4",
+        "label": "Cedar",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 0,
+        "deadline": 66,
+        "firstDelivery": 75
+      },
+      {
+        "id": "h5",
+        "label": "Willow",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 4,
+        "deadline": 72,
+        "firstDelivery": 37
+      },
+      {
+        "id": "h6",
+        "label": "Hilltop",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 0,
+        "deadline": 94,
+        "firstDelivery": 97
+      }
+    ],
+    "significantEvents": [
+      {
+        "tick": 25,
+        "type": "bridge_closed",
+        "eventId": "event-1",
+        "targetId": "bridge-north",
+        "message": "North bridge closed · turns 25–50"
+      },
+      {
+        "tick": 26,
+        "type": "reroute",
+        "agentId": "courier-5",
+        "houseId": "h3",
+        "message": "A courier rerouted around a closed bridge."
+      },
+      {
+        "tick": 28,
+        "type": "reroute",
+        "agentId": "courier-1",
+        "houseId": "h3",
+        "message": "A courier rerouted around a closed bridge."
+      },
+      {
+        "tick": 30,
+        "type": "reroute",
+        "agentId": "courier-2",
+        "houseId": "h3",
+        "message": "A courier rerouted around a closed bridge."
+      },
+      {
+        "tick": 51,
+        "type": "bridge_opened",
+        "eventId": "event-1",
+        "targetId": "bridge-north",
+        "message": "bridge-north reopened."
+      },
+      {
+        "tick": 66,
+        "type": "deadline_missed",
+        "houseId": "h4",
+        "missing": 4,
+        "message": "Cedar missed its deadline by 4 water unit(s)."
+      },
+      {
+        "tick": 94,
+        "type": "deadline_missed",
+        "houseId": "h6",
+        "missing": 4,
+        "message": "Hilltop missed its deadline by 4 water unit(s)."
+      },
+      {
+        "tick": 117,
+        "type": "all_delivered",
+        "message": "Every household has received its requested water."
+      }
+    ],
+    "bridgeQueues": [
+      ["bridge-south", 8],
+      ["bridge-north", 1]
+    ],
+    "scheduledMechanics": [
+      {
+        "from": 25,
+        "id": "event-1",
+        "kind": "bridge_closed",
+        "targetId": "bridge-north",
+        "to": 50
+      }
+    ],
+    "routePhases": [
+      {
+        "tick": 0,
+        "reachableHomes": 6
+      },
+      {
+        "tick": 25,
+        "reachableHomes": 6
+      },
+      {
+        "tick": 51,
+        "reachableHomes": 6
+      }
+    ]
+  }
+}

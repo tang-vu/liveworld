@@ -1,4 +1,5 @@
 import { createServer } from "node:http";
+import { randomUUID } from "node:crypto";
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, extname, join, resolve, sep } from "node:path";
@@ -131,8 +132,21 @@ const server = createServer(async (req, res) => {
         const body = await readBody(req);
         if (url.pathname === "/api/scan")
           return json(res, 200, await scanTabletop(client, body));
-        if (url.pathname === "/api/rules")
-          return json(res, 200, await compileRuleChange(client, body));
+        if (url.pathname === "/api/rules") {
+          const result = {
+            ...(await compileRuleChange(client, body)),
+            designId: randomUUID(),
+            createdAt: new Date().toISOString(),
+            startingWorld: validateWorld(body.world),
+          };
+          await mkdir(join(dataDirectory, "designs"), { recursive: true });
+          await writeFile(
+            join(dataDirectory, "designs", `${result.designId}.json`),
+            JSON.stringify(result, null, 2),
+            { mode: 0o600 },
+          );
+          return json(res, 200, result);
+        }
         res.writeHead(200, {
           "Content-Type": "text/event-stream",
           "Cache-Control": "no-store",

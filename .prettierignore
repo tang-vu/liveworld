@@ -4,3 +4,4 @@ captures/
 .env*
 docs/*.jpg
 package-lock.json
+public/vendor/

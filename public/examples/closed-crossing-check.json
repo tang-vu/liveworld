@@ -1,0 +1,29 @@
+{
+  "format": "liveworld-mechanics-check-v1",
+  "source": "Recorded Meta calls; outcomes independently recomputed",
+  "model": "muse-spark-1.3",
+  "designId": "37f1733b-f9dd-49a7-a5bb-2b067ad9e300",
+  "runId": "9663d751-a412-4ae8-ab95-891624dc1ee3",
+  "schedule": [
+    {
+      "from": 25,
+      "id": "event-1",
+      "kind": "bridge_closed",
+      "targetId": "bridge-north",
+      "to": 50
+    }
+  ],
+  "originalOnTime": 20,
+  "scheduledOnTime": 16,
+  "bestRepairOnTime": 22,
+  "demand": 24,
+  "trials": 22,
+  "goalMet": false,
+  "hashes": {
+    "closed-crossing-design.json": "53d3a07e638b0abb45501ee6f5867e3b513b97a8a168c745d1829ae02964e935",
+    "closed-crossing-playtest.json": "400bdac4bb374cb184b75d82d5de4b3b894336b7db6f4de035f2e25fdea6f7e9",
+    "closed-crossing-project.json": "274f7ef32ee28e683894a2d178cf5e371b150d777fcfb0a3abc90258e1bc6a1f",
+    "closed-crossing-repairs-project.json": "6cba36ec5ad9b47ece32129d9a497200f9f34d8a95fe06e030d085310af347e0"
+  },
+  "scope": "One authored scheduled-mechanic study. This is not a general success-rate or camera benchmark."
+}

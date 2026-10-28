@@ -20,4 +20,7 @@ jobs:
       - run: npm run format:check
       - run: npm test
       - run: node scripts/check-generated-pair.mjs
+      - run: node scripts/check-mechanics.mjs
+      - run: node scripts/evaluate-rules.mjs
+      - run: node scripts/check-agent-evidence.mjs
       - run: npm run evaluate

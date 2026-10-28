@@ -1,5 +1,6 @@
 import { validateWorld, applyPatch } from "./world.js";
 import { simulate, evidence, compareRuns } from "./engine.js";
+import { describeEvent } from "./mechanics.js";
 
 export const PROJECT_FORMAT = "liveworld-project-v2";
 export const PROJECT_LIMIT_BYTES = 15_000_000;
@@ -211,5 +212,15 @@ export function describeWorldChanges(before, after) {
   for (const field of Object.keys(a.rules))
     if (a.rules[field] !== b.rules[field])
       changes.push(`${field}: ${a.rules[field]} → ${b.rules[field]}`);
+  if (JSON.stringify(a.events ?? []) !== JSON.stringify(b.events ?? [])) {
+    const oldEvents = new Map((a.events ?? []).map((e) => [e.id, e]));
+    const newEvents = new Map((b.events ?? []).map((e) => [e.id, e]));
+    for (const event of a.events ?? [])
+      if (JSON.stringify(newEvents.get(event.id)) !== JSON.stringify(event))
+        changes.push("Remove schedule: " + describeEvent(event, a));
+    for (const event of b.events ?? [])
+      if (JSON.stringify(oldEvents.get(event.id)) !== JSON.stringify(event))
+        changes.push("Schedule: " + describeEvent(event, b));
+  }
   return changes;
 }

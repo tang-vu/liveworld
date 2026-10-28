@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>The valley — a reproducible experiment — LiveWorld experiment</title>
+  <link rel="stylesheet" href="/examples/studio-report.css" />
+  <small>LIVEWORLD · REPLAYABLE EXPERIMENT · 2026-10-28T11:27:20.618Z</small>
+  <h1>The valley — a reproducible experiment</h1>
+  <p>The little valley · B: Move bridge-south to row 7</p>
+  <p>
+    Input A: <strong>Authored example world</strong>. Input B:
+    <strong>Authored example world</strong>. Outcomes below were recomputed by
+    the deterministic simulator when this report was exported.
+  </p>
+
+  <h2>Measured outcome</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Measurement</th>
+        <th>A · Original</th>
+        <th>B · Candidate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>On-time water</td>
+        <td>20</td>
+        <td>24</td>
+      </tr>
+      <tr>
+        <td>Total demand</td>
+        <td>24</td>
+        <td>24</td>
+      </tr>
+      <tr>
+        <td>Late water units</td>
+        <td>4</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>Undelivered units</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>Bridge waiting turns</td>
+        <td>16</td>
+        <td>22</td>
+      </tr>
+      <tr>
+        <td>Completion turn</td>
+        <td>100</td>
+        <td>94</td>
+      </tr>
+    </tbody>
+  </table>
+  <h2>What changed</h2>
+  <ul>
+    <li>bridge-south: cell 9, 10 → 9, 7</li>
+  </ul>
+  <p>
+    Trial source: imported. The playtest patch is constrained to one bridge move
+    or one dispatch change.
+  </p>
+  <h2>Household results · B</h2>
+  <table>
+    <tr>
+      <th>Home</th>
+      <th>On time / demand</th>
+      <th>Delivered</th>
+      <th>Deadline</th>
+    </tr>
+    <tr>
+      <td>Orchard</td>
+      <td>4 / 4</td>
+      <td>4</td>
+      <td>38</td>
+    </tr>
+    <tr>
+      <td>Meadow</td>
+      <td>4 / 4</td>
+      <td>4</td>
+      <td>45</td>
+    </tr>
+    <tr>
+      <td>Pine</td>
+      <td>4 / 4</td>
+      <td>4</td>
+      <td>58</td>
+    </tr>
+    <tr>
+      <td>Cedar</td>
+      <td>4 / 4</td>
+      <td>4</td>
+      <td>66</td>
+    </tr>
+    <tr>
+      <td>Willow</td>
+      <td>4 / 4</td>
+      <td>4</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <td>Hilltop</td>
+      <td>4 / 4</td>
+      <td>4</td>
+      <td>94</td>
+    </tr>
+  </table>
+  <p>
+    Seed A: 271026 · Seed B: 271026. Horizon A: 120 · Horizon B: 120. This
+    result describes these inputs only. It is not a benchmark of camera
+    reliability or game-design productivity.
+  </p>
+  <p>
+    Download the matching LiveWorld project file to open, inspect and replay the
+    inputs in the app. An imported file does not authenticate provider activity;
+    imported results are always recomputed.
+  </p>
+  <details>
+    <summary>World inputs</summary>
+    <pre>
+{
+  &quot;a&quot;: {
+    &quot;version&quot;: 1,
+    &quot;name&quot;: &quot;The little valley&quot;,
+    &quot;width&quot;: 18,
+    &quot;height&quot;: 12,
+    &quot;seed&quot;: 271026,
+    &quot;river&quot;: {
+      &quot;x&quot;: 8,
+      &quot;width&quot;: 2
+    },
+    &quot;source&quot;: {
+      &quot;id&quot;: &quot;well&quot;,
+      &quot;label&quot;: &quot;The well&quot;,
+      &quot;x&quot;: 3,
+      &quot;y&quot;: 5
+    },
+    &quot;bridges&quot;: [
+      {
+        &quot;id&quot;: &quot;bridge-north&quot;,
+        &quot;x&quot;: 8,
+        &quot;y&quot;: 2
+      },
+      {
+        &quot;id&quot;: &quot;bridge-south&quot;,
+        &quot;x&quot;: 8,
+        &quot;y&quot;: 9
+      }
+    ],
+    &quot;houses&quot;: [
+      {
+        &quot;id&quot;: &quot;h1&quot;,
+        &quot;label&quot;: &quot;Orchard&quot;,
+        &quot;x&quot;: 5,
+        &quot;y&quot;: 2,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 38
+      },
+      {
+        &quot;id&quot;: &quot;h2&quot;,
+        &quot;label&quot;: &quot;Meadow&quot;,
+        &quot;x&quot;: 4,
+        &quot;y&quot;: 9,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 45
+      },
+      {
+        &quot;id&quot;: &quot;h3&quot;,
+        &quot;label&quot;: &quot;Pine&quot;,
+        &quot;x&quot;: 12,
+        &quot;y&quot;: 2,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 58
+      },
+      {
+        &quot;id&quot;: &quot;h4&quot;,
+        &quot;label&quot;: &quot;Cedar&quot;,
+        &quot;x&quot;: 14,
+        &quot;y&quot;: 5,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 66
+      },
+      {
+        &quot;id&quot;: &quot;h5&quot;,
+        &quot;label&quot;: &quot;Willow&quot;,
+        &quot;x&quot;: 12,
+        &quot;y&quot;: 9,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 72
+      },
+      {
+        &quot;id&quot;: &quot;h6&quot;,
+        &quot;label&quot;: &quot;Hilltop&quot;,
+        &quot;x&quot;: 16,
+        &quot;y&quot;: 9,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 94
+      }
+    ],
+    &quot;obstacles&quot;: [
+      {
+        &quot;id&quot;: &quot;stone-1&quot;,
+        &quot;x&quot;: 6,
+        &quot;y&quot;: 5
+      },
+      {
+        &quot;id&quot;: &quot;stone-2&quot;,
+        &quot;x&quot;: 12,
+        &quot;y&quot;: 6
+      }
+    ],
+    &quot;rules&quot;: {
+      &quot;dispatch&quot;: &quot;nearest&quot;,
+      &quot;couriers&quot;: 6,
+      &quot;bridgeCapacity&quot;: 1,
+      &quot;productionInterval&quot;: 2,
+      &quot;horizon&quot;: 120
+    },
+    &quot;provenance&quot;: {
+      &quot;type&quot;: &quot;example&quot;,
+      &quot;confirmed&quot;: true
+    }
+  },
+  &quot;b&quot;: {
+    &quot;version&quot;: 1,
+    &quot;name&quot;: &quot;The little valley&quot;,
+    &quot;width&quot;: 18,
+    &quot;height&quot;: 12,
+    &quot;seed&quot;: 271026,
+    &quot;river&quot;: {
+      &quot;x&quot;: 8,
+      &quot;width&quot;: 2
+    },
+    &quot;source&quot;: {
+      &quot;id&quot;: &quot;well&quot;,
+      &quot;label&quot;: &quot;The well&quot;,
+      &quot;x&quot;: 3,
+      &quot;y&quot;: 5
+    },
+    &quot;bridges&quot;: [
+      {
+        &quot;id&quot;: &quot;bridge-north&quot;,
+        &quot;x&quot;: 8,
+        &quot;y&quot;: 2
+      },
+      {
+        &quot;id&quot;: &quot;bridge-south&quot;,
+        &quot;x&quot;: 8,
+        &quot;y&quot;: 6
+      }
+    ],
+    &quot;houses&quot;: [
+      {
+        &quot;id&quot;: &quot;h1&quot;,
+        &quot;label&quot;: &quot;Orchard&quot;,
+        &quot;x&quot;: 5,
+        &quot;y&quot;: 2,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 38
+      },
+      {
+        &quot;id&quot;: &quot;h2&quot;,
+        &quot;label&quot;: &quot;Meadow&quot;,
+        &quot;x&quot;: 4,
+        &quot;y&quot;: 9,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 45
+      },
+      {
+        &quot;id&quot;: &quot;h3&quot;,
+        &quot;label&quot;: &quot;Pine&quot;,
+        &quot;x&quot;: 12,
+        &quot;y&quot;: 2,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 58
+      },
+      {
+        &quot;id&quot;: &quot;h4&quot;,
+        &quot;label&quot;: &quot;Cedar&quot;,
+        &quot;x&quot;: 14,
+        &quot;y&quot;: 5,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 66
+      },
+      {
+        &quot;id&quot;: &quot;h5&quot;,
+        &quot;label&quot;: &quot;Willow&quot;,
+        &quot;x&quot;: 12,
+        &quot;y&quot;: 9,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 72
+      },
+      {
+        &quot;id&quot;: &quot;h6&quot;,
+        &quot;label&quot;: &quot;Hilltop&quot;,
+        &quot;x&quot;: 16,
+        &quot;y&quot;: 9,
+        &quot;demand&quot;: 4,
+        &quot;deadline&quot;: 94
+      }
+    ],
+    &quot;obstacles&quot;: [
+      {
+        &quot;id&quot;: &quot;stone-1&quot;,
+        &quot;x&quot;: 6,
+        &quot;y&quot;: 5
+      },
+      {
+        &quot;id&quot;: &quot;stone-2&quot;,
+        &quot;x&quot;: 12,
+        &quot;y&quot;: 6
+      }
+    ],
+    &quot;rules&quot;: {
+      &quot;dispatch&quot;: &quot;nearest&quot;,
+      &quot;couriers&quot;: 6,
+      &quot;bridgeCapacity&quot;: 1,
+      &quot;productionInterval&quot;: 2,
+      &quot;horizon&quot;: 120
+    },
+    &quot;provenance&quot;: {
+      &quot;type&quot;: &quot;example&quot;,
+      &quot;confirmed&quot;: true
+    }
+  }
+}</pre>
+  </details>
+</html>

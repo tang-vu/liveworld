@@ -1,8 +1,8 @@
-param([string]$Voice = 'Microsoft Zira Desktop')
+param([string]$Voice = 'Microsoft Zira Desktop', [string]$Storyboard = 'demo/storyboard.json', [string]$CaptureDirectory = '.liveworld/studio-film')
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$story = Get-Content -LiteralPath (Join-Path $projectRoot 'demo/storyboard.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-$captureRoot = Join-Path $projectRoot '.liveworld/demo-capture'
+$story = Get-Content -LiteralPath (Join-Path $projectRoot $Storyboard) -Raw -Encoding UTF8 | ConvertFrom-Json
+$captureRoot = Join-Path $projectRoot $CaptureDirectory
 New-Item -ItemType Directory -Path $captureRoot -Force | Out-Null
 Add-Type -AssemblyName System.Speech
 $speaker = New-Object System.Speech.Synthesis.SpeechSynthesizer

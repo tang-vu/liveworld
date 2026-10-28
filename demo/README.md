@@ -2,31 +2,31 @@
 
 The finished video is [`public/demo/liveworld-demo.mp4`](../public/demo/liveworld-demo.mp4). It is 1920×1080, approximately 180 seconds, with English narration and an embedded English subtitle track. After starting the app, open **http://127.0.0.1:4173/demo/** for the local player and optional English subtitles.
 
-This is an edited capture of the actual application. Tabletop input images are generated and labelled synthetic. The segmentation scene uses an actual Meta response. The valley playtest scenes replay the saved Meta run and are labelled as recordings. The rule instruction scene uses a new live Meta proposal. Generic synthetic narration was generated locally with an installed Windows voice; it is not a recording or imitation of the builder's voice.
+The movie combines actual application screenshots with native simulation replay exports encoded at 30 fps. Tabletop input images are generated and labelled synthetic. Segmentation uses an actual Muse Spark and SAM response. Playtests and the timed rule proposal use saved Meta outputs, with recording labels visible. Generic English narration was synthesized locally with an installed Windows voice.
 
-| Start | Scene                                                  |
-| ----- | ------------------------------------------------------ |
-| 00:00 | Generated tabletop input and role confirmation         |
-| 00:15 | Actual Muse Spark + SAM segmentation                   |
-| 00:35 | Deterministic world replay                             |
-| 00:51 | Recorded photo A/B comparison; deadlines still missed  |
-| 01:10 | Authored valley baseline: 20/24 on time                |
-| 01:25 | Failed recorded Meta proposal: 14/24                   |
-| 01:40 | Verified recorded bridge fix: 24/24, with more waiting |
-| 02:00 | Plain-language creator rule instruction                |
-| 02:10 | Validated six-to-eight courier preview                 |
-| 02:23 | Apply a candidate and retain checkpoints               |
-| 02:38 | Save and reopen a project; measurements recomputed     |
-| 02:50 | Export review evidence                                 |
+| Start | Scene                                                   |
+| ----- | ------------------------------------------------------- |
+| 00:00 | One bridge change: 20/24 → 24/24 on time                |
+| 00:12 | Generated tabletop input                                |
+| 00:22 | Actual masks, role review and the resulting photo world |
+| 00:36 | Switch to the authored valley: 20/24 on time            |
+| 00:54 | Failed recorded hypothesis: balanced dispatch, 14/24    |
+| 01:12 | Verified bridge repair: 24/24, with more waiting        |
+| 01:36 | Timed rule: close the north crossing, 20/24 → 16/24     |
+| 01:58 | Playtest under that closure: 16/24 → 22/24, not solved  |
+| 02:16 | Save, reopen and share reproducible evidence            |
+| 02:40 | Scope, attribution and the next validation step         |
 
 The video demonstrates this fixed-grid prototype, rather than physical camera reliability, productivity gains or a general game engine. Model waiting time is omitted. The narrated measurements are scoped to the particular examples shown.
 
-`example-project.json` is an actual UI export with eight-courier rules, checkpoints and 22 local trials. Open it in LiveWorld to recompute the results. `example-report.html` is the corresponding report exported from the application after reopening that project. These examples are separate from the six-courier recorded Meta challenge shown earlier in the video.
+`example-project.json` is the actual six-courier UI export shown in the sharing scene. It retains two checkpoints, 22 trials and the selected 24/24 candidate. Open it in LiveWorld to recompute the results. `example-report.html` is the corresponding report exported after reopening that project. The same review kit is available from the local video page as downloadable project inputs and a styled report.
 
 ## Rebuild the edit
 
 `storyboard.json` contains the timings, narration and summary captions. `liveworld-demo.srt` contains the English subtitles. `render-manifest.json` records the output dimensions, duration and source frame counts.
 
-The original interface captures remain in ignored `.liveworld/demo-capture/`; they were taken through the browser's computer-use screenshot API. No invented screenshot or generated UI frame is used. Rebuilding the edit requires those captures, FFmpeg/FFprobe on `PATH`, and narration WAV files. On Windows, `powershell -NoProfile -File scripts/render-demo-voice.ps1` creates the narration locally from the installed generic voice. Then run `node scripts/render-demo.mjs` to encode and verify the final MP4. Other platforms can supply equivalent local WAV files and a local `font.ttf` in the capture directory.
+The original screenshots, native WebM exports, source hashes and narration WAVs remain in ignored `.liveworld/studio-film/`. These source captures are not required to run the app or watch the bundled movie. The renderer checks each source hash and checks that native replay inputs contain 30 fps video. The manifest identifies still images and native replays separately.
+
+Rebuilding requires those original captures plus FFmpeg and FFprobe on `PATH` (or in `LIVEWORLD_FFMPEG_DIR`). On Windows, `scripts/render-demo-voice.ps1` creates the narration from an installed generic voice if the machine's existing script policy permits it. Do not change that policy for this task; existing WAVs or equivalent locally generated narration can be supplied. Run `node scripts/render-demo.mjs` to encode and verify the MP4. The capture directory defaults to `.liveworld/studio-film/` and can be passed as the first argument. A `font.ttf` in that directory is used, or the renderer copies Windows Segoe UI when available.
 
 The renderer verifies duration, resolution and audio/subtitle tracks. Visual review still matters: inspect the model masks, A/B metrics, failed trial, verified fix and final evidence view before using the video in a submission.
