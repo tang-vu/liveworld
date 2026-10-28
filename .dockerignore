@@ -1,0 +1,15 @@
+*
+!package.json
+!package-lock.json
+!server.mjs
+!src/
+!src/**
+!shared/
+!shared/**
+!public/
+!public/**
+public/captures/
+**/.env*
+**/*.key
+**/*.pem
+**/.liveworld/

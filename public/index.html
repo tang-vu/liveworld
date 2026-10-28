@@ -45,6 +45,7 @@
           </p>
         </div>
         <div class="project-actions">
+          <a class="button secondary" href="/demo/">Watch the demo ↗</a>
           <button id="open-project" class="button secondary">
             Open project
           </button>
@@ -361,6 +362,48 @@ Find a change that gets every home its water on time. Keep the same workers and 
         </button>
       </div>
       <div id="budget-details"></div>
+      <button id="manage-access" class="button secondary" hidden>
+        Manage live access
+      </button>
+    </dialog>
+    <dialog id="access-dialog">
+      <div class="dialog-heading">
+        <h2>Try live Meta.</h2>
+        <button
+          id="close-access"
+          class="icon-button"
+          aria-label="Close live access"
+        >
+          ×
+        </button>
+      </div>
+      <p class="dialog-copy">
+        Use the demo access code provided by the builder. The examples, recorded
+        replays and local simulations work without it.
+      </p>
+      <form id="access-form">
+        <label class="field-label" for="access-code">Demo access code</label
+        ><input
+          id="access-code"
+          type="password"
+          autocomplete="off"
+          maxlength="512"
+          required
+        />
+        <p id="access-status" role="status" class="small-copy"></p>
+        <div class="dialog-actions">
+          <button id="unlock-access" type="submit" class="button primary">
+            Enable live calls →</button
+          ><button
+            id="logout-access"
+            type="button"
+            class="button secondary"
+            hidden
+          >
+            Lock live calls
+          </button>
+        </div>
+      </form>
     </dialog>
     <dialog id="rules-dialog">
       <div class="dialog-heading">

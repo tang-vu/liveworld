@@ -8,9 +8,11 @@ Built by Tang Vu for the Meta Global AI Developer Hackathon 2026, Indie Develope
 
 ![LiveWorld workbench showing a recorded Meta playtest and a verified A/B comparison](docs/workbench.jpg)
 
+**[Watch the three-minute demo](public/demo/liveworld-demo.mp4)** · [Recording details and transcript](demo/README.md) · [Submission draft](docs/submission.md)
+
 ## Run locally
 
-Requires Node.js 24 or later. No GPU or database is required.
+Requires Node.js 24 or later. No GPU or external database is required.
 
 ```sh
 npm install
@@ -18,6 +20,8 @@ npm start
 ```
 
 Open **http://127.0.0.1:4173**. The included example worlds, replay, dragging, and **Try local changes** work without a key and make no model calls.
+
+On Windows, you can also double-click **`start-liveworld.cmd`**. It checks Node and configuration, installs missing dependencies, then starts the local backend. It does not replace an existing `.env.local`. Open **http://127.0.0.1:4173/demo/** for the bundled video player.
 
 To enable Meta, copy `.env.example` to `.env.local` and set `MODEL_API_KEY`. On Windows PowerShell:
 
@@ -97,6 +101,8 @@ These commands make no paid requests. Tests cover deterministic replays, resourc
 
 `node scripts/smoke-meta.mjs` is a separate, explicitly paid one-request connectivity check, using the same budget gate.
 
+`node scripts/check-playtest.mjs` is a separate, explicitly paid HTTP integration check against a running local backend. It runs the real Meta agent and independently replays every returned patch. The October 28 check evaluated 22 trials and verified a 24/24-on-time candidate through five Meta requests; that run's local cost estimate was $0.032478. This is one observed run, not a general success-rate claim.
+
 `node scripts/check-local.mjs` checks a running local server, including private-file isolation and cross-origin request rejection, without paid API calls. `node scripts/check-scan.mjs` is an explicitly paid Spark + SAM integration check using an original synthetic test image, not a real camera evaluation.
 
 ## Repository map
@@ -116,4 +122,6 @@ The verification design was informed by Meta's [legal-agent workshop](https://gi
 
 Technical references: [Meta tool calling](https://dev.meta.ai/docs/tool-calling), [structured output](https://dev.meta.ai/docs/structured-output), [SAM client libraries](https://dev.meta.ai/docs/sam/client-libraries), and [published pricing](https://dev.meta.ai/docs/pricing-rate-limits).
 
-This is an early local prototype, not a finished hackathon submission. Real tabletop capture, latency, usability, and playtest performance need broader evaluation. No user study or general performance improvement is claimed.
+The requested delivery is local, with generated tabletop inputs and a three-minute demo. No public hosting or event submission has been performed. Optional hosting files are documented in [deploy/README.md](deploy/README.md); public mode requires a separate demo code, HTTPS and the existing persistent budget ledger. The Docker image was built and checked locally without a key or inference.
+
+This remains a fixed-camera prototype. Real tabletop capture, latency, usability, and playtest performance need broader evaluation. No user study or general performance improvement is claimed.

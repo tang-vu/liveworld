@@ -99,13 +99,13 @@ export class BudgetLedger {
         );
       const id = randomUUID();
       state.entries.push({
+        ...metadata,
         id,
         kind,
         status: "reserved",
         reservedMicros: amount,
         chargedMicros: 0,
         createdAt: new Date().toISOString(),
-        ...metadata,
       });
       return id;
     });
@@ -135,7 +135,7 @@ export class BudgetLedger {
       reserveUsd: this.policy.reserve,
       requests: state.entries.length,
       blocked: state.blocked,
-      scope: "Calls made by this local app; not the provider account balance.",
+      scope: "Calls made by this app; not the provider account balance.",
     };
   }
 }

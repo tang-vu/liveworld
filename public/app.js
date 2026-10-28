@@ -181,6 +181,11 @@ async function api(path, body) {
   });
   const result = await response.json();
   if (!response.ok)
+    if (result.code === "LIVE_ACCESS_REQUIRED") {
+      openLiveAccess();
+      throw new Error(result.error);
+    }
+  if (!response.ok)
     throw new Error(result.error ?? "The operation could not be completed.");
   return result;
 }
@@ -191,7 +196,9 @@ async function refreshStatus() {
     $("spend").textContent = `$${b.spentUsd.toFixed(3)}`;
     $("connection").classList.toggle(
       "ready",
-      state.status.configured && !b.blocked,
+      state.status.configured &&
+        !b.blocked &&
+        (!state.status.accessRequired || state.status.authorized),
     );
     $("connection").replaceChildren(
       Object.assign(document.createElement("i")),
@@ -199,10 +206,13 @@ async function refreshStatus() {
         b.blocked
           ? "API paused"
           : state.status.configured
-            ? "Meta configured"
+            ? state.status.accessRequired && !state.status.authorized
+              ? "Meta · code required"
+              : "Meta configured"
             : "Local mode",
       ),
     );
+    $("manage-access").hidden = !state.status.accessRequired;
     $("budget-details").innerHTML =
       `<dl><dt>Recorded API cost estimate</dt><dd>$${b.spentUsd.toFixed(5)}</dd><dt>Held for pending calls</dt><dd>$${b.heldUsd.toFixed(4)}</dd><dt>Current phase cap</dt><dd>$${b.phaseBudgetUsd}</dd><dt>Project budget</dt><dd>$${b.totalBudgetUsd}</dd><dt>Protected reserve</dt><dd>$${b.reserveUsd}</dd><dt>Requests recorded</dt><dd>${b.requests}</dd></dl><p>${escape(b.scope)}</p><p>Token costs use published Standard rates without cache discounts. Unknown charges are held conservatively. The app pauses if a charge cannot be confirmed.</p>${b.blocked ? `<p><strong>${escape(b.blocked)}</strong></p>` : ""}`;
     document.querySelector(".api-note").textContent =
@@ -211,6 +221,53 @@ async function refreshStatus() {
     $("connection").textContent = "Backend unavailable";
   }
 }
+function openLiveAccess() {
+  if ($("scan-dialog").open) $("scan-dialog").close();
+  if ($("rules-dialog").open) $("rules-dialog").close();
+  if ($("budget-dialog").open) $("budget-dialog").close();
+  $("access-code").value = "";
+  $("access-status").textContent = state.status?.authorized
+    ? "Live Meta calls are enabled in this browser for up to two hours."
+    : "The code unlocks live calls in this browser for two hours.";
+  $("logout-access").hidden = !state.status?.authorized;
+  $("access-code").required = !state.status?.authorized;
+  if (!$("access-dialog").open) $("access-dialog").showModal();
+}
+async function ensureLiveAccess() {
+  await refreshStatus();
+  if (state.status?.accessRequired && !state.status.authorized) {
+    openLiveAccess();
+    return false;
+  }
+  return true;
+}
+$("close-access").addEventListener("click", () => $("access-dialog").close());
+$("manage-access").addEventListener("click", openLiveAccess);
+$("access-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  $("unlock-access").disabled = true;
+  try {
+    await api("/api/access", { code: $("access-code").value.trim() });
+    $("access-code").value = "";
+    await refreshStatus();
+    $("access-dialog").close();
+    toast("Live Meta enabled. Select the action you want to run.");
+  } catch (error) {
+    $("access-status").textContent = error.message;
+  } finally {
+    $("unlock-access").disabled = false;
+  }
+});
+$("logout-access").addEventListener("click", async () => {
+  try {
+    await api("/api/logout", {});
+    await refreshStatus();
+    $("access-dialog").close();
+    toast("Live calls locked in this browser.");
+  } catch (error) {
+    $("access-status").textContent = error.message;
+  }
+});
 function setBusy(busy) {
   state.busy = busy;
   for (const id of [
@@ -317,7 +374,10 @@ function renderMetrics() {
       "units",
       b
         ? {
-            text: `${a.lateUnits - b.lateUnits} fewer than original`,
+            text:
+              a.lateUnits === b.lateUnits
+                ? "Same as original"
+                : `${Math.abs(a.lateUnits - b.lateUnits)} ${a.lateUnits > b.lateUnits ? "fewer" : "more"} than original`,
             good: b.lateUnits < a.lateUnits,
             bad: b.lateUnits > a.lateUnits,
           }
@@ -500,6 +560,7 @@ function selectTrial(id) {
     Math.max(state.world.rules.horizon, t.world.rules.horizon),
   );
   render();
+  $("trials").scrollTop = 0;
   if (
     ["capture", "rules", "checkpoint"].includes(t.kind) ||
     t.source === "imported"
@@ -574,7 +635,9 @@ function displayVerdict(result, local = false) {
         ? "This trial improved the measured result. Some deadlines are still missed."
         : result.verdict === "already_met"
           ? "All water deliveries already arrive on time."
-          : "These trials did not meet the goal. This does not prove that no solution exists.";
+          : result.selected
+            ? "This trial did not meet the goal. Other tested candidates may do better."
+            : "These trials did not meet the goal. This does not prove that no solution exists.";
   $("verdict").className =
     `verdict${result.verification?.goalMet ? "" : " warning"}`;
   $("verdict").innerHTML =
@@ -608,6 +671,10 @@ $("play").addEventListener("click", () => {
   )
     state.tick = 0;
   state.playing = !state.playing;
+  if (state.playing)
+    document
+      .querySelector(".simulation-heading")
+      .scrollIntoView({ block: "nearest" });
   draw();
 });
 $("rewind").addEventListener("click", () => {
@@ -771,6 +838,7 @@ $("local-sweep").addEventListener("click", () => {
 
 $("playtest").addEventListener("click", async () => {
   if (state.busy) return;
+  if (!(await ensureLiveAccess()) || state.busy) return;
   setBusy(true);
   state.trials = [];
   state.candidate = null;
@@ -979,6 +1047,7 @@ $("preview-rules").addEventListener("click", () => {
 });
 $("compile-rules").addEventListener("click", async () => {
   if (state.busy) return;
+  if (!(await ensureLiveAccess()) || state.busy) return;
   const instruction = $("rule-instruction").value.trim();
   if (!instruction)
     return ($("rule-status").textContent =
@@ -1200,6 +1269,7 @@ function drawScan() {
 }
 $("scan-photo").addEventListener("click", async () => {
   if (!state.scanImage || state.busy) return;
+  if (!(await ensureLiveAccess()) || state.busy) return;
   setBusy(true);
   $("scan-status").textContent =
     "Muse Spark is locating objects, then SAM 3.1 will trace them…";

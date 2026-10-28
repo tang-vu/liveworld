@@ -40,10 +40,10 @@ The recorded runs are explicitly labelled and do not call Meta again. Use the li
 
 ## Items required before submission
 
-- Produce and review the actual video; this outline is not a video artifact.
-- Verify the full Official Rules, including any required tool or asset disclosures.
+- The [three-minute video](../public/demo/liveworld-demo.mp4) is available with [recording details](../demo/README.md); review it before submitting.
+- Verify the full Official Rules, including any required tool or asset disclosures. On October 28, the participant details URL redirected to CV login, so those full terms could not be inspected in this browser session.
 - Run a physical tabletop capture test if presenting physical interaction as demonstrated.
-- Prepare the live review URL and test it from a clean browser; the current backend is loopback-only.
+- Local delivery was selected. If a hosted review URL is later required, approve a target and deploy the prepared backend; no public URL has been created.
 - Ensure the final public commit and its checks are accessible.
 - Fill in final video/live links, confirm the participant list and submit through the event platform before the deadline.
 

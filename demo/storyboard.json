@@ -1,0 +1,98 @@
+{
+  "format": "liveworld-demo-storyboard-v1",
+  "title": "LiveWorld — Turn a tabletop into a testable world",
+  "owner": "Tang Vu",
+  "durationSeconds": 180,
+  "disclosures": [
+    "Edited capture of the actual application",
+    "AI-generated tabletop input images",
+    "Recorded Meta playtests are labelled as replays",
+    "Synthetic English narration"
+  ],
+  "scenes": [
+    {
+      "id": "01-table",
+      "seconds": 15,
+      "heading": "Your desk becomes a testable world",
+      "caption": "AI-generated input · roles are reviewed by the creator",
+      "narration": "LiveWorld turns a tabletop into a game-system experiment. This demo uses clearly labelled, AI-generated images: a cup is a water source, blocks are homes, and two wooden sticks become bridges."
+    },
+    {
+      "id": "02-segmentation",
+      "seconds": 20,
+      "heading": "Muse Spark sees meaning. SAM traces shape.",
+      "caption": "Actual Meta response · model waiting time omitted",
+      "narration": "Muse Spark locates the objects and suggests their roles. SAM traces their shapes. These are actual returned masks, not hand-drawn overlays. The creator reviews every role before any object enters the simulation."
+    },
+    {
+      "id": "03-world",
+      "seconds": 16,
+      "heading": "A simulation with rules, not invented outcomes",
+      "caption": "Movement, water accounting, queues and deadlines run in code",
+      "narration": "After confirmation, image-relative positions map to a fixed grid. Couriers move, water is produced, and each household has a deadline. The simulator computes every delivery and queue; the model does not invent the outcome."
+    },
+    {
+      "id": "04-rescan",
+      "seconds": 19,
+      "heading": "One bridge moves. Measure what changes.",
+      "caption": "Recorded Meta captures · waiting 22 → 10 · on time remains 20/24",
+      "narration": "Here is a replay of two actual Meta captures. Only the lower bridge changes grid position. Waiting drops from twenty-two to ten turns, but on-time delivery remains twenty out of twenty-four. A useful change is not automatically a solved level."
+    },
+    {
+      "id": "05-baseline",
+      "seconds": 15,
+      "heading": "Give the playtester a constrained problem",
+      "caption": "Authored valley example · six couriers · baseline 20/24 on time",
+      "narration": "Now switch to an authored level: six couriers, twenty-four units, fixed household deadlines. Twenty arrive on time. This recording replays a real Meta playtest, with every result recalculated."
+    },
+    {
+      "id": "06-failed-trial",
+      "seconds": 15,
+      "heading": "A plausible proposal can fail",
+      "caption": "Recorded Meta trial · balanced dispatch delivers only 14/24 on time",
+      "narration": "The agent's balanced-dispatch proposal looks plausible, but only fourteen units arrive on time. Code marks the trial as unsuccessful. A model's confident explanation cannot turn a failed experiment into a successful one."
+    },
+    {
+      "id": "07-verified-fix",
+      "seconds": 20,
+      "heading": "The world has the final say",
+      "caption": "Recorded Meta trial · 24/24 on time · waiting 16 → 22 turns",
+      "narration": "Moving the south bridge is a verified fix: all twenty-four units arrive on time, with the original six couriers, demand and deadlines. Waiting increases from sixteen to twenty-two turns, so that trade-off stays visible. Success is checked independently by the simulator."
+    },
+    {
+      "id": "08-rule-instruction",
+      "seconds": 10,
+      "heading": "Design rules in plain language",
+      "caption": "Creator instruction · separate from the same-resource agent challenge",
+      "narration": "Creators can also change the game itself. Here the instruction asks Muse Spark to use eight couriers while keeping every other rule unchanged."
+    },
+    {
+      "id": "09-rule-preview",
+      "seconds": 13,
+      "heading": "Review the exact change before applying",
+      "caption": "Live Meta rule proposal · couriers 6 → 8 · outcome recomputed",
+      "narration": "The instruction becomes a validated proposal. Only couriers change from six to eight. This creator design change is clearly separated from a same-resource playtest fix."
+    },
+    {
+      "id": "10-checkpoint",
+      "seconds": 15,
+      "heading": "Keep a branch. Keep the original.",
+      "caption": "Apply B · original A is retained as a checkpoint",
+      "narration": "Apply the candidate to keep designing. LiveWorld saves the original as a checkpoint. You can compare against it later, change your mind, or branch from a different layout."
+    },
+    {
+      "id": "11-project",
+      "seconds": 12,
+      "heading": "Save it. Open it. Recompute it.",
+      "caption": "Portable project · layouts, photos, checkpoints and verified trials",
+      "narration": "Save the whole project, including photos, checkpoints and trials. Reopening it validates the inputs and recalculates the measurements, instead of trusting a saved success flag."
+    },
+    {
+      "id": "12-evidence",
+      "seconds": 10,
+      "heading": "Build a world. Find what breaks. Test the fix.",
+      "caption": "Built by Tang Vu · powered by Meta · github.com/tang-vu/liveworld",
+      "narration": "Export inspectable evidence. LiveWorld helps game creators test fixed-camera tabletop layouts through deterministic, replayable experiments."
+    }
+  ]
+}

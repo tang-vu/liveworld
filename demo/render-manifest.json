@@ -1,0 +1,111 @@
+{
+  "format": "liveworld-demo-render-v1",
+  "durationSeconds": 179.988021,
+  "width": 1920,
+  "height": 1080,
+  "disclosures": [
+    "Edited capture of the actual application",
+    "AI-generated tabletop input images",
+    "Recorded Meta playtests are labelled as replays",
+    "Synthetic English narration"
+  ],
+  "scenes": [
+    {
+      "id": "01-table",
+      "seconds": 15,
+      "frames": 17,
+      "captureSeconds": 5.171,
+      "narrationSeconds": 14.027029,
+      "tempo": 1
+    },
+    {
+      "id": "02-segmentation",
+      "seconds": 20,
+      "frames": 7,
+      "captureSeconds": 5.565,
+      "narrationSeconds": 15.886757,
+      "tempo": 1
+    },
+    {
+      "id": "03-world",
+      "seconds": 16,
+      "frames": 68,
+      "captureSeconds": 16.024,
+      "narrationSeconds": 16.006667,
+      "tempo": 1.046187385620915
+    },
+    {
+      "id": "04-rescan",
+      "seconds": 19,
+      "frames": 82,
+      "captureSeconds": 19.131,
+      "narrationSeconds": 17.211429,
+      "tempo": 1
+    },
+    {
+      "id": "05-baseline",
+      "seconds": 15,
+      "frames": 64,
+      "captureSeconds": 15.07,
+      "narrationSeconds": 14.887256,
+      "tempo": 1.0410668531468532
+    },
+    {
+      "id": "06-failed-trial",
+      "seconds": 15,
+      "frames": 63,
+      "captureSeconds": 15.001,
+      "narrationSeconds": 15.15619,
+      "tempo": 1.0598734265734266
+    },
+    {
+      "id": "07-verified-fix",
+      "seconds": 20,
+      "frames": 85,
+      "captureSeconds": 19.117,
+      "narrationSeconds": 18.706122,
+      "tempo": 1
+    },
+    {
+      "id": "08-rule-instruction",
+      "seconds": 10,
+      "frames": 20,
+      "captureSeconds": 4.206,
+      "narrationSeconds": 9.412472,
+      "tempo": 1.01209376344086
+    },
+    {
+      "id": "09-rule-preview",
+      "seconds": 13,
+      "frames": 13,
+      "captureSeconds": 9.573,
+      "narrationSeconds": 11.767256,
+      "tempo": 1
+    },
+    {
+      "id": "10-checkpoint",
+      "seconds": 15,
+      "frames": 26,
+      "captureSeconds": 6.12,
+      "narrationSeconds": 11.992336,
+      "tempo": 1
+    },
+    {
+      "id": "11-project",
+      "seconds": 12,
+      "frames": 36,
+      "captureSeconds": 7.124,
+      "narrationSeconds": 12.277234,
+      "tempo": 1.0864808849557521
+    },
+    {
+      "id": "12-evidence",
+      "seconds": 10,
+      "frames": 26,
+      "captureSeconds": 5.113,
+      "narrationSeconds": 10.087302,
+      "tempo": 1.0846561290322578
+    }
+  ],
+  "videoSha256": "a43e70b3eb2e395c54d4c02c366bc21d0a0f16598741a5cd80e8c92dda2753d3"
+}

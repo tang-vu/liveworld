@@ -6,6 +6,18 @@
   gap: 8px;
   justify-content: flex-end;
 }
+.project-actions a {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+#access-code {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--paper);
+}
 .project-bar {
   display: flex;
   align-items: center;

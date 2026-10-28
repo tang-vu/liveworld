@@ -31,6 +31,20 @@ test("pending reservations survive a restart and cannot be spent twice", async (
   const afterRestart = new BudgetLedger(b.directory, b.policy);
   await assert.rejects(afterRestart.reserve("spark", 2));
 });
+
+test("reservation metadata cannot override accounting fields", async (t) => {
+  const b = await ledger(t);
+  const id = await b.reserve("spark", 1.4, {
+    id: "forged",
+    status: "settled",
+    reservedMicros: 0,
+    chargedMicros: 0,
+  });
+  assert.notEqual(id, "forged");
+  assert.equal((await b.summary()).heldUsd, 1.4);
+  await b.settle(id, 0.01);
+  assert.equal((await b.summary()).spentUsd, 0.01);
+});
 test("corrupted records fail closed instead of resetting the budget", async (t) => {
   const b = await ledger(t);
   await writeFile(b.path, "{broken");

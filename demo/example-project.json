@@ -1,0 +1,5396 @@
+{
+  "format": "liveworld-project-v2",
+  "name": "Valley courier study",
+  "world": {
+    "version": 1,
+    "name": "The little valley",
+    "width": 18,
+    "height": 12,
+    "seed": 271026,
+    "river": {
+      "x": 8,
+      "width": 2
+    },
+    "source": {
+      "id": "well",
+      "label": "The well",
+      "x": 3,
+      "y": 5
+    },
+    "bridges": [
+      {
+        "id": "bridge-north",
+        "x": 8,
+        "y": 2
+      },
+      {
+        "id": "bridge-south",
+        "x": 8,
+        "y": 9
+      }
+    ],
+    "houses": [
+      {
+        "id": "h1",
+        "label": "Orchard",
+        "x": 5,
+        "y": 2,
+        "demand": 4,
+        "deadline": 38
+      },
+      {
+        "id": "h2",
+        "label": "Meadow",
+        "x": 4,
+        "y": 9,
+        "demand": 4,
+        "deadline": 45
+      },
+      {
+        "id": "h3",
+        "label": "Pine",
+        "x": 12,
+        "y": 2,
+        "demand": 4,
+        "deadline": 58
+      },
+      {
+        "id": "h4",
+        "label": "Cedar",
+        "x": 14,
+        "y": 5,
+        "demand": 4,
+        "deadline": 66
+      },
+      {
+        "id": "h5",
+        "label": "Willow",
+        "x": 12,
+        "y": 9,
+        "demand": 4,
+        "deadline": 72
+      },
+      {
+        "id": "h6",
+        "label": "Hilltop",
+        "x": 16,
+        "y": 9,
+        "demand": 4,
+        "deadline": 94
+      }
+    ],
+    "obstacles": [
+      {
+        "id": "stone-1",
+        "x": 6,
+        "y": 5
+      },
+      {
+        "id": "stone-2",
+        "x": 12,
+        "y": 6
+      }
+    ],
+    "rules": {
+      "dispatch": "nearest",
+      "couriers": 8,
+      "bridgeCapacity": 1,
+      "productionInterval": 2,
+      "horizon": 120
+    },
+    "provenance": {
+      "type": "example",
+      "confirmed": true
+    }
+  },
+  "photo": null,
+  "checkpoints": [
+    {
+      "id": "cp-87831c52-adcf-4551-9d0e-147eb8130a75",
+      "label": "Before · Synthetic tabletop world",
+      "createdAt": "2026-10-28T08:19:31.656Z",
+      "world": {
+        "version": 1,
+        "name": "Synthetic tabletop world",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "photo-1-mvrnpfil",
+          "label": "blue cup",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "photo-3-mvrnpfil",
+            "label": "popsicle stick",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "photo-9-mvrnpfil",
+            "label": "popsicle stick",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "photo-2-mvrnpfil",
+            "label": "green block",
+            "x": 6,
+            "y": 2,
+            "demand": 4,
+            "deadline": 80
+          },
+          {
+            "id": "photo-4-mvrnpfil",
+            "label": "green block",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 80
+          },
+          {
+            "id": "photo-6-mvrnpfil",
+            "label": "green block",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 80
+          },
+          {
+            "id": "photo-8-mvrnpfil",
+            "label": "green block",
+            "x": 5,
+            "y": 9,
+            "demand": 4,
+            "deadline": 80
+          },
+          {
+            "id": "photo-10-mvrnpfim",
+            "label": "green block",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 80
+          },
+          {
+            "id": "photo-11-mvrnpfim",
+            "label": "green block",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 80
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "photo-5-mvrnpfil",
+            "label": "gray stone",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "photo-7-mvrnpfil",
+            "label": "gray stone",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "synthetic",
+          "fixture": "a",
+          "manifest": "/examples/generated-inputs.json",
+          "confirmed": true,
+          "objects": [
+            {
+              "id": "photo-1-mvrnpfil",
+              "role": "source",
+              "nx": 0.171875,
+              "ny": 0.4443631039531479,
+              "observedNx": 0.171875,
+              "observedNy": 0.4443631039531479,
+              "stabilized": false
+            },
+            {
+              "id": "photo-2-mvrnpfil",
+              "role": "house",
+              "nx": 0.34521484375,
+              "ny": 0.18960468521229867,
+              "observedNx": 0.34521484375,
+              "observedNy": 0.18960468521229867,
+              "stabilized": false
+            },
+            {
+              "id": "photo-3-mvrnpfil",
+              "role": "bridge",
+              "nx": 0.50048828125,
+              "ny": 0.19692532942898974,
+              "observedNx": 0.50048828125,
+              "observedNy": 0.19692532942898974,
+              "stabilized": false
+            },
+            {
+              "id": "photo-4-mvrnpfil",
+              "role": "house",
+              "nx": 0.69140625,
+              "ny": 0.18960468521229867,
+              "observedNx": 0.69140625,
+              "observedNy": 0.18960468521229867,
+              "stabilized": false
+            },
+            {
+              "id": "photo-5-mvrnpfil",
+              "role": "obstacle",
+              "nx": 0.38671875,
+              "ny": 0.4575402635431918,
+              "observedNx": 0.38671875,
+              "observedNy": 0.4575402635431918,
+              "stabilized": false
+            },
+            {
+              "id": "photo-6-mvrnpfil",
+              "role": "house",
+              "nx": 0.791015625,
+              "ny": 0.4494875549048316,
+              "observedNx": 0.791015625,
+              "observedNy": 0.4494875549048316,
+              "stabilized": false
+            },
+            {
+              "id": "photo-7-mvrnpfil",
+              "role": "obstacle",
+              "nx": 0.697265625,
+              "ny": 0.5658857979502196,
+              "observedNx": 0.697265625,
+              "observedNy": 0.5658857979502196,
+              "stabilized": false
+            },
+            {
+              "id": "photo-8-mvrnpfil",
+              "role": "house",
+              "nx": 0.2880859375,
+              "ny": 0.7510980966325037,
+              "observedNx": 0.2880859375,
+              "observedNy": 0.7510980966325037,
+              "stabilized": false
+            },
+            {
+              "id": "photo-9-mvrnpfil",
+              "role": "bridge",
+              "nx": 0.4970703125,
+              "ny": 0.7628111273792094,
+              "observedNx": 0.4970703125,
+              "observedNy": 0.7628111273792094,
+              "stabilized": false
+            },
+            {
+              "id": "photo-10-mvrnpfim",
+              "role": "house",
+              "nx": 0.68701171875,
+              "ny": 0.7554904831625183,
+              "observedNx": 0.68701171875,
+              "observedNy": 0.7554904831625183,
+              "stabilized": false
+            },
+            {
+              "id": "photo-11-mvrnpfim",
+              "role": "house",
+              "nx": 0.89599609375,
+              "ny": 0.7620790629575402,
+              "observedNx": 0.89599609375,
+              "observedNy": 0.7620790629575402,
+              "stabilized": false
+            }
+          ],
+          "models": ["muse-spark-1.3", "sam-3.1"],
+          "note": "Image-relative positions snapped to a fixed grid; bridge anchors mapped to the river."
+        }
+      },
+      "photo": "/examples/generated-tabletop-a.png"
+    },
+    {
+      "id": "cp-61bfa4b9-1f50-4b17-a5ab-b55e02c7a1a2",
+      "label": "Before · The little valley",
+      "createdAt": "2026-10-28T08:19:48.398Z",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null
+    },
+    {
+      "id": "cp-d0754334-66f1-4d47-8ff2-db373af0d64a",
+      "label": "Before · The little valley",
+      "createdAt": "2026-10-28T08:23:15.606Z",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 6,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null
+    },
+    {
+      "id": "cp-70fe419f-af47-4abc-913f-a48395e6a2db",
+      "label": "Checkpoint 4 · The little valley",
+      "createdAt": "2026-10-28T08:23:16.108Z",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null
+    }
+  ],
+  "trials": [
+    {
+      "id": "local-5",
+      "label": "Move north bridge to row 4",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 3
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-north",
+            "y": 3
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 24,
+          "lateUnits": 0,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 10,
+          "completedAt": 75,
+          "unreachable": [],
+          "allOnTime": true,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 55
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 37
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 69
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 75,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [
+          ["bridge-north", 2],
+          ["bridge-south", 4]
+        ]
+      },
+      "comparison": {
+        "improved": true,
+        "goalMet": true,
+        "lateUnitsReduced": 0,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": 8,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-21",
+      "label": "Move south bridge to row 11",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 10
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-south",
+            "y": 10
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 24,
+          "lateUnits": 0,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 10,
+          "completedAt": 79,
+          "unreachable": [],
+          "allOnTime": true,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 59
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 39
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 73
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 79,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-north", 6]]
+      },
+      "comparison": {
+        "improved": true,
+        "goalMet": true,
+        "lateUnitsReduced": 0,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": 8,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-20",
+      "label": "Move south bridge to row 9",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 8
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-south",
+            "y": 8
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 24,
+          "lateUnits": 0,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 22,
+          "completedAt": 74,
+          "unreachable": [],
+          "allOnTime": true,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 59
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 37
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 68
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 74,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [
+          ["bridge-north", 6],
+          ["bridge-south", 12]
+        ]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": true,
+        "lateUnitsReduced": 0,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -4,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-17",
+      "label": "Move south bridge to row 6",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 5
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-south",
+            "y": 5
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 24,
+          "lateUnits": 0,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 42,
+          "completedAt": 78,
+          "unreachable": [],
+          "allOnTime": true,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 37
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 59
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 72
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 78,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [
+          ["bridge-north", 6],
+          ["bridge-south", 12]
+        ]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": true,
+        "lateUnitsReduced": 0,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -24,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-19",
+      "label": "Move south bridge to row 8",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 7
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-south",
+            "y": 7
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 24,
+          "lateUnits": 0,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 42,
+          "completedAt": 76,
+          "unreachable": [],
+          "allOnTime": true,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 59
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 37
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 70
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 76,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [
+          ["bridge-north", 6],
+          ["bridge-south", 12]
+        ]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": true,
+        "lateUnitsReduced": 0,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -24,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-6",
+      "label": "Move north bridge to row 5",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 4
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-north",
+            "y": 4
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 24,
+          "lateUnits": 0,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 52,
+          "completedAt": 79,
+          "unreachable": [],
+          "allOnTime": true,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 38
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 53
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 73
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 79,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [
+          ["bridge-north", 9],
+          ["bridge-south", 8]
+        ]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": true,
+        "lateUnitsReduced": 0,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -34,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-2",
+      "label": "Use deadline priority",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "deadline",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "dispatch": "deadline"
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 24,
+          "lateUnits": 0,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 55,
+          "completedAt": 88,
+          "unreachable": [],
+          "allOnTime": true,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 42
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 57
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 77
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 88,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [
+          ["bridge-north", 10],
+          ["bridge-south", 6]
+        ]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": true,
+        "lateUnitsReduced": 0,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -37,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-18",
+      "label": "Move south bridge to row 7",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 6
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-south",
+            "y": 6
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 24,
+          "lateUnits": 0,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 64,
+          "completedAt": 78,
+          "unreachable": [],
+          "allOnTime": true,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 37
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 59
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 72
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 78,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [
+          ["bridge-north", 6],
+          ["bridge-south", 10]
+        ]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": true,
+        "lateUnitsReduced": 0,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -46,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-16",
+      "label": "Move south bridge to row 5",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 4
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-south",
+            "y": 4
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 24,
+          "lateUnits": 0,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 78,
+          "completedAt": 88,
+          "unreachable": [],
+          "allOnTime": true,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 38
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 59
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 78
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 88,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-south", 20]]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": true,
+        "lateUnitsReduced": 0,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -60,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-15",
+      "label": "Move south bridge to row 4",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 3
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-south",
+            "y": 3
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 23,
+          "lateUnits": 1,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 68,
+          "completedAt": 92,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 40
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 3,
+            "deadline": 72,
+            "firstDelivery": 61
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 80
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 72,
+            "type": "deadline_missed",
+            "houseId": "h5",
+            "missing": 1,
+            "message": "Willow missed its deadline by 1 water unit(s)."
+          },
+          {
+            "tick": 92,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-south", 22]]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -1,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -50,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-22",
+      "label": "Move south bridge to row 12",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 11
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-south",
+            "y": 11
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 23,
+          "lateUnits": 1,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 70,
+          "completedAt": 90,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 42
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 3,
+            "deadline": 72,
+            "firstDelivery": 61
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 80
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 72,
+            "type": "deadline_missed",
+            "houseId": "h5",
+            "missing": 1,
+            "message": "Willow missed its deadline by 1 water unit(s)."
+          },
+          {
+            "tick": 90,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [
+          ["bridge-north", 10],
+          ["bridge-south", 4]
+        ]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -1,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -52,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-7",
+      "label": "Move north bridge to row 6",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 5
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-north",
+            "y": 5
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 22,
+          "lateUnits": 2,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 10,
+          "completedAt": 75,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 2,
+            "deadline": 58,
+            "firstDelivery": 56
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 29
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 37
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 69
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 58,
+            "type": "deadline_missed",
+            "houseId": "h3",
+            "missing": 2,
+            "message": "Pine missed its deadline by 2 water unit(s)."
+          },
+          {
+            "tick": 75,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [
+          ["bridge-north", 2],
+          ["bridge-south", 4]
+        ]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -2,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": 8,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-13",
+      "label": "Move south bridge to row 1",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 0
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-south",
+            "y": 0
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 21,
+          "lateUnits": 3,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 58,
+          "completedAt": 96,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 42
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 2,
+            "deadline": 72,
+            "firstDelivery": 63
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 3,
+            "deadline": 94,
+            "firstDelivery": 82
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 72,
+            "type": "deadline_missed",
+            "houseId": "h5",
+            "missing": 2,
+            "message": "Willow missed its deadline by 2 water unit(s)."
+          },
+          {
+            "tick": 94,
+            "type": "deadline_missed",
+            "houseId": "h6",
+            "missing": 1,
+            "message": "Hilltop missed its deadline by 1 water unit(s)."
+          },
+          {
+            "tick": 96,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-north", 13]]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -3,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -40,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-14",
+      "label": "Move south bridge to row 2",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 1
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-south",
+            "y": 1
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 21,
+          "lateUnits": 3,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 58,
+          "completedAt": 96,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 28
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 42
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 2,
+            "deadline": 72,
+            "firstDelivery": 63
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 3,
+            "deadline": 94,
+            "firstDelivery": 82
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 72,
+            "type": "deadline_missed",
+            "houseId": "h5",
+            "missing": 2,
+            "message": "Willow missed its deadline by 2 water unit(s)."
+          },
+          {
+            "tick": 94,
+            "type": "deadline_missed",
+            "houseId": "h6",
+            "missing": 1,
+            "message": "Hilltop missed its deadline by 1 water unit(s)."
+          },
+          {
+            "tick": 96,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-north", 13]]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -3,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -40,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-1",
+      "label": "Use balanced service",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 2
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "balanced",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "dispatch": "balanced"
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 20,
+          "lateUnits": 4,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 17,
+          "completedAt": 79,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 3,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 3,
+            "deadline": 45,
+            "firstDelivery": 7
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 3,
+            "deadline": 58,
+            "firstDelivery": 16
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 3,
+            "deadline": 66,
+            "firstDelivery": 25
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 19
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 27
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 38,
+            "type": "deadline_missed",
+            "houseId": "h1",
+            "missing": 1,
+            "message": "Orchard missed its deadline by 1 water unit(s)."
+          },
+          {
+            "tick": 45,
+            "type": "deadline_missed",
+            "houseId": "h2",
+            "missing": 1,
+            "message": "Meadow missed its deadline by 1 water unit(s)."
+          },
+          {
+            "tick": 58,
+            "type": "deadline_missed",
+            "houseId": "h3",
+            "missing": 1,
+            "message": "Pine missed its deadline by 1 water unit(s)."
+          },
+          {
+            "tick": 66,
+            "type": "deadline_missed",
+            "houseId": "h4",
+            "missing": 1,
+            "message": "Cedar missed its deadline by 1 water unit(s)."
+          },
+          {
+            "tick": 79,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [
+          ["bridge-north", 5],
+          ["bridge-south", 4]
+        ]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -4,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": 1,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-4",
+      "label": "Move north bridge to row 2",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 1
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-north",
+            "y": 1
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 20,
+          "lateUnits": 4,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 26,
+          "completedAt": 78,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 38
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 0,
+            "deadline": 66,
+            "firstDelivery": 72
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 29
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 61
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 66,
+            "type": "deadline_missed",
+            "houseId": "h4",
+            "missing": 4,
+            "message": "Cedar missed its deadline by 4 water unit(s)."
+          },
+          {
+            "tick": 78,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-south", 14]]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -4,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -8,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-3",
+      "label": "Move north bridge to row 1",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 0
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-north",
+            "y": 0
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 20,
+          "lateUnits": 4,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 32,
+          "completedAt": 81,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 58,
+            "firstDelivery": 40
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 0,
+            "deadline": 66,
+            "firstDelivery": 75
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 29
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 61
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 66,
+            "type": "deadline_missed",
+            "houseId": "h4",
+            "missing": 4,
+            "message": "Cedar missed its deadline by 4 water unit(s)."
+          },
+          {
+            "tick": 81,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-south", 10]]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -4,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -14,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-10",
+      "label": "Move north bridge to row 9",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 8
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-north",
+            "y": 8
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 20,
+          "lateUnits": 4,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 38,
+          "completedAt": 87,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 0,
+            "deadline": 58,
+            "firstDelivery": 77
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 42
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 29
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 61
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 58,
+            "type": "deadline_missed",
+            "houseId": "h3",
+            "missing": 4,
+            "message": "Pine missed its deadline by 4 water unit(s)."
+          },
+          {
+            "tick": 87,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-north", 10]]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -4,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -20,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-9",
+      "label": "Move north bridge to row 8",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 7
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-north",
+            "y": 7
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 20,
+          "lateUnits": 4,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 54,
+          "completedAt": 86,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 0,
+            "deadline": 58,
+            "firstDelivery": 60
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 40
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 29
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 76
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 58,
+            "type": "deadline_missed",
+            "houseId": "h3",
+            "missing": 4,
+            "message": "Pine missed its deadline by 4 water unit(s)."
+          },
+          {
+            "tick": 86,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-north", 20]]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -4,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -36,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-8",
+      "label": "Move north bridge to row 7",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 6
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-north",
+            "y": 6
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 20,
+          "lateUnits": 4,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 80,
+          "completedAt": 82,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 0,
+            "deadline": 58,
+            "firstDelivery": 65
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 66,
+            "firstDelivery": 29
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 38
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 76
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 58,
+            "type": "deadline_missed",
+            "houseId": "h3",
+            "missing": 4,
+            "message": "Pine missed its deadline by 4 water unit(s)."
+          },
+          {
+            "tick": 82,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-north", 23]]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -4,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -62,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-11",
+      "label": "Move north bridge to row 11",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 10
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-north",
+            "y": 10
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 17,
+          "lateUnits": 7,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 60,
+          "completedAt": 93,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 0,
+            "deadline": 58,
+            "firstDelivery": 81
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 1,
+            "deadline": 66,
+            "firstDelivery": 65
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 29
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 42
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 58,
+            "type": "deadline_missed",
+            "houseId": "h3",
+            "missing": 4,
+            "message": "Pine missed its deadline by 4 water unit(s)."
+          },
+          {
+            "tick": 66,
+            "type": "deadline_missed",
+            "houseId": "h4",
+            "missing": 3,
+            "message": "Cedar missed its deadline by 3 water unit(s)."
+          },
+          {
+            "tick": 93,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-south", 14]]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -7,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -42,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    },
+    {
+      "id": "local-12",
+      "label": "Move north bridge to row 12",
+      "kind": "local",
+      "source": "local-sweep",
+      "model": "",
+      "instruction": "",
+      "world": {
+        "version": 1,
+        "name": "The little valley",
+        "width": 18,
+        "height": 12,
+        "seed": 271026,
+        "river": {
+          "x": 8,
+          "width": 2
+        },
+        "source": {
+          "id": "well",
+          "label": "The well",
+          "x": 3,
+          "y": 5
+        },
+        "bridges": [
+          {
+            "id": "bridge-north",
+            "x": 8,
+            "y": 11
+          },
+          {
+            "id": "bridge-south",
+            "x": 8,
+            "y": 9
+          }
+        ],
+        "houses": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "x": 5,
+            "y": 2,
+            "demand": 4,
+            "deadline": 38
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "x": 4,
+            "y": 9,
+            "demand": 4,
+            "deadline": 45
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "x": 12,
+            "y": 2,
+            "demand": 4,
+            "deadline": 58
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "x": 14,
+            "y": 5,
+            "demand": 4,
+            "deadline": 66
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "x": 12,
+            "y": 9,
+            "demand": 4,
+            "deadline": 72
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "x": 16,
+            "y": 9,
+            "demand": 4,
+            "deadline": 94
+          }
+        ],
+        "obstacles": [
+          {
+            "id": "stone-1",
+            "x": 6,
+            "y": 5
+          },
+          {
+            "id": "stone-2",
+            "x": 12,
+            "y": 6
+          }
+        ],
+        "rules": {
+          "dispatch": "nearest",
+          "couriers": 8,
+          "bridgeCapacity": 1,
+          "productionInterval": 2,
+          "horizon": 120
+        },
+        "provenance": {
+          "type": "example",
+          "confirmed": true
+        }
+      },
+      "photo": null,
+      "patch": {
+        "bridgeMoves": [
+          {
+            "id": "bridge-north",
+            "y": 11
+          }
+        ]
+      },
+      "evidence": {
+        "metrics": {
+          "demand": 24,
+          "delivered": 24,
+          "onTime": 17,
+          "lateUnits": 7,
+          "unmetUnits": 0,
+          "coverage": 1,
+          "worstCoverage": 1,
+          "waitTicks": 60,
+          "completedAt": 93,
+          "unreachable": [],
+          "allOnTime": false,
+          "allDelivered": true
+        },
+        "households": [
+          {
+            "id": "h1",
+            "label": "Orchard",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 38,
+            "firstDelivery": 5
+          },
+          {
+            "id": "h2",
+            "label": "Meadow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 45,
+            "firstDelivery": 13
+          },
+          {
+            "id": "h3",
+            "label": "Pine",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 0,
+            "deadline": 58,
+            "firstDelivery": 81
+          },
+          {
+            "id": "h4",
+            "label": "Cedar",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 1,
+            "deadline": 66,
+            "firstDelivery": 65
+          },
+          {
+            "id": "h5",
+            "label": "Willow",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 72,
+            "firstDelivery": 29
+          },
+          {
+            "id": "h6",
+            "label": "Hilltop",
+            "demand": 4,
+            "delivered": 4,
+            "onTime": 4,
+            "deadline": 94,
+            "firstDelivery": 42
+          }
+        ],
+        "significantEvents": [
+          {
+            "tick": 58,
+            "type": "deadline_missed",
+            "houseId": "h3",
+            "missing": 4,
+            "message": "Pine missed its deadline by 4 water unit(s)."
+          },
+          {
+            "tick": 66,
+            "type": "deadline_missed",
+            "houseId": "h4",
+            "missing": 3,
+            "message": "Cedar missed its deadline by 3 water unit(s)."
+          },
+          {
+            "tick": 93,
+            "type": "all_delivered",
+            "message": "Every household has received its requested water."
+          }
+        ],
+        "bridgeQueues": [["bridge-south", 14]]
+      },
+      "comparison": {
+        "improved": false,
+        "goalMet": false,
+        "lateUnitsReduced": -7,
+        "unmetUnitsReduced": 0,
+        "waitTicksReduced": -42,
+        "sameSeed": true,
+        "verifiedBy": "deterministic-engine-v1"
+      }
+    }
+  ],
+  "selectedTrialId": "local-5",
+  "tick": 0,
+  "runSummary": {
+    "goal": "Find a change that gets every home its water on time. Keep the same workers and resources. Only one edit per trial.",
+    "model": "",
+    "summary": "",
+    "source": "local-sweep"
+  }
+}
