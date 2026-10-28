@@ -6,6 +6,7 @@ import { readConfig } from "./src/config.mjs";
 import { BudgetLedger } from "./src/budget.mjs";
 import { MetaClient, scanTabletop } from "./src/meta.mjs";
 import { runPlaytest } from "./src/agent.mjs";
+import { compileRuleChange } from "./src/rules.mjs";
 import { validateWorld } from "./shared/world.js";
 import { simulate } from "./shared/engine.js";
 
@@ -77,17 +78,19 @@ const server = createServer(async (req, res) => {
     }
     if (
       req.method === "POST" &&
-      ["/api/playtest", "/api/scan"].includes(url.pathname)
+      ["/api/playtest", "/api/scan", "/api/rules"].includes(url.pathname)
     ) {
       if (paidBusy)
         return json(res, 409, {
           error: "Another Meta operation is running. Wait for it to finish.",
         });
-      const body = await readBody(req);
       paidBusy = true;
       try {
+        const body = await readBody(req);
         if (url.pathname === "/api/scan")
           return json(res, 200, await scanTabletop(client, body));
+        if (url.pathname === "/api/rules")
+          return json(res, 200, await compileRuleChange(client, body));
         res.writeHead(200, {
           "Content-Type": "text/event-stream",
           "Cache-Control": "no-store",

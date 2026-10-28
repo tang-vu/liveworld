@@ -53,12 +53,52 @@ function integer(value, min, max, label) {
     throw new Error(`${label} must be an integer from ${min} to ${max}.`);
 }
 
+function fields(value, allowed, label) {
+  if (
+    !value ||
+    typeof value !== "object" ||
+    Array.isArray(value) ||
+    Object.keys(value).some((key) => !allowed.includes(key))
+  )
+    throw new Error(`${label} contains unsupported fields.`);
+}
+
 export function validateWorld(input) {
   if (!input || typeof input !== "object" || Array.isArray(input))
     throw new Error("A world must be an object.");
   if (JSON.stringify(input).length > 60_000)
     throw new Error("World is too large.");
   const world = structuredClone(input);
+  fields(
+    world,
+    [
+      "version",
+      "name",
+      "width",
+      "height",
+      "seed",
+      "river",
+      "source",
+      "bridges",
+      "houses",
+      "obstacles",
+      "rules",
+      "provenance",
+    ],
+    "World",
+  );
+  if (
+    typeof world.name !== "string" ||
+    !world.name.trim() ||
+    world.name.length > 80
+  )
+    throw new Error("Give the world a name of 1–80 characters.");
+  fields(world.river, ["x", "width"], "River");
+  fields(
+    world.rules,
+    ["dispatch", "couriers", "bridgeCapacity", "productionInterval", "horizon"],
+    "Rules",
+  );
   if (world.version !== 1) throw new Error("Unsupported world version.");
   integer(world.width, 8, 32, "Width");
   integer(world.height, 6, 24, "Height");
@@ -93,6 +133,13 @@ export function validateWorld(input) {
     )
       throw new Error("Every object needs a unique simple ID.");
     ids.add(object.id);
+    fields(
+      object,
+      world.houses.includes(object)
+        ? ["id", "label", "x", "y", "demand", "deadline"]
+        : ["id", "label", "x", "y"],
+      "Object",
+    );
     integer(object.x, 0, world.width - 1, "Object x");
     integer(object.y, 0, world.height - 1, "Object y");
     const isBridge = world.bridges.includes(object);
@@ -121,6 +168,62 @@ export function validateWorld(input) {
   integer(world.rules.bridgeCapacity, 1, 3, "Bridge capacity");
   integer(world.rules.productionInterval, 1, 12, "Production interval");
   integer(world.rules.horizon, 10, 240, "Horizon");
+  if (world.provenance !== undefined) {
+    const p = world.provenance;
+    fields(
+      p,
+      ["type", "confirmed", "objects", "models", "note", "fixture", "manifest"],
+      "Provenance",
+    );
+    if (
+      !["example", "photo", "synthetic"].includes(p.type) ||
+      typeof p.confirmed !== "boolean"
+    )
+      throw new Error("Invalid world provenance.");
+    for (const key of ["note", "fixture", "manifest"])
+      if (
+        p[key] !== undefined &&
+        (typeof p[key] !== "string" || p[key].length > 500)
+      )
+        throw new Error("Invalid provenance text.");
+    if (
+      p.models !== undefined &&
+      (!Array.isArray(p.models) ||
+        p.models.length > 4 ||
+        p.models.some((m) => typeof m !== "string" || m.length > 80))
+    )
+      throw new Error("Invalid model provenance.");
+    if (p.objects !== undefined) {
+      if (!Array.isArray(p.objects) || p.objects.length > 41)
+        throw new Error("Invalid observation history.");
+      const observed = new Set();
+      for (const point of p.objects) {
+        fields(
+          point,
+          ["id", "role", "nx", "ny", "observedNx", "observedNy", "stabilized"],
+          "Observation",
+        );
+        if (
+          !ids.has(point.id) ||
+          observed.has(point.id) ||
+          !["source", "house", "bridge", "obstacle"].includes(point.role)
+        )
+          throw new Error("Invalid observed object.");
+        observed.add(point.id);
+        for (const key of ["nx", "ny", "observedNx", "observedNy"])
+          if (
+            (key === "nx" || key === "ny" || point[key] !== undefined) &&
+            (!Number.isFinite(point[key]) || point[key] < 0 || point[key] > 1)
+          )
+            throw new Error("Invalid observed position.");
+        if (
+          point.stabilized !== undefined &&
+          typeof point.stabilized !== "boolean"
+        )
+          throw new Error("Invalid observation state.");
+      }
+    }
+  }
   return world;
 }
 

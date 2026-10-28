@@ -7,6 +7,17 @@ import {
 import { simulate, evidence, compareRuns } from "/shared/engine.js";
 import { drawWorld, drawTablePreview, cellFromPointer } from "./render.js";
 import { stabilizeObservation } from "/shared/tracking.js";
+import {
+  PROJECT_FORMAT,
+  PROJECT_LIMIT_BYTES,
+  normalizeProject,
+  makeCheckpoint,
+  verifyTrial,
+  describeWorldChanges,
+} from "/shared/project.js";
+import { applyRuleChange, ruleChangeFromForm } from "/shared/rules.js";
+import { loadAutosave, saveAutosave } from "./storage.js";
+import { experimentReport } from "./report.js";
 
 const $ = (id) => document.getElementById(id);
 const escape = (text) =>
@@ -39,14 +50,120 @@ const state = {
   scanImage: null,
   scanResult: null,
   camera: null,
+  name: "My LiveWorld",
+  photo: null,
+  checkpoints: [],
 };
+let restoredProject = null;
 try {
-  const saved = localStorage.getItem("liveworld.world.v1");
-  if (saved) state.world = validateWorld(JSON.parse(saved));
+  const saved = await loadAutosave();
+  if (saved) {
+    restoredProject = normalizeProject(saved);
+    Object.assign(state, {
+      world: restoredProject.world,
+      photo: restoredProject.photo,
+      name: restoredProject.name,
+      checkpoints: restoredProject.checkpoints,
+      trials: restoredProject.trials,
+      tick: restoredProject.tick,
+    });
+  } else {
+    const legacy = localStorage.getItem("liveworld.world.v1");
+    if (legacy) state.world = validateWorld(JSON.parse(legacy));
+  }
 } catch {
   /* An invalid saved layout is replaced by the example. */
 }
 state.run = simulate(state.world);
+
+function projectSnapshot() {
+  return normalizeProject({
+    format: PROJECT_FORMAT,
+    name: state.name,
+    world: state.world,
+    photo: state.photo,
+    checkpoints: state.checkpoints,
+    trials: state.trials,
+    selectedTrialId: state.candidate?.id ?? null,
+    tick: state.tick,
+    runSummary: state.result
+      ? {
+          goal: state.result.goal ?? $("goal").value,
+          model: state.result.model ?? "",
+          summary: state.result.summary ?? "",
+          source: state.result.source ?? "meta",
+        }
+      : null,
+  });
+}
+let autosaveTimer;
+let saveQueue = Promise.resolve();
+function autosave() {
+  $("save-status").textContent = "Saving…";
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(() => {
+    try {
+      const project = projectSnapshot();
+      saveQueue = saveQueue.catch(() => {}).then(() => saveAutosave(project));
+      saveQueue.then(
+        () => {
+          $("save-status").textContent = "Saved in this browser";
+        },
+        () => {
+          $("save-status").textContent =
+            "Browser storage full · download a project copy";
+        },
+      );
+    } catch (error) {
+      $("save-status").textContent = error.message;
+    }
+  }, 250);
+}
+function download(value, name, type = "application/json") {
+  const blob = new Blob(
+    [typeof value === "string" ? value : JSON.stringify(value, null, 2)],
+    { type },
+  );
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+function checkpoint(label = state.world.name) {
+  const item = makeCheckpoint(
+    state.world,
+    state.photo,
+    label,
+    `cp-${crypto.randomUUID()}`,
+  );
+  state.checkpoints = [...state.checkpoints.slice(-11), item];
+  return item;
+}
+function restoreProject(project) {
+  Object.assign(state, {
+    world: project.world,
+    photo: project.photo,
+    name: project.name,
+    checkpoints: project.checkpoints,
+    trials: project.trials,
+    tick: project.tick,
+    selected: null,
+    candidate: null,
+    comparing: false,
+    playing: false,
+    result: project.runSummary
+      ? { ...project.runSummary, experiments: project.trials }
+      : null,
+  });
+  state.run = simulate(state.world);
+  $("project-name").value = state.name;
+  $("verdict").hidden = true;
+  $("agent-activity").hidden = true;
+  if (project.selectedTrialId) selectTrial(project.selectedTrialId);
+  else render();
+}
 
 function toast(message) {
   $("toast").textContent = message;
@@ -82,7 +199,7 @@ async function refreshStatus() {
         b.blocked
           ? "API paused"
           : state.status.configured
-            ? "Meta connected"
+            ? "Meta configured"
             : "Local mode",
       ),
     );
@@ -108,17 +225,33 @@ function setBusy(busy) {
     "take-photo",
     "fixture-a",
     "fixture-b",
+    "replay-capture",
+    "open-project",
+    "save-project",
+    "export",
+    "save-checkpoint",
+    "compare-checkpoint",
+    "edit-rules",
+    "preview-rules",
+    "compile-rules",
+    "apply-candidate",
+    "project-name",
+    "checkpoints",
   ])
     $(id).disabled = busy;
   $("scan-photo").disabled = busy || !state.scanImage;
   $("confirm-scan").disabled = busy || !state.scanResult?.objects.length;
+  $("compare-checkpoint").disabled = busy || !state.checkpoints.length;
   $("playtest").textContent = busy
     ? "Testing the world…"
     : "Find & test a fix ↗";
 }
-function commitWorld(world) {
+function commitWorld(world, { photo = state.photo, remember = true } = {}) {
   if (state.busy) return;
-  state.world = validateWorld(world);
+  const validated = validateWorld(world);
+  if (remember) checkpoint("Before · " + state.world.name);
+  state.world = validated;
+  state.photo = photo;
   state.run = simulate(state.world);
   state.candidate = null;
   state.trials = [];
@@ -126,14 +259,10 @@ function commitWorld(world) {
   state.comparing = false;
   state.playing = false;
   state.tick = 0;
-  try {
-    localStorage.setItem("liveworld.world.v1", JSON.stringify(state.world));
-  } catch {
-    /* Saving is optional. */
-  }
   $("verdict").hidden = true;
   $("agent-activity").hidden = true;
   render();
+  autosave();
 }
 function roleOf(object) {
   return object.id === state.world.source.id
@@ -173,10 +302,10 @@ function renderMetrics() {
     metric(
       "Water delivered on time",
       b ? b.onTime : a.onTime,
-      `/ ${a.demand}`,
+      `/ ${(b ?? a).demand}`,
       b
         ? {
-            text: `A: ${a.onTime} → B: ${b.onTime}`,
+            text: `A: ${a.onTime}/${a.demand} → B: ${b.onTime}/${b.demand}`,
             good: b.onTime > a.onTime,
             bad: b.onTime < a.onTime,
           }
@@ -264,16 +393,41 @@ function render() {
         ? "YOUR TABLE"
         : "EXAMPLE";
   $("courier-count").textContent = `${state.world.rules.couriers} couriers`;
-  $("horizon").textContent = ` / ${state.world.rules.horizon}`;
-  $("timeline").max = state.world.rules.horizon;
+  const designPreview =
+    state.candidate &&
+    ["rules", "capture", "checkpoint"].includes(state.candidate.kind);
+  $("change-constraint").textContent = designPreview
+    ? "Creator design preview"
+    : "1 change / trial";
+  $("resource-constraint").textContent = designPreview
+    ? "Review rule differences"
+    : "Same resources";
+  $("replay-note").textContent =
+    state.candidate && !state.candidate.comparison.sameSeed
+      ? "Different seeds · inspect inputs"
+      : state.candidate
+        ? "Same seed · replayable results"
+        : "Deterministic replay";
+  const horizon = Math.max(
+    state.world.rules.horizon,
+    state.candidate?.world.rules.horizon ?? 0,
+  );
+  $("horizon").textContent = ` / ${horizon}`;
+  $("timeline").max = horizon;
   $("result-caption").textContent =
-    `${state.candidate ? "B" : "A"} · Results across ${state.world.rules.horizon} turns`;
+    `${state.candidate ? "B" : "A"} · Results across ${(state.candidate?.world ?? state.world).rules.horizon} turns`;
   $("view-compare").disabled = !state.candidate;
   $("view-compare").classList.toggle("active", state.comparing);
   $("view-world").classList.toggle("active", !state.comparing);
   $("candidate-pane").hidden = !state.comparing;
   $("canvas-section").classList.toggle("comparing", state.comparing);
   $("candidate-label").textContent = state.candidate?.label.slice(0, 36) ?? "";
+  if (state.photo) $("table-photo").src = state.photo;
+  else $("table-photo").removeAttribute("src");
+  $("table-photo").alt =
+    state.world.provenance?.type === "synthetic"
+      ? "AI-generated tabletop test input"
+      : "Your captured tabletop";
   $("table-preview").hidden = Boolean($("table-photo").getAttribute("src"));
   $("table-photo").hidden = !Boolean($("table-photo").getAttribute("src"));
   $("preview-caption").textContent =
@@ -284,6 +438,29 @@ function render() {
           ? "Saved layout · photo not stored"
           : "Your table · confirmed roles"
         : "A little valley, on your desk";
+  const checkpointId = $("checkpoints").value;
+  $("checkpoints").innerHTML = state.checkpoints.length
+    ? state.checkpoints
+        .map(
+          (cp) =>
+            `<option value="${escape(cp.id)}">${escape(cp.label)}</option>`,
+        )
+        .join("")
+    : '<option value="">No checkpoints yet</option>';
+  if (state.checkpoints.some((cp) => cp.id === checkpointId))
+    $("checkpoints").value = checkpointId;
+  $("compare-checkpoint").disabled = state.busy || !state.checkpoints.length;
+  $("change-preview").hidden = !state.candidate;
+  if (state.candidate) {
+    $("change-title").textContent =
+      `${state.candidate.kind === "rules" ? "Designer rule preview" : "Changes from A to B"}${state.candidate.source === "imported" ? " · imported, recomputed" : ""}`;
+    const changes = describeWorldChanges(state.world, state.candidate.world);
+    $("change-list").innerHTML = (
+      changes.length ? changes : ["No layout or rule differences."]
+    )
+      .map((text) => `<li>${escape(text)}</li>`)
+      .join("");
+  }
   renderObjects();
   renderMetrics();
   renderEvents();
@@ -318,9 +495,30 @@ function selectTrial(id) {
   if (!t) return;
   state.candidate = { ...t, run: simulate(t.world) };
   state.comparing = true;
-  state.tick = Math.min(state.tick, state.world.rules.horizon);
+  state.tick = Math.min(
+    state.tick,
+    Math.max(state.world.rules.horizon, t.world.rules.horizon),
+  );
   render();
-  if (state.result)
+  if (
+    ["capture", "rules", "checkpoint"].includes(t.kind) ||
+    t.source === "imported"
+  ) {
+    $("verdict").className = `verdict${t.comparison.goalMet ? "" : " warning"}`;
+    $("verdict").replaceChildren();
+    const title = document.createElement("strong");
+    title.textContent =
+      t.source === "imported"
+        ? "Imported trial, replayed."
+        : "A design change, measured.";
+    $("verdict").append(
+      title,
+      document.createTextNode(
+        `${t.evidence.metrics.onTime}/${t.evidence.metrics.demand} water units on time in B. Review the changes before applying. ${t.source === "imported" ? "Imported inputs; results recomputed locally." : t.kind === "rules" && t.source === "meta" ? "Meta translated the instruction; the simulator checked the outcome." : "Computed locally from the confirmed layout and rules."}`,
+      ),
+    );
+    $("verdict").hidden = false;
+  } else if (state.result)
     displayVerdict(
       {
         ...state.result,
@@ -334,6 +532,31 @@ function selectTrial(id) {
       },
       state.result.source === "local-sweep",
     );
+  autosave();
+}
+function previewWorld(
+  world,
+  {
+    kind,
+    label,
+    photo = state.photo,
+    source = kind,
+    model = "",
+    instruction = "",
+  } = {},
+) {
+  const trial = verifyTrial(state.world, {
+    id: `${kind}-${Date.now().toString(36)}`,
+    kind,
+    label,
+    world,
+    photo,
+    source,
+    model,
+    instruction,
+  });
+  state.trials = [...state.trials.slice(-31), trial];
+  selectTrial(trial.id);
 }
 function displayVerdict(result, local = false) {
   const title = {
@@ -368,17 +591,22 @@ $("objects").addEventListener("click", (e) => {
   }
 });
 $("scenario").addEventListener("change", () => {
-  $("table-photo").removeAttribute("src");
   state.selected = null;
-  commitWorld(exampleWorld($("scenario").value));
+  commitWorld(exampleWorld($("scenario").value), { photo: null });
 });
 $("reset-world").addEventListener("click", () => {
-  $("table-photo").removeAttribute("src");
   state.selected = null;
-  commitWorld(exampleWorld($("scenario").value));
+  commitWorld(exampleWorld($("scenario").value), { photo: null });
 });
 $("play").addEventListener("click", () => {
-  if (state.tick >= state.world.rules.horizon) state.tick = 0;
+  if (
+    state.tick >=
+    Math.max(
+      state.world.rules.horizon,
+      state.candidate?.world.rules.horizon ?? 0,
+    )
+  )
+    state.tick = 0;
   state.playing = !state.playing;
   draw();
 });
@@ -391,6 +619,7 @@ $("timeline").addEventListener("input", (e) => {
   state.tick = Number(e.target.value);
   state.playing = false;
   draw();
+  autosave();
 });
 $("speed").addEventListener("change", (e) => {
   state.speed = Number(e.target.value);
@@ -489,12 +718,15 @@ $("local-sweep").addEventListener("click", () => {
           label: `Move ${bridge.id.replace("bridge-", "")} bridge to row ${y + 1}`,
         });
   for (const { patch, label } of patches) {
+    if (trials.length >= 32) break;
     try {
       const world = applyPatch(state.world, patch).world;
       const run = simulate(world);
       trials.push({
         id: `local-${trials.length + 1}`,
         label,
+        kind: "local",
+        source: "local-sweep",
         patch,
         world,
         comparison: compareRuns(state.run, run),
@@ -531,7 +763,10 @@ $("local-sweep").addEventListener("click", () => {
   else render();
   displayVerdict(state.result, true);
   $("agent-activity").hidden = true;
-  toast(`Checked ${trials.length} local changes. No API credit used.`);
+  autosave();
+  toast(
+    `Checked ${trials.length} local changes${trials.length === 32 ? " (32-trial limit)" : ""}. No API credit used.`,
+  );
 });
 
 $("playtest").addEventListener("click", async () => {
@@ -587,7 +822,11 @@ $("playtest").addEventListener("click", async () => {
         if (event.type === "complete") {
           completed = true;
           state.result = event.result;
-          state.trials = event.result.experiments;
+          state.trials = event.result.experiments.map((t) => ({
+            ...t,
+            kind: "agent",
+            source: "meta",
+          }));
           if (event.result.best) selectTrial(event.result.best.id);
           else render();
           displayVerdict(event.result);
@@ -602,11 +841,16 @@ $("playtest").addEventListener("click", async () => {
     toast(error.message);
   } finally {
     setBusy(false);
+    autosave();
     refreshStatus();
   }
 });
 
-$("export").addEventListener("click", () => {
+$("export").addEventListener("click", () => $("evidence-dialog").showModal());
+$("close-evidence").addEventListener("click", () =>
+  $("evidence-dialog").close(),
+);
+$("export-json").addEventListener("click", () => {
   const artifact = {
     format: "liveworld-experiment-v1",
     exportedAt: new Date().toISOString(),
@@ -617,16 +861,157 @@ $("export").addEventListener("click", () => {
       ? { ...state.candidate, run: undefined }
       : null,
   };
-  const blob = new Blob([JSON.stringify(artifact, null, 2)], {
-    type: "application/json",
-  });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "liveworld-experiment.json";
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  download(artifact, "liveworld-experiment.json");
   toast("Experiment exported with its inputs and evidence.");
+});
+$("save-project").addEventListener("click", () => {
+  try {
+    download(projectSnapshot(), "liveworld-project.json");
+    autosave();
+    toast("Project saved with its photos, checkpoints and replayable trials.");
+  } catch (error) {
+    toast(error.message);
+  }
+});
+$("export-report").addEventListener("click", () => {
+  try {
+    download(
+      experimentReport(projectSnapshot()),
+      "liveworld-report.html",
+      "text/html;charset=utf-8",
+    );
+    toast("Report exported. Open it in a browser to read or print.");
+  } catch (error) {
+    toast(error.message);
+  }
+});
+$("open-project").addEventListener("click", () => $("project-file").click());
+$("project-file").addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  e.target.value = "";
+  if (!file || state.busy) return;
+  if (file.size > PROJECT_LIMIT_BYTES)
+    return toast("Choose a project file under 15 MB.");
+  try {
+    const project = normalizeProject(JSON.parse(await file.text()), {
+      imported: true,
+    });
+    restoreProject(project);
+    autosave();
+    toast(
+      "Project opened. All trial results were recomputed from their inputs.",
+    );
+  } catch (error) {
+    toast(error.message);
+  }
+});
+$("project-name").addEventListener("input", (e) => {
+  state.name = e.target.value.trim() || "My LiveWorld";
+  e.target.value = state.name;
+  autosave();
+});
+$("save-checkpoint").addEventListener("click", () => {
+  const item = checkpoint(
+    `Checkpoint ${state.checkpoints.length + 1} · ${state.world.name}`,
+  );
+  render();
+  $("checkpoints").value = item.id;
+  autosave();
+  toast("Checkpoint saved. Compare it with a later version from the list.");
+});
+$("compare-checkpoint").addEventListener("click", () => {
+  const cp = state.checkpoints.find((cp) => cp.id === $("checkpoints").value);
+  if (!cp || state.busy) return;
+  const current = { world: state.world, photo: state.photo };
+  commitWorld(cp.world, { photo: cp.photo });
+  previewWorld(current.world, {
+    kind: "checkpoint",
+    label: "Current world vs saved checkpoint",
+    photo: current.photo,
+  });
+});
+$("apply-candidate").addEventListener("click", () => {
+  if (!state.candidate || state.busy) return;
+  const trial = state.candidate;
+  commitWorld(trial.world, { photo: trial.photo ?? state.photo });
+  toast("B is now your working world. A is saved as a checkpoint.");
+});
+
+$("edit-rules").addEventListener("click", () => {
+  for (const [key, value] of Object.entries(state.world.rules))
+    $("rule-" + key).value = value;
+  $("household-fields").innerHTML = state.world.houses
+    .map(
+      (h) =>
+        `<div class="household-rule-row"><span>${escape(h.label ?? h.id)}</span><label>Water demand<input data-house="${escape(h.id)}" data-field="demand" aria-label="Water demand for ${escape(h.label ?? h.id)}" type="number" min="1" max="12" value="${h.demand}" /></label><label>Deadline turn<input data-house="${escape(h.id)}" data-field="deadline" aria-label="Deadline for ${escape(h.label ?? h.id)}" type="number" min="1" max="240" value="${h.deadline}" /></label></div>`,
+    )
+    .join("");
+  $("rule-status").textContent = "Manual previews use no API credit.";
+  $("rules-dialog").showModal();
+});
+$("close-rules").addEventListener("click", () => $("rules-dialog").close());
+$("preview-rules").addEventListener("click", () => {
+  try {
+    const values = Object.fromEntries(
+      Object.keys(state.world.rules).map((key) => [
+        key,
+        $("rule-" + key).value,
+      ]),
+    );
+    const proposal = ruleChangeFromForm(values);
+    proposal.households = state.world.houses.map((h) => ({ id: h.id }));
+    document.querySelectorAll("[data-house]").forEach((input) => {
+      proposal.households.find((h) => h.id === input.dataset.house)[
+        input.dataset.field
+      ] = Number(input.value);
+    });
+    const { world } = applyRuleChange(state.world, proposal);
+    previewWorld(world, {
+      kind: "rules",
+      source: "manual",
+      label: "Manual rule changes",
+    });
+    $("rules-dialog").close();
+    toast("Rules previewed in B. Review the differences, then apply.");
+  } catch (error) {
+    $("rule-status").textContent = error.message;
+  }
+});
+$("compile-rules").addEventListener("click", async () => {
+  if (state.busy) return;
+  const instruction = $("rule-instruction").value.trim();
+  if (!instruction)
+    return ($("rule-status").textContent =
+      "Describe the rule you want to change.");
+  setBusy(true);
+  $("rule-status").textContent =
+    "Meta is translating your instruction into a rule proposal…";
+  try {
+    const result = await api("/api/rules", { world: state.world, instruction });
+    if (!result.supported) {
+      $("rule-status").textContent = result.unsupported.join(" · ");
+      return;
+    }
+    // Reapply and recompute in the browser, rather than trust returned success fields.
+    const { world } = applyRuleChange(state.world, result.proposal);
+    previewWorld(world, {
+      kind: "rules",
+      source: "meta",
+      label: result.explanation.slice(0, 100),
+      model: result.model,
+      instruction,
+    });
+    $("rules-dialog").close();
+    toast(
+      "Meta's rule proposal is ready in B. Review and apply when satisfied.",
+    );
+  } catch (error) {
+    $("rule-status").textContent = error.message;
+  } finally {
+    setBusy(false);
+    refreshStatus();
+    autosave();
+  }
 });
 
 $("recorded-example").addEventListener("click", async () => {
@@ -648,11 +1033,16 @@ $("recorded-example").addEventListener("click", async () => {
       trial.evidence = evidence(run);
     }
     state.result = result;
-    state.trials = result.experiments;
-    $("table-photo").removeAttribute("src");
+    state.trials = result.experiments.map((t) => ({
+      ...t,
+      kind: "agent",
+      source: "recorded-meta-run",
+    }));
+    state.photo = null;
     selectTrial(result.best.id);
     state.tick = state.candidate.run.metrics.completedAt ?? 94;
     draw();
+    autosave();
     $("agent-activity").hidden = true;
     toast(
       "Loaded an actual recorded Meta run. All displayed measurements were recomputed locally.",
@@ -732,6 +1122,22 @@ for (const variant of ["a", "b"]) {
     }
   });
 }
+$("replay-capture").addEventListener("click", async () => {
+  if (state.busy) return;
+  try {
+    const project = normalizeProject(
+      await api("/examples/tabletop-study.json"),
+    );
+    restoreProject(project);
+    $("scan-dialog").close();
+    autosave();
+    toast(
+      "Replayed actual saved Meta captures of generated inputs. No new API calls.",
+    );
+  } catch (error) {
+    toast(error.message);
+  }
+});
 $("photo-file").addEventListener("change", async (e) => {
   const file = e.target.files?.[0];
   if (!file) return;
@@ -836,7 +1242,7 @@ function worldFromScan() {
     throw new Error("Assign exactly one source and at least one house.");
   if (objects.filter((o) => o.role === "bridge").length > 4)
     throw new Error("Use at most four bridges.");
-  const world = exampleWorld();
+  const world = structuredClone(state.world);
   world.name =
     state.scanImage.provenance.type === "synthetic"
       ? "Synthetic tabletop world"
@@ -935,17 +1341,20 @@ function worldFromScan() {
 $("confirm-scan").addEventListener("click", () => {
   try {
     const world = worldFromScan();
-    $("table-photo").src = state.scanImage.dataUrl;
-    $("table-photo").alt =
-      world.provenance.type === "synthetic"
-        ? "AI-generated tabletop test input"
-        : "Your captured tabletop";
-    $("preview-caption").textContent = "Your table · confirmed roles";
     state.selected = null;
-    commitWorld(world);
+    const rescan = Boolean(state.world.provenance?.objects?.length);
+    if (rescan)
+      previewWorld(world, {
+        kind: "capture",
+        label: "Confirmed rescan of the table",
+        photo: state.scanImage.dataUrl,
+      });
+    else commitWorld(world, { photo: state.scanImage.dataUrl });
     $("scan-dialog").close();
     toast(
-      "Your world is ready. Review the grid placements, then run a playtest.",
+      rescan
+        ? "Rescan ready in B. Review the changes before applying."
+        : "Your world is ready. Review the grid placements, then run a playtest.",
     );
   } catch (error) {
     toast(error.message);
@@ -955,14 +1364,29 @@ $("confirm-scan").addEventListener("click", () => {
 let previousTime = 0;
 function animate(time) {
   if (state.playing && time - previousTime > 140 / state.speed) {
-    state.tick = Math.min(state.tick + 1, state.world.rules.horizon);
-    if (state.tick >= state.world.rules.horizon) state.playing = false;
+    const horizon = Math.max(
+      state.world.rules.horizon,
+      state.candidate?.world.rules.horizon ?? 0,
+    );
+    state.tick = Math.min(state.tick + 1, horizon);
+    if (state.tick >= horizon) {
+      state.playing = false;
+      autosave();
+    }
     draw();
     previousTime = time;
   }
   requestAnimationFrame(animate);
 }
 new ResizeObserver(() => draw()).observe($("canvas-section"));
-render();
+if (restoredProject) restoreProject(restoredProject);
+else {
+  $("project-name").value = state.name;
+  render();
+}
+document.querySelector("main").removeAttribute("inert");
+document.querySelector("main").setAttribute("aria-busy", "false");
+$("budget-button").disabled = false;
+autosave();
 refreshStatus();
 requestAnimationFrame(animate);

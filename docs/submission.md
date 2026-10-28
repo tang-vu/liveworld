@@ -1,0 +1,52 @@
+# Submission draft
+
+Owner: Tang Vu. Track: Indie Developer. Theme: Build for Your World.
+
+## Project description
+
+LiveWorld turns objects on a desk into a small playable logistics world. A cup can become a water source, blocks become homes and wooden sticks become bridges. I built it for game creators who want to investigate the effect of a layout or rule change without editing simulation code for every experiment.
+
+Muse Spark proposes object roles and locations; SAM 3.1 supplies the segmentation masks. The creator reviews those suggestions. Muse Spark also translates supported rule instructions into validated proposals and acts as a playtester, inspecting traces and running constrained experiments. A deterministic simulator computes every delivery, missed deadline and queue. The model cannot certify its own success.
+
+Creators can rescan a changed tabletop, compare A and B, apply a candidate, return to checkpoints and save a portable project. Imported trials are recomputed. Evidence exports retain the inputs and measurements for review.
+
+This prototype has not been validated in a creator study. Its photo mapping uses a fixed grid and heuristic object matching, rather than metric reconstruction. The included generated images are labelled synthetic; they are not real camera tests.
+
+## What was built during the event
+
+This repository began on October 27, 2026. The world format, simulator, workbench, photo-to-grid mapping, object tracking, Meta API integration, agent tools, rule proposal validation, project persistence, evidence exports and budget controls were developed for LiveWorld during the event. No Keryx application code is included.
+
+Meta provides Muse Spark, SAM 3.1 and the official `@meta-sam/parser` dependency. The tabletop example images are generated test assets; their prompts and limitations are recorded in `public/examples/generated-inputs.json`. Existing models and dependencies are not original project contributions.
+
+## Reproducible examples
+
+1. **Authored valley playtest.** Replay the recorded Meta run. Balanced dispatch is a failed proposal: 14 of 24 units arrive on time, compared with 20 originally. Moving the south bridge to zero-based row 6 produces 24 of 24 on time. Bridge waiting increases from 16 to 22 turns. The app retains that tradeoff.
+2. **Generated photo A/B.** Capture dialog → Replay recorded A/B capture. The saved outputs came from real Muse Spark and SAM requests on generated inputs. All 11 identities are retained, ten grid positions are unchanged and one bridge moves from row 10 to row 7. On-time delivery remains 20/24; waiting falls from 22 to 10 turns and completion from 99 to 91. This is an improvement in waiting, not a deadline success.
+3. **Designer rule change.** Edit the game rules → describe “Use eight couriers. Keep all other rules unchanged.” Review the exact proposal before applying. This changes the design constraints; it must not be presented as a same-resource agent fix.
+
+The recorded runs are explicitly labelled and do not call Meta again. Use the live buttons to run new inference. Each paid operation goes through the same local budget ledger.
+
+## Three-minute demo outline
+
+| Time      | Show                                                             | Narration point                                                                                                               |
+| --------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 0:00–0:15 | Tabletop photo beside its playable layout                        | “I built LiveWorld to test small game systems with objects already on my desk.” Identify generated input visibly if used.     |
+| 0:15–0:45 | Capture, actual Meta masks and role review                       | Explain Spark proposes meaning, SAM segments and the creator confirms. Condense waiting with a visible time-cut label.        |
+| 0:45–1:15 | Rescan A/B and exact change list                                 | Move one crossing. Compare measured effects and show a drawback if one exists.                                                |
+| 1:15–2:00 | An agent's failed trial, trace inspection and verified candidate | Use the authored valley example. Label recordings. Show 20/24 → 14/24 → 24/24 with the same six couriers and fixed deadlines. |
+| 2:00–2:25 | Natural-language rule proposal and preview                       | Separate creator rule editing from constrained agent fixes. The simulator, not model prose, produces the outcome.             |
+| 2:25–2:45 | Apply B, checkpoint, save and reopen                             | Show that the experiment can be reproduced rather than being a one-time animation.                                            |
+| 2:45–3:00 | Evidence and scope                                               | State the target user, what is working, and the fixed-camera limitation. End on the product.                                  |
+
+## Items required before submission
+
+- Produce and review the actual video; this outline is not a video artifact.
+- Verify the full Official Rules, including any required tool or asset disclosures.
+- Run a physical tabletop capture test if presenting physical interaction as demonstrated.
+- Prepare the live review URL and test it from a clean browser; the current backend is loopback-only.
+- Ensure the final public commit and its checks are accessible.
+- Fill in final video/live links, confirm the participant list and submit through the event platform before the deadline.
+
+Repository: https://github.com/tang-vu/liveworld
+
+Submission deadline from the supplied participant guide: November 4, 2026 at 9:00 PM Eastern Time, equivalent to November 5 at 9:00 AM in Vietnam. Confirm the event page for changes before submitting.

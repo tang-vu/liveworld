@@ -34,7 +34,7 @@ If a configured `.env.local` already exists, preserve it rather than copying ove
 2. Play or scrub the replay. Select a home to highlight its route; replay a deadline event to inspect the relevant turn.
 3. Select **Find & test a fix** for a real Muse Spark playtest, or **Try local changes** for an explicitly labelled deterministic search without API usage.
 4. Compare a tested candidate against the original. Every trial starts from the original world; changes do not accumulate between trials.
-5. Export the experiment to retain the world, measurements, tested changes, and verification result.
+5. Select **Use B as my world** to continue building from a candidate. A is retained as a checkpoint. Save the project or export evidence to retain the inputs and measurements.
 
 **Replay a recorded Meta run** loads an actual Muse Spark experiment without making new API calls. Every trial's measurements are recomputed in the browser before display. It is explicitly labelled as a recording; it is not presented as a live model call.
 
@@ -55,6 +55,16 @@ Both inputs were processed by the actual Muse Spark + SAM pipeline. The included
 - You review the roles before building the world.
 
 This prototype uses image-relative coordinates snapped to a fixed 18×12 grid with a predefined river. Bridge anchors map to the river, and overlapping objects move to nearby valid cells. Review those placements. This is not metric reconstruction or a physics model. Rescans match nearby objects of the same confirmed role heuristically and retain the previous grid cell under small detection jitter. The reference anchor stays fixed until sufficient movement accumulates. Inspect the result, especially after large moves or occlusion.
+
+## Keep an experiment and design its rules
+
+**Save project** downloads a portable JSON file containing the original world, its photo, up to 12 checkpoints, up to 32 trials and the selected comparison. **Open project** accepts that file or an older experiment export. Every trial is recomputed; success flags supplied in a file are not trusted. Imported activity is labelled as imported because a file cannot authenticate a provider call. Autosave retains the same project in this browser using IndexedDB. Download a project copy for a backup or another device.
+
+**Evidence** exports the original experiment JSON or a standalone HTML report with A/B measurements, a change list and household results. The corresponding project file contains replayable inputs.
+
+**Edit the game rules** supports manual changes without API usage, or a natural-language instruction compiled by Muse Spark into a constrained proposal. Supported fields are dispatch, couriers, bridge capacity, production interval, simulation horizon, household demand and deadlines. Code validates the proposal and recomputes outcomes. Unsupported mechanics are reported rather than silently approximated. Review B before applying; creator rule changes are labelled separately from resource-constrained playtest fixes.
+
+A rescan preserves your current rules, matches nearby objects of the same role and opens as a comparison against A. Apply only after reviewing the changes. To inspect the recorded generated-image pair without making calls, choose **Capture your table → Replay recorded A/B capture**. This is explicitly a replay of saved Meta outputs, not a live camera demonstration.
 
 ## Agent and verification
 

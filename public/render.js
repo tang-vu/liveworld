@@ -331,7 +331,7 @@ export function drawWorld(
   ctx.textAlign = "right";
   ctx.fillStyle = "#8d9b7d";
   ctx.fillText(
-    alternative ? "B / SAME STARTING CONDITIONS" : "A / ORIGINAL LAYOUT",
+    alternative ? "B / CANDIDATE REPLAY" : "A / ORIGINAL LAYOUT",
     g.width - 13,
     g.height - 8,
   );

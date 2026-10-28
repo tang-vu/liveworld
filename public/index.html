@@ -27,13 +27,14 @@
         ><button
           class="budget-chip"
           id="budget-button"
+          disabled
           title="Usage made by this app, not your account balance"
         >
           API spend <strong id="spend">$0.000</strong>
         </button>
       </div>
     </header>
-    <main>
+    <main inert aria-busy="true">
       <div class="page-intro">
         <div>
           <div class="eyebrow">SMALL WORLDS. BETTER QUESTIONS.</div>
@@ -43,9 +44,32 @@
             test.
           </p>
         </div>
-        <button id="export" class="button secondary">
-          ↓ Export experiment
-        </button>
+        <div class="project-actions">
+          <button id="open-project" class="button secondary">
+            Open project
+          </button>
+          <input
+            id="project-file"
+            type="file"
+            accept="application/json,.json"
+            aria-label="Open LiveWorld project file"
+            hidden
+          />
+          <button id="save-project" class="button secondary">
+            ↓ Save project
+          </button>
+          <button id="export" class="button secondary">↓ Evidence</button>
+        </div>
+      </div>
+      <div class="project-bar">
+        <label for="project-name">PROJECT</label
+        ><input
+          id="project-name"
+          maxlength="80"
+          value="My LiveWorld"
+          aria-label="Project name"
+        />
+        <span id="save-status" role="status">Opening project…</span>
       </div>
       <div class="workbench">
         <aside class="scene-panel panel">
@@ -76,6 +100,20 @@
             <option value="disconnected">A missing crossing</option>
             <option value="impossible">An impossible deadline</option>
           </select>
+          <div class="checkpoint-controls">
+            <button id="save-checkpoint" class="text-button">
+              ＋ Save checkpoint
+            </button>
+            <select id="checkpoints" aria-label="Saved checkpoint">
+              <option value="">No checkpoints yet</option>
+            </select>
+            <button id="compare-checkpoint" class="text-button" disabled>
+              Compare with current →
+            </button>
+          </div>
+          <button id="edit-rules" class="button secondary rules-button">
+            Edit the game rules ↗
+          </button>
           <div class="objects-heading">
             <h2>On the table</h2>
             <span id="object-count"></span>
@@ -125,7 +163,7 @@
               </div>
               <canvas
                 id="candidate-canvas"
-                aria-label="Proposed world from the same starting conditions"
+                aria-label="Proposed world comparison"
               ></canvas>
             </div>
           </div>
@@ -133,7 +171,18 @@
             <span><i class="legend-dot water"></i>Water courier</span
             ><span><i class="legend-dot home"></i>Household</span
             ><span><i class="legend-dot queue"></i>Waiting at bridge</span
-            ><span class="replay-note">Same start · replayable results</span>
+            ><span class="replay-note" id="replay-note"
+              >Same start · replayable results</span
+            >
+          </div>
+          <div id="change-preview" class="change-preview" hidden>
+            <div>
+              <strong id="change-title">Proposed changes</strong>
+              <ul id="change-list"></ul>
+            </div>
+            <button id="apply-candidate" class="button primary">
+              Use B as my world →
+            </button>
           </div>
           <div class="playback">
             <button id="play" class="play-button" aria-label="Play simulation">
@@ -167,7 +216,8 @@
             </div>
             <div class="constraint-chips">
               <span id="courier-count">6 couriers</span
-              ><span>1 change / trial</span><span>Same resources</span>
+              ><span id="change-constraint">1 change / trial</span
+              ><span id="resource-constraint">Same resources</span>
             </div>
           </div>
           <div class="bottom-tabs">
@@ -273,6 +323,9 @@ Find a change that gets every home its water on time. Keep the same workers and 
           Load scene B · moved bridge
         </button>
         <small>Loading is local. “Find objects” calls Meta.</small>
+        <button id="replay-capture" class="text-button">
+          Replay recorded A/B capture · no new API calls →
+        </button>
       </div>
       <video id="camera" autoplay playsinline muted hidden></video>
       <div class="scan-workspace" id="scan-workspace" hidden>
@@ -308,6 +361,108 @@ Find a change that gets every home its water on time. Keep the same workers and 
         </button>
       </div>
       <div id="budget-details"></div>
+    </dialog>
+    <dialog id="rules-dialog">
+      <div class="dialog-heading">
+        <div>
+          <span class="eyebrow">DESIGN THE SYSTEM</span>
+          <h2>Change a rule. See what follows.</h2>
+        </div>
+        <button id="close-rules" class="icon-button" aria-label="Close rules">
+          ×
+        </button>
+      </div>
+      <p class="dialog-copy">
+        Preview your design changes before applying them. The playtester then
+        searches under your new rules.
+      </p>
+      <label class="field-label" for="rule-instruction"
+        >Describe a rule change</label
+      >
+      <textarea
+        id="rule-instruction"
+        rows="2"
+        maxlength="2000"
+        placeholder="Use eight couriers and give every home a deadline of turn 100."
+      ></textarea>
+      <button id="compile-rules" class="button primary">
+        Preview with Meta ↗
+      </button>
+      <p class="small-copy">
+        One Meta request. Supports the fields below; new game mechanics require
+        code.
+      </p>
+      <div class="rule-fields">
+        <label
+          >Dispatch<select id="rule-dispatch">
+            <option value="nearest">Nearest first</option>
+            <option value="balanced">Balanced service</option>
+            <option value="deadline">Deadline priority</option>
+          </select></label
+        >
+        <label
+          >Couriers<input
+            id="rule-couriers"
+            type="number"
+            min="1"
+            max="12"
+            required
+        /></label>
+        <label
+          >Bridge capacity<input
+            id="rule-bridgeCapacity"
+            type="number"
+            min="1"
+            max="3"
+            required
+        /></label>
+        <label
+          >Turns per water unit<input
+            id="rule-productionInterval"
+            type="number"
+            min="1"
+            max="12"
+            required
+        /></label>
+        <label
+          >Simulation turns<input
+            id="rule-horizon"
+            type="number"
+            min="10"
+            max="240"
+            required
+        /></label>
+      </div>
+      <div id="household-fields" class="household-fields"></div>
+      <p id="rule-status" class="scan-status" aria-live="polite"></p>
+      <div class="dialog-actions">
+        <button id="preview-rules" class="button secondary">
+          Preview manual changes →
+        </button>
+      </div>
+    </dialog>
+    <dialog id="evidence-dialog">
+      <div class="dialog-heading">
+        <h2>Share the experiment.</h2>
+        <button
+          id="close-evidence"
+          class="icon-button"
+          aria-label="Close evidence"
+        >
+          ×
+        </button>
+      </div>
+      <p class="dialog-copy">
+        Inputs, measurements and the selected comparison. Results can be
+        replayed from the project file.
+      </p>
+      <div class="dialog-actions">
+        <button id="export-json" class="button secondary">
+          ↓ Evidence JSON</button
+        ><button id="export-report" class="button primary">
+          ↓ Readable report
+        </button>
+      </div>
     </dialog>
   </body>
 </html>

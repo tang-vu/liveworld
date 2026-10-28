@@ -1,5 +1,115 @@
 @import url("/base.css");
 
+.project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.project-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: -5px 0 20px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.project-bar label {
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.project-bar input {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  padding: 5px 0;
+  width: min(250px, 40vw);
+}
+.project-bar > span {
+  margin-left: auto;
+}
+.checkpoint-controls {
+  display: grid;
+  gap: 9px;
+  margin: 15px 0;
+  padding: 14px 0;
+  border-block: 1px solid var(--line);
+}
+.checkpoint-controls select {
+  width: 100%;
+}
+.checkpoint-controls .text-button {
+  text-align: left;
+  font-size: 10px;
+}
+.rules-button {
+  width: 100%;
+}
+.change-preview {
+  margin: 0 20px 14px;
+  padding: 14px;
+  border: 1px solid #cbd7bd;
+  background: #f4f7ed;
+  border-radius: 7px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+}
+.change-preview ul {
+  padding-left: 15px;
+  margin: 7px 0 0;
+  line-height: 1.7;
+  max-height: 120px;
+  overflow: auto;
+}
+.change-preview .button {
+  flex-shrink: 0;
+}
+.rule-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+  margin: 25px 0;
+}
+.rule-fields label {
+  display: grid;
+  gap: 7px;
+  font-size: 11px;
+}
+.rule-fields input,
+.household-fields input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 5px;
+  padding: 10px;
+}
+.household-fields {
+  display: grid;
+  gap: 9px;
+}
+.household-rule-row {
+  display: grid;
+  grid-template-columns: 1fr 90px 110px;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+}
+.household-rule-row label {
+  display: grid;
+  gap: 4px;
+  font-size: 9px;
+  color: var(--muted);
+}
+#rules-dialog textarea {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
 .fixture-options {
   display: flex;
   flex-wrap: wrap;
@@ -1361,6 +1471,46 @@ dialog::backdrop {
     font-size: 7px;
     gap: 12px;
     line-height: 1.8;
+  }
+  .project-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: flex-start;
+  }
+  .page-intro {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  .project-bar {
+    margin-top: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .project-bar > span {
+    font-size: 8px;
+  }
+  .scene-panel > .checkpoint-controls,
+  .scene-panel > .rules-button {
+    grid-column: 1/-1;
+  }
+  .checkpoint-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+  .checkpoint-controls select {
+    grid-column: 1/-1;
+  }
+  .change-preview {
+    margin-inline: 10px;
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .rule-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+  .household-rule-row {
+    grid-template-columns: 1fr 65px 85px;
+    gap: 8px;
   }
   .connection i {
     width: 5px;
