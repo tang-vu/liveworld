@@ -1,0 +1,59 @@
+{
+  "format": "liveworld-generated-capture-check-v1",
+  "inputSource": "AI-generated images; not real camera captures",
+  "runtimeModels": ["muse-spark-1.3", "sam-3.1"],
+  "originalObjects": 11,
+  "rescannedObjects": 11,
+  "matchedIdentities": 11,
+  "added": [],
+  "removed": [],
+  "moved": [
+    {
+      "id": "photo-9-mvrnpfil",
+      "label": "popsicle stick bottom",
+      "role": "bridge",
+      "from": {
+        "x": 8,
+        "y": 9
+      },
+      "to": {
+        "x": 8,
+        "y": 6
+      }
+    }
+  ],
+  "unchangedGridPositions": 10,
+  "sameRules": true,
+  "singleBridgeMoveDetected": true,
+  "measurements": {
+    "a": {
+      "demand": 24,
+      "delivered": 24,
+      "onTime": 20,
+      "lateUnits": 4,
+      "unmetUnits": 0,
+      "coverage": 1,
+      "worstCoverage": 1,
+      "waitTicks": 22,
+      "completedAt": 99,
+      "unreachable": [],
+      "allOnTime": false,
+      "allDelivered": true
+    },
+    "b": {
+      "demand": 24,
+      "delivered": 24,
+      "onTime": 20,
+      "lateUnits": 4,
+      "unmetUnits": 0,
+      "coverage": 1,
+      "worstCoverage": 1,
+      "waitTicks": 10,
+      "completedAt": 91,
+      "unreachable": [],
+      "allOnTime": false,
+      "allDelivered": true
+    }
+  },
+  "limitation": "This result covers this generated pair only. It does not establish physical camera reliability, general tracking accuracy, or pixel-identical preservation outside the edit."
+}

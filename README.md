@@ -44,11 +44,17 @@ The default scene is an authored example, not a general benchmark. Changing the 
 
 Choose **Capture your table**, select a photo or capture a camera frame, and then select **Find objects**. This sends the resized image to Meta:
 
+The capture dialog also offers **Load scene A** and **Load scene B**: AI-generated tabletop inputs, with the lower stick moved in B. Loading them makes no API calls; **Find objects** still runs the real Meta pipeline. Worlds created from those buttons are labelled **SYNTHETIC** and retain that provenance in their export. Prompts and limitations are recorded in [`generated-inputs.json`](public/examples/generated-inputs.json). They are not real camera captures, and generative edits are not guaranteed to preserve every pixel outside the moved object.
+
+Both inputs were processed by the actual Muse Spark + SAM pipeline. The included post-fix UI exports preserve all 11 object identities: ten grid positions remain unchanged and one bridge moves from row 10 to row 7. Recompute the comparison without API usage with `node scripts/check-generated-pair.mjs`. The [recorded report](public/examples/generated-capture-check.json) includes the measured simulation outcomes; meeting every deadline is not claimed for this pair.
+
+![Actual Meta segmentation of an AI-generated tabletop test input](docs/generated-input-capture.jpg)
+
 - **Muse Spark 1.3** proposes object locations and tentative source / house / bridge / obstacle roles using structured output.
 - **SAM 3.1** segments the proposed objects using box prompts. Actual returned masks are drawn over the photo; missing masks are not presented as successful segmentations.
 - You review the roles before building the world.
 
-This prototype uses image-relative coordinates snapped to a fixed 18×12 grid with a predefined river. Bridge anchors map to the river, and overlapping objects move to nearby valid cells. Review those placements. This is not metric reconstruction or a physics model. Rescans match nearby objects of the same confirmed role heuristically; inspect the result, especially after large moves or occlusion.
+This prototype uses image-relative coordinates snapped to a fixed 18×12 grid with a predefined river. Bridge anchors map to the river, and overlapping objects move to nearby valid cells. Review those placements. This is not metric reconstruction or a physics model. Rescans match nearby objects of the same confirmed role heuristically and retain the previous grid cell under small detection jitter. The reference anchor stays fixed until sufficient movement accumulates. Inspect the result, especially after large moves or occlusion.
 
 ## Agent and verification
 

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "source": "AI-generated synthetic test inputs",
+  "generationMethod": "Built-in imagegen tool: generate A, then edit A into B",
+  "realCameraCapture": false,
+  "assets": [
+    {
+      "variant": "a",
+      "file": "generated-tabletop-a.png",
+      "role": "original generated scene",
+      "sha256": "232fa18d72a2e9276ca273cfdf31fed473fa90ba115cb860598b2bd0100622d8"
+    },
+    {
+      "variant": "b",
+      "file": "generated-tabletop-b.png",
+      "role": "generated single-object edit of A",
+      "sha256": "29f4bf04dcce48e3e7aef1b09b245c39020a06828b7e8af6b9dbb77206b2484c"
+    }
+  ],
+  "intendedChange": "Move only the lower wooden stick upward, preserving the remaining objects and camera composition.",
+  "limitations": "Generative editing can change surface details and shadows outside the requested region. These inputs test the image-processing workflow, not physical camera reliability. Object positions and correspondence require verification.",
+  "prompts": {
+    "a": "Use case: photorealistic-natural. Asset type: explicitly synthetic test input for a tabletop logistics prototyping application, not a screenshot and not evidence of a real camera test. Generate ONE landscape overhead photograph-like image, approximately 3:2 aspect ratio. Scene: a clean off-white rectangular sheet lying flat on a pale oak desk, viewed straight down, soft natural window light with realistic gentle shadows. The sheet fills almost the whole frame. Exactly eleven separate ordinary physical-looking objects, each with space around it: one small blue glazed ceramic espresso cup with a visible handle at 20% from the left and 46% from the top; six small sage-green painted wooden cube blocks centered at approximately (30%,20%), (25%,78%), (70%,20%), (82%,46%), (70%,78%), (91%,80%); two horizontal natural wooden popsicle sticks, centered at (50%,20%) and (50%,78%); two small grey pebbles near (37%,46%) and (72%,58%). The two sticks are each about 16% of the image width and 2% of its height. Keep the middle vertical strip of the sheet clear except for the two sticks, representing crossings of an imaginary river. Every object fully inside the image, no overlaps, all six blocks visually distinct and countable. Materials should look like ordinary household objects, not a game render. No printed river, no drawn roads, no text, no lettering, no logos, no UI, no people or hands, no decorative extra objects. Preserve a fixed clean orthographic top-down camera composition suitable for a later single-object edit.",
+    "b": "Use case: precise-object-edit. Edit target: the provided synthetic overhead tabletop image. Create scene B for a controlled input comparison. Change ONLY the lower horizontal wooden popsicle stick: move that entire stick straight upward so its center is at 50% of image width and 54% of image height. Keep its horizontal orientation, exact length, thickness, material and color. Remove it completely from its former lower position and restore the plain off-white paper there, with no ghost or duplicate. Keep the upper stick, blue cup, all SIX green wooden blocks, both grey pebbles, all their positions, shapes, sizes, surface textures and shadows, the paper edges, desk grain, lighting, camera angle, crop and image dimensions unchanged. The moved stick's shadow should move consistently with it. No additional edits, no text, no labels, no hands, no UI, no new objects. This is an AI-generated diagnostic input, not a real camera capture."
+  }
+}

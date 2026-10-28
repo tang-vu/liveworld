@@ -1,5 +1,24 @@
 @import url("/base.css");
 
+.fixture-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.fixture-options > span {
+  font-size: 10px;
+  color: var(--muted);
+}
+.fixture-options > small {
+  flex-basis: 100%;
+  font-size: 9px;
+  color: var(--muted);
+}
+
 textarea {
   font-size: 11px;
   line-height: 1.7;

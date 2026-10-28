@@ -19,4 +19,5 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: npm run format:check
       - run: npm test
+      - run: node scripts/check-generated-pair.mjs
       - run: npm run evaluate

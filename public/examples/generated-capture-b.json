@@ -1,0 +1,307 @@
+{
+  "format": "liveworld-experiment-v1",
+  "exportedAt": "2026-10-28T05:12:55.328Z",
+  "world": {
+    "version": 1,
+    "name": "Synthetic tabletop world",
+    "width": 18,
+    "height": 12,
+    "seed": 271026,
+    "river": {
+      "x": 8,
+      "width": 2
+    },
+    "source": {
+      "id": "photo-1-mvrnpfil",
+      "label": "blue cup",
+      "x": 3,
+      "y": 5
+    },
+    "bridges": [
+      {
+        "id": "photo-3-mvrnpfil",
+        "label": "popsicle stick top",
+        "x": 8,
+        "y": 2
+      },
+      {
+        "id": "photo-9-mvrnpfil",
+        "label": "popsicle stick bottom",
+        "x": 8,
+        "y": 6
+      }
+    ],
+    "houses": [
+      {
+        "id": "photo-2-mvrnpfil",
+        "label": "green block top left",
+        "x": 6,
+        "y": 2,
+        "demand": 4,
+        "deadline": 80
+      },
+      {
+        "id": "photo-4-mvrnpfil",
+        "label": "green block top right",
+        "x": 12,
+        "y": 2,
+        "demand": 4,
+        "deadline": 80
+      },
+      {
+        "id": "photo-6-mvrnpfil",
+        "label": "green block middle right",
+        "x": 14,
+        "y": 5,
+        "demand": 4,
+        "deadline": 80
+      },
+      {
+        "id": "photo-8-mvrnpfil",
+        "label": "green block bottom left",
+        "x": 5,
+        "y": 9,
+        "demand": 4,
+        "deadline": 80
+      },
+      {
+        "id": "photo-10-mvrnpfim",
+        "label": "green block bottom middle",
+        "x": 12,
+        "y": 9,
+        "demand": 4,
+        "deadline": 80
+      },
+      {
+        "id": "photo-11-mvrnpfim",
+        "label": "green block bottom right",
+        "x": 16,
+        "y": 9,
+        "demand": 4,
+        "deadline": 80
+      }
+    ],
+    "obstacles": [
+      {
+        "id": "photo-5-mvrnpfil",
+        "label": "gray stone left",
+        "x": 6,
+        "y": 5
+      },
+      {
+        "id": "photo-7-mvrnpfil",
+        "label": "gray stone right",
+        "x": 12,
+        "y": 6
+      }
+    ],
+    "rules": {
+      "dispatch": "nearest",
+      "couriers": 6,
+      "bridgeCapacity": 1,
+      "productionInterval": 2,
+      "horizon": 120
+    },
+    "provenance": {
+      "type": "synthetic",
+      "fixture": "b",
+      "manifest": "/examples/generated-inputs.json",
+      "confirmed": true,
+      "objects": [
+        {
+          "id": "photo-1-mvrnpfil",
+          "role": "source",
+          "nx": 0.171875,
+          "ny": 0.4443631039531479,
+          "observedNx": 0.1650390625,
+          "observedNy": 0.44363103953147875,
+          "stabilized": true
+        },
+        {
+          "id": "photo-2-mvrnpfil",
+          "role": "house",
+          "nx": 0.34521484375,
+          "ny": 0.18960468521229867,
+          "observedNx": 0.30517578125,
+          "observedNy": 0.18740849194729137,
+          "stabilized": true
+        },
+        {
+          "id": "photo-3-mvrnpfil",
+          "role": "bridge",
+          "nx": 0.50048828125,
+          "ny": 0.19692532942898974,
+          "observedNx": 0.50048828125,
+          "observedNy": 0.19692532942898974,
+          "stabilized": true
+        },
+        {
+          "id": "photo-4-mvrnpfil",
+          "role": "house",
+          "nx": 0.69140625,
+          "ny": 0.18960468521229867,
+          "observedNx": 0.68603515625,
+          "observedNy": 0.18960468521229867,
+          "stabilized": true
+        },
+        {
+          "id": "photo-5-mvrnpfil",
+          "role": "obstacle",
+          "nx": 0.38671875,
+          "ny": 0.4575402635431918,
+          "observedNx": 0.34765625,
+          "observedNy": 0.45314787701317716,
+          "stabilized": true
+        },
+        {
+          "id": "photo-6-mvrnpfil",
+          "role": "house",
+          "nx": 0.791015625,
+          "ny": 0.4494875549048316,
+          "observedNx": 0.7900390625,
+          "observedNy": 0.4494875549048316,
+          "stabilized": true
+        },
+        {
+          "id": "photo-9-mvrnpfil",
+          "role": "bridge",
+          "nx": 0.4970703125,
+          "ny": 0.575402635431918,
+          "observedNx": 0.4970703125,
+          "observedNy": 0.575402635431918,
+          "stabilized": false
+        },
+        {
+          "id": "photo-7-mvrnpfil",
+          "role": "obstacle",
+          "nx": 0.697265625,
+          "ny": 0.5658857979502196,
+          "observedNx": 0.69677734375,
+          "observedNy": 0.5658857979502196,
+          "stabilized": true
+        },
+        {
+          "id": "photo-8-mvrnpfil",
+          "role": "house",
+          "nx": 0.2880859375,
+          "ny": 0.7510980966325037,
+          "observedNx": 0.2724609375,
+          "observedNy": 0.753294289897511,
+          "stabilized": true
+        },
+        {
+          "id": "photo-10-mvrnpfim",
+          "role": "house",
+          "nx": 0.68701171875,
+          "ny": 0.7554904831625183,
+          "observedNx": 0.6875,
+          "observedNy": 0.7547584187408491,
+          "stabilized": true
+        },
+        {
+          "id": "photo-11-mvrnpfim",
+          "role": "house",
+          "nx": 0.89599609375,
+          "ny": 0.7620790629575402,
+          "observedNx": 0.89599609375,
+          "observedNy": 0.7620790629575402,
+          "stabilized": true
+        }
+      ],
+      "models": ["muse-spark-1.3", "sam-3.1"],
+      "note": "Image-relative positions snapped to a fixed grid; bridge anchors mapped to the river."
+    }
+  },
+  "baseline": {
+    "metrics": {
+      "demand": 24,
+      "delivered": 24,
+      "onTime": 20,
+      "lateUnits": 4,
+      "unmetUnits": 0,
+      "coverage": 1,
+      "worstCoverage": 1,
+      "waitTicks": 10,
+      "completedAt": 91,
+      "unreachable": [],
+      "allOnTime": false,
+      "allDelivered": true
+    },
+    "households": [
+      {
+        "id": "photo-2-mvrnpfil",
+        "label": "green block top left",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 4,
+        "deadline": 80,
+        "firstDelivery": 6
+      },
+      {
+        "id": "photo-4-mvrnpfil",
+        "label": "green block top right",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 4,
+        "deadline": 80,
+        "firstDelivery": 28
+      },
+      {
+        "id": "photo-6-mvrnpfil",
+        "label": "green block middle right",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 4,
+        "deadline": 80,
+        "firstDelivery": 59
+      },
+      {
+        "id": "photo-8-mvrnpfil",
+        "label": "green block bottom left",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 4,
+        "deadline": 80,
+        "firstDelivery": 14
+      },
+      {
+        "id": "photo-10-mvrnpfim",
+        "label": "green block bottom middle",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 4,
+        "deadline": 80,
+        "firstDelivery": 37
+      },
+      {
+        "id": "photo-11-mvrnpfim",
+        "label": "green block bottom right",
+        "demand": 4,
+        "delivered": 4,
+        "onTime": 0,
+        "deadline": 80,
+        "firstDelivery": 85
+      }
+    ],
+    "significantEvents": [
+      {
+        "tick": 80,
+        "type": "deadline_missed",
+        "houseId": "photo-11-mvrnpfim",
+        "missing": 4,
+        "message": "green block bottom right missed its deadline by 4 water unit(s)."
+      },
+      {
+        "tick": 91,
+        "type": "all_delivered",
+        "message": "Every household has received its requested water."
+      }
+    ],
+    "bridgeQueues": [
+      ["photo-3-mvrnpfil", 4],
+      ["photo-9-mvrnpfil", 2]
+    ]
+  },
+  "playtest": null,
+  "selectedTrial": null
+}

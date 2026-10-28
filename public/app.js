@@ -6,6 +6,7 @@ import {
 } from "/shared/world.js";
 import { simulate, evidence, compareRuns } from "/shared/engine.js";
 import { drawWorld, drawTablePreview, cellFromPointer } from "./render.js";
+import { stabilizeObservation } from "/shared/tracking.js";
 
 const $ = (id) => document.getElementById(id);
 const escape = (text) =>
@@ -105,6 +106,8 @@ function setBusy(busy) {
     "photo-file",
     "use-camera",
     "take-photo",
+    "fixture-a",
+    "fixture-b",
   ])
     $(id).disabled = busy;
   $("scan-photo").disabled = busy || !state.scanImage;
@@ -255,7 +258,11 @@ function render() {
   $("world-name").textContent = state.world.name;
   $("policy-label").textContent = policyLabel[state.world.rules.dispatch];
   $("scene-tag").textContent =
-    state.world.provenance?.type === "photo" ? "YOUR TABLE" : "EXAMPLE";
+    state.world.provenance?.type === "synthetic"
+      ? "SYNTHETIC"
+      : state.world.provenance?.type === "photo"
+        ? "YOUR TABLE"
+        : "EXAMPLE";
   $("courier-count").textContent = `${state.world.rules.couriers} couriers`;
   $("horizon").textContent = ` / ${state.world.rules.horizon}`;
   $("timeline").max = state.world.rules.horizon;
@@ -270,11 +277,13 @@ function render() {
   $("table-preview").hidden = Boolean($("table-photo").getAttribute("src"));
   $("table-photo").hidden = !Boolean($("table-photo").getAttribute("src"));
   $("preview-caption").textContent =
-    state.world.provenance?.type === "photo"
-      ? $("table-photo").hidden
-        ? "Saved layout · photo not stored"
-        : "Your table · confirmed roles"
-      : "A little valley, on your desk";
+    state.world.provenance?.type === "synthetic"
+      ? "AI-generated test input"
+      : state.world.provenance?.type === "photo"
+        ? $("table-photo").hidden
+          ? "Saved layout · photo not stored"
+          : "Your table · confirmed roles"
+        : "A little valley, on your desk";
   renderObjects();
   renderMetrics();
   renderEvents();
@@ -678,7 +687,7 @@ $("use-camera").addEventListener("click", async () => {
     toast("Camera unavailable. You can choose a photo instead.");
   }
 });
-function loadImage(source, width, height) {
+function loadImage(source, width, height, provenance = { type: "photo" }) {
   const scale = Math.min(1, 1024 / Math.max(width, height));
   const canvas = document.createElement("canvas");
   canvas.width = Math.round(width * scale);
@@ -689,6 +698,7 @@ function loadImage(source, width, height) {
     width: canvas.width,
     height: canvas.height,
     bitmap: canvas,
+    provenance,
   };
   state.scanResult = null;
   $("scan-workspace").hidden = false;
@@ -696,8 +706,31 @@ function loadImage(source, width, height) {
   $("confirm-scan").disabled = true;
   $("scan-photo").disabled = false;
   $("scan-status").textContent =
-    "Photo ready. Find objects sends this image to Muse Spark and SAM 3.1.";
+    provenance.type === "synthetic"
+      ? "AI-generated test input ready. Find objects sends it to Muse Spark and SAM 3.1."
+      : "Photo ready. Find objects sends this image to Muse Spark and SAM 3.1.";
   drawScan();
+}
+for (const variant of ["a", "b"]) {
+  $(`fixture-${variant}`).addEventListener("click", async () => {
+    if (state.busy) return;
+    try {
+      const response = await fetch(
+        `/examples/generated-tabletop-${variant}.png`,
+      );
+      if (!response.ok)
+        throw new Error("The synthetic test image could not be loaded.");
+      const bitmap = await createImageBitmap(await response.blob());
+      loadImage(bitmap, bitmap.width, bitmap.height, {
+        type: "synthetic",
+        fixture: variant,
+        manifest: "/examples/generated-inputs.json",
+      });
+      bitmap.close();
+    } catch (error) {
+      toast(error.message);
+    }
+  });
 }
 $("photo-file").addEventListener("change", async (e) => {
   const file = e.target.files?.[0];
@@ -804,7 +837,10 @@ function worldFromScan() {
   if (objects.filter((o) => o.role === "bridge").length > 4)
     throw new Error("Use at most four bridges.");
   const world = exampleWorld();
-  world.name = "My tabletop world";
+  world.name =
+    state.scanImage.provenance.type === "synthetic"
+      ? "Synthetic tabletop world"
+      : "My tabletop world";
   world.houses = [];
   world.bridges = [];
   world.obstacles = [];
@@ -825,10 +861,28 @@ function worldFromScan() {
     const nx = (object.box.left + object.box.right) / 2 / result.width;
     const ny = (object.box.top + object.box.bottom) / 2 / result.height;
     const bridge = object.role === "bridge";
-    let x = bridge
-      ? world.river.x
-      : Math.min(world.width - 1, Math.floor(nx * world.width));
-    let y = Math.min(world.height - 1, Math.floor(ny * world.height));
+    const match = previous
+      .filter((p) => p.role === object.role && !matched.has(p.id))
+      .map((p) => ({ ...p, distance: Math.hypot(p.nx - nx, p.ny - ny) }))
+      .sort((a, b) => a.distance - b.distance)[0];
+    const matchedObservation = match && match.distance < 0.25 ? match : null;
+    const oldEntity = matchedObservation
+      ? [
+          state.world.source,
+          ...state.world.houses,
+          ...state.world.bridges,
+          ...state.world.obstacles,
+        ].find((o) => o.id === matchedObservation.id)
+      : null;
+    const placement = stabilizeObservation({
+      world,
+      role: object.role,
+      nx,
+      ny,
+      previousObservation: matchedObservation,
+      previousEntity: oldEntity,
+    });
+    let { x, y } = placement;
     if (!available(x, y, bridge)) {
       const cells = [];
       for (let cy = 0; cy < world.height; cy++)
@@ -843,17 +897,20 @@ function worldFromScan() {
       if (!cells.length) throw new Error("No free cell for this object.");
       ({ x, y } = cells[0]);
     }
-    const match = previous
-      .filter((p) => p.role === object.role && !matched.has(p.id))
-      .map((p) => ({ ...p, distance: Math.hypot(p.nx - nx, p.ny - ny) }))
-      .sort((a, b) => a.distance - b.distance)[0];
-    const id =
-      match && match.distance < 0.25
-        ? match.id
-        : `photo-${index + 1}-${Date.now().toString(36)}`;
+    const id = matchedObservation
+      ? matchedObservation.id
+      : `photo-${index + 1}-${Date.now().toString(36)}`;
     matched.add(id);
     occupied.add(`${x},${y}`);
-    positions.push({ id, role: object.role, nx, ny });
+    positions.push({
+      id,
+      role: object.role,
+      nx: placement.anchorNx,
+      ny: placement.anchorNy,
+      observedNx: nx,
+      observedNy: ny,
+      stabilized: placement.stabilized,
+    });
     const entity = { id, label: object.label, x, y };
     if (object.role === "source") world.source = entity;
     else if (object.role === "house") {
@@ -867,7 +924,7 @@ function worldFromScan() {
     else world.obstacles.push(entity);
   }
   world.provenance = {
-    type: "photo",
+    ...state.scanImage.provenance,
     confirmed: true,
     objects: positions,
     models: result.models,
@@ -879,6 +936,10 @@ $("confirm-scan").addEventListener("click", () => {
   try {
     const world = worldFromScan();
     $("table-photo").src = state.scanImage.dataUrl;
+    $("table-photo").alt =
+      world.provenance.type === "synthetic"
+        ? "AI-generated tabletop test input"
+        : "Your captured tabletop";
     $("preview-caption").textContent = "Your table · confirmed roles";
     state.selected = null;
     commitWorld(world);

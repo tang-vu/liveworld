@@ -6,6 +6,15 @@ const base = "http://127.0.0.1:4173";
 const page = await fetch(base, { headers: { "Sec-Fetch-Site": "cross-site" } });
 assert.equal(page.status, 200);
 assert.match(await page.text(), /LiveWorld/);
+for (const variant of ["a", "b"]) {
+  const image = await fetch(
+    `${base}/examples/generated-tabletop-${variant}.png`,
+  );
+  assert.equal(image.status, 200);
+  assert.equal(image.headers.get("content-type"), "image/png");
+  const bytes = new Uint8Array(await image.arrayBuffer());
+  assert.deepEqual([...bytes.slice(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+}
 for (const path of [
   "/.env.local",
   "/.liveworld/usage.json",
