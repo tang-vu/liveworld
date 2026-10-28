@@ -1,162 +1,174 @@
 1
-00:00:00,000 --> 00:00:05,399
-One moved bridge. Every home supplied on time.
-LiveWorld turns a small game
+00:00:00,000 --> 00:00:05,155
+Twenty deliveries on time in both worlds. But one
+leaves a home with
 
 2
-00:00:05,399 --> 00:00:10,797
-world into an experiment, with changes you can see
-and results you can
+00:00:05,155 --> 00:00:10,310
+none. The other gives every home at least three.
+LiveWorld helps game creators
 
 3
-00:00:10,797 --> 00:00:11,213
-verify.
+00:00:10,310 --> 00:00:11,500
+test the difference.
 
 4
-00:00:12,000 --> 00:00:18,315
-A cup becomes a well, blocks become homes, and sticks
-become bridges. This
+00:00:12,000 --> 00:00:17,688
+A cup becomes the well, blocks become homes, and
+sticks become bridges. This
 
 5
-00:00:18,315 --> 00:00:20,258
-tabletop image is generated.
+00:00:17,688 --> 00:00:23,375
+input is generated. Recorded Muse Spark and SAM
+outputs supplied the objects and
 
 6
-00:00:22,000 --> 00:00:27,850
-Muse Spark proposes the objects and their roles. SAM
-traces their shapes. These
+00:00:23,375 --> 00:00:29,063
+shapes. Confirmed roles and image-relative positions
+become a fixed-grid world, not a metric
 
 7
-00:00:27,850 --> 00:00:33,700
-are actual returned masks. The creator reviews the
-suggestions before the image-relative positions
+00:00:29,063 --> 00:00:29,500
+reconstruction.
 
 8
-00:00:33,700 --> 00:00:35,500
-become a fixed-grid level.
+00:00:30,000 --> 00:00:35,549
+The creator asks for at least twenty on-time units,
+at least three at
 
 9
-00:00:36,000 --> 00:00:42,295
-Now switch to an authored challenge. Six couriers
-supply six homes, each with
+00:00:35,549 --> 00:00:41,098
+every home, and at most ten waiting turns. Muse Spark
+translates this into
 
 10
-00:00:42,295 --> 00:00:48,589
-its own deadline. Everything is connected, yet four
-water units arrive late. Movement,
+00:00:41,098 --> 00:00:46,646
+a contract. The creator confirms it. Each repair
+keeps workers, demand, deadlines and
 
 11
-00:00:48,589 --> 00:00:52,947
-stock, queues and deadlines are computed by the
-simulator.
+00:00:46,646 --> 00:00:47,500
+production locked.
 
 12
-00:00:54,000 --> 00:01:00,319
-Balanced dispatch sounds like a reasonable fix. In
-this recorded Meta experiment, it
+00:00:48,000 --> 00:00:53,857
+Moving the lower stick looks promising: waiting falls
+from twenty-two to ten turns.
 
 13
-00:01:00,319 --> 00:01:06,639
-makes the outcome worse: only fourteen of twenty-four
-units arrive on time. The
+00:00:53,857 --> 00:00:59,713
+Yet the total stays twenty of twenty-four. The
+household comparison reveals the problem.
 
 14
-00:01:06,639 --> 00:01:11,500
-simulator rejects the hypothesis. Model confidence
-cannot change that result.
+00:00:59,713 --> 00:01:05,570
+Four late units move from one home to another. This
+proposal fails the
 
 15
-00:01:12,000 --> 00:01:18,048
-The playtester uses simulation tools to investigate
-allowed edits. Its search includes a
+00:01:05,570 --> 00:01:06,921
+confirmed per-home floor.
 
 16
-00:01:18,048 --> 00:01:24,096
-systematic sweep; that part is code, not invented
-reasoning. Moving the south bridge
+00:01:08,000 --> 00:01:13,590
+Inspect a home and its delivery receipts. Each
+receipt records dispatch, arrival, bridge
 
 17
-00:01:24,096 --> 00:01:30,144
-gets every unit there on time, with the same workers,
-demand and deadlines.
+00:01:13,590 --> 00:01:19,180
+visits and waiting, with references to the
+simulator's events. Select an arrival to
 
 18
-00:01:30,144 --> 00:01:33,401
-Waiting increases, so the tradeoff remains visible.
+00:01:19,180 --> 00:01:24,770
+replay the exact turn and highlight its courier.
+Across worlds, deliveries are matched
 
 19
-00:01:36,000 --> 00:01:41,704
-Creators can design a different challenge: close the
-north bridge from turn twenty-five
+00:01:24,770 --> 00:01:29,500
+by home and order, not assumed to be the same parcel.
 
 20
-00:01:41,704 --> 00:01:47,408
-through fifty. Muse Spark compiles that instruction
-into a validated schedule. The bridge
+00:01:30,000 --> 00:01:35,480
+The recorded Meta playtester tests a dispatch change
+and uses a systematic simulator
 
 21
-00:01:47,408 --> 00:01:53,112
-really closes, couriers reroute, and on-time delivery
-falls from twenty to sixteen. This
+00:01:35,480 --> 00:01:40,961
+search. Balanced dispatch meets every condition:
+twenty units on time, waiting seven turns,
 
 22
-00:01:53,112 --> 00:01:57,500
-is a creator design change, separate from a
-same-resource repair.
+00:01:40,961 --> 00:01:46,441
+and at least three on time at every home. Four units
+still arrive
 
 23
-00:01:58,000 --> 00:02:03,549
-Under that new schedule, another recorded Meta
-playtest improves delivery from sixteen to
+00:01:46,441 --> 00:01:51,500
+late. Three previously fully served homes each give
+up one on-time unit.
 
 24
-00:02:03,549 --> 00:02:09,098
-twenty-two. The closure remains locked. Some
-deadlines are still missed, and the app
+00:01:52,000 --> 00:01:57,281
+Now shift the lower bridge one cell in either
+direction in both worlds.
 
 25
-00:02:09,098 --> 00:02:14,646
-says so. A bounded search is useful evidence, not
-proof that every level
+00:01:57,281 --> 00:02:02,563
+The nominal balanced design passes. One direction
+breaks its waiting cap; the other
 
 26
-00:02:14,646 --> 00:02:15,500
-is solved.
+00:02:02,563 --> 00:02:07,844
+breaks its on-time target. These are selected
+deterministic conditions, not a statistical
+reliability
 
 27
-00:02:16,000 --> 00:02:21,771
-Save the world, checkpoints and trials as a portable
-project. Reopening validates the
+00:02:07,844 --> 00:02:11,500
+score. No model calls are needed for the sweep.
 
 28
-00:02:21,771 --> 00:02:27,542
-inputs and recomputes the measurements. Export an
-inspectable report or a smooth replay
+00:02:12,000 --> 00:02:17,958
+Save the project, open it again, and recompute every
+trial. The contract and
 
 29
-00:02:27,542 --> 00:02:33,313
-clip directly from the product. These local replays
-need no API calls, so
+00:02:17,958 --> 00:02:23,917
+checkpoints travel with the world. Export household
+tradeoffs, delivery receipts and sensitivity
+conditions,
 
 30
-00:02:33,313 --> 00:02:36,420
-a collaborator can examine the same experiment.
+00:02:23,917 --> 00:02:29,875
+or a replay with its inputs. Imported success claims
+are discarded. Eight predeclared
 
 31
-00:02:40,000 --> 00:02:45,633
-LiveWorld is a tabletop playtest studio for small
-logistics games. It connects design
+00:02:29,875 --> 00:02:35,833
+interpretation checks matched the expected contracts
+or refusals, one attempt each. This small
 
 32
-00:02:45,633 --> 00:02:51,267
-intent to an executable system, a visible failure,
-and a measured change. The
+00:02:35,833 --> 00:02:39,500
+integration check is not a general accuracy
+benchmark.
 
 33
-00:02:51,267 --> 00:02:56,900
-prototype uses a fixed grid and two timed mechanics.
-The next step is
+00:02:40,000 --> 00:02:46,036
+LiveWorld was built by Tang Vu for indie creators.
+Meta interprets the scene
 
 34
-00:02:56,900 --> 00:02:59,500
-testing this workflow with game creators.
+00:02:46,036 --> 00:02:52,071
+and design intent, and orchestrates experiments. The
+simulator verifies outcomes. Three.js renders the
+
+35
+00:02:52,071 --> 00:02:58,107
+world. This is a generated-input local prototype.
+Physical capture and creator usability still
+
+36
+00:02:58,107 --> 00:02:59,500
+need broader validation.

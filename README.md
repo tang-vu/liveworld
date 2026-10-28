@@ -6,7 +6,7 @@ LiveWorld is a tabletop playtest studio for small logistics games. Turn objects 
 
 Built by Tang Vu for the Meta Global AI Developer Hackathon 2026, Indie Developer track.
 
-![LiveWorld's 3D playtest studio: a miniature world with lit buildings, bridges and replayable courier movement](docs/studio-focus.jpg)
+![LiveWorld's creator brief: the minimum number of on-time deliveries per home improves from zero to three on the same synthetic tabletop world](docs/creator-brief.jpg)
 
 **[Watch the three-minute demo](public/demo/liveworld-demo.mp4)** · [Recording details and transcript](demo/README.md) · [Submission draft](docs/submission.md)
 
@@ -46,6 +46,29 @@ The default scene is an authored example, not a general benchmark. Changing the 
 
 **Focus** gives the world more room for a presentation or detailed inspection; press Escape to leave it. The orthographic 3D scene uses the same ground projection as labels and object picking. Buildings, trees, materials and lighting are procedural project assets, rendered with Three.js. A canvas renderer remains available when WebGL is unavailable. Landscape decoration does not change simulation obstacles or routes. Ambient water movement leaves the simulation turn unchanged, and reduced-motion preferences disable ambient animation and initial autoplay.
 
+## Design against a creator brief
+
+Choose **Set the test brief** to define success before testing: a total on-time minimum, an optional minimum for every home, a maximum number of courier waiting turns, and which existing bridges or dispatch policy may change. Muse Spark can translate the instruction into a proposal; inspect the fields and confirm them. Manual entry makes no model calls. Each repair still permits only one edit, with resources, demand, deadlines and schedule locked.
+
+Blank total means all demand must arrive on time; enter zero to remove that total minimum. Blank per-home floor or waiting cap adds no such condition. The engine evaluates each confirmed condition independently of model prose. The brief travels inside the world through projects, checkpoints, reports and replay inputs. Imported pass flags are discarded. Older worlds without a brief retain their original all-on-time objective.
+
+**Explore a creator's brief** is a recorded Meta study on one synthetic tabletop world. Its brief requires at least 20/24 units on time, at least three at every home, and at most ten waiting turns. The original has 20/24 on time and 22 waiting turns, with one home receiving no on-time units. Moving the lower stick cuts waiting to ten, but transfers four late units to a different home; it fails the per-home floor. A recorded Meta playtest selects balanced dispatch: **20/24 on time, seven waiting turns, and at least three on time at every home**. Four units remain late; three previously fully served homes each lose one on-time unit. This is an authored showcase on previously observed inputs, not a held-out benchmark or a real-camera evaluation.
+
+The **Delivery receipts** tab compares every household and links each completed delivery to its dispatch/arrival events, bridge visits and waiting frames. Selecting an arrival replays its exact turn and labels the relevant courier. A/B deliveries are matched by home and arrival order, not assumed to be the same parcel or courier. Outbound waiting excludes return trips, while the aggregate waiting metric includes both.
+
+The **Stress test** tab applies the same declared perturbation to A and B: all deadlines shift −3…+3 turns, or one selected bridge shifts −1, 0, +1 cell. The confirmed brief stays fixed. Invalid conditions remain visible. Export retains both input worlds, the condition set and recomputed results. These finite conditions do not estimate a reliability percentage or prove anything beyond the selected set. In the creator study, shifting the lower bridge one cell in either direction breaks the balanced design's waiting cap or total on-time floor.
+
+Replay the new evidence without API usage:
+
+```sh
+node scripts/evaluate-contracts.mjs
+node scripts/record-creator-study.mjs
+```
+
+The eight [predeclared interpretation cases](demo/contract-evaluation-cases.json) matched their expected contracts or refusals in one attempt each, using eight Meta requests at an app-estimated $0.035343. They include named edit permissions, preservation of existing criteria, ambiguity, unsupported resource changes and a measurable but infeasible brief. This is a small integration check, not a general accuracy claim. The separate creator translation/playtest used five Meta requests and 22 simulated trials at an app-estimated $0.048361. `--live` explicitly makes new paid requests; the default commands only verify the saved outputs.
+
+[Open the creator project](public/examples/creator-brief-project.json) · [Read its measured report](public/examples/creator-brief-report.html) · [Creator usability protocol](docs/creator-validation.md). No creator sessions or productivity measurements have been completed.
+
 ## Use your own table
 
 Choose **Capture your table**, select a photo or capture a camera frame, and then select **Find objects**. This sends the resized image to Meta:
@@ -83,7 +106,7 @@ A fresh photo world starts with the example game rules. Rescanning an existing p
 
 ## Agent and verification
 
-Muse Spark can inspect baseline events, call `test_change` for a hypothesis, and use `search_one_edit` to systematically search bridge positions or dispatch policies. Each trial may change **one dispatch policy or move one existing bridge**. Couriers, production, households, demand, deadlines, and bridge capacity are locked during playtesting. This initial version checks the explicit objective of delivering every unit by its household deadline; it does not compile arbitrary game mechanics.
+Muse Spark can inspect baseline events and delivery receipts, call `test_change` for a hypothesis, and use `search_one_edit` to systematically search permitted bridge positions or dispatch policies. Each trial may change **one dispatch policy or move one existing bridge**. Couriers, production, households, demand, deadlines, and bridge capacity are locked during playtesting. The engine checks the confirmed brief; worlds without one default to delivering every unit by its household deadline. It does not compile arbitrary game mechanics.
 
 The simulator independently computes paths, movement, bridge queues, water accounting, deliveries, deadlines, and the final verdict. A model's written claim cannot change the verified success flag. The best candidate means the best among evaluated candidates, not a globally optimal solution. An unsuccessful limited search is not proof of impossibility.
 

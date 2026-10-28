@@ -1,5 +1,6 @@
 import { validateWorld } from "./world.js";
 import { activeMechanics, describeEvent } from "./mechanics.js";
+import { evaluateContract, rankRuns } from "./contract.js";
 
 const key = (p) => `${p.x},${p.y}`;
 export function bridgeAt(world, point) {
@@ -360,25 +361,32 @@ export function simulate(input) {
 export function compareRuns(baseline, candidate) {
   const a = baseline.metrics;
   const b = candidate.metrics;
-  const improved =
-    b.lateUnits < a.lateUnits ||
-    (b.lateUnits === a.lateUnits &&
-      (b.unmetUnits < a.unmetUnits ||
-        (b.unmetUnits === a.unmetUnits && b.waitTicks < a.waitTicks)));
+  const improved = baseline.world.contract
+    ? rankRuns(candidate, baseline, baseline.world.contract) < 0
+    : b.lateUnits < a.lateUnits ||
+      (b.lateUnits === a.lateUnits &&
+        (b.unmetUnits < a.unmetUnits ||
+          (b.unmetUnits === a.unmetUnits && b.waitTicks < a.waitTicks)));
   return {
     improved,
-    goalMet: b.allOnTime,
+    goalMet: baseline.world.contract
+      ? evaluateContract(candidate, baseline.world.contract).passed
+      : b.allOnTime,
     lateUnitsReduced: a.lateUnits - b.lateUnits,
     unmetUnitsReduced: a.unmetUnits - b.unmetUnits,
     waitTicksReduced: a.waitTicks - b.waitTicks,
     sameSeed: baseline.world.seed === candidate.world.seed,
     verifiedBy: "deterministic-engine-v1",
+    ...(baseline.world.contract
+      ? { contract: evaluateContract(candidate, baseline.world.contract) }
+      : {}),
   };
 }
 
 export function evidence(run) {
   return {
     metrics: run.metrics,
+    ...(run.world.contract ? { contract: evaluateContract(run) } : {}),
     households: run.houses.map((h) => ({
       id: h.id,
       label: h.label,

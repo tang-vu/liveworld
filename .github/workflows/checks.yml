@@ -23,4 +23,7 @@ jobs:
       - run: node scripts/check-mechanics.mjs
       - run: node scripts/evaluate-rules.mjs
       - run: node scripts/check-agent-evidence.mjs
+      - run: node scripts/evaluate-contracts.mjs
+      - run: node scripts/record-creator-study.mjs
+      - run: node scripts/check-creator-film.mjs
       - run: npm run evaluate

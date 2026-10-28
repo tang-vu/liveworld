@@ -1,0 +1,151 @@
+{
+  "format": "liveworld-contract-evaluation-v1",
+  "createdAt": "2026-10-28T15:25:33.209Z",
+  "digest": "e98ecc541028cd7317d9f6f03959643148fb6585db8036351584a8200f88abeb",
+  "model": "muse-spark-1.3",
+  "scope": "Eight predeclared integration briefs on renamed authored layouts; one attempt each. Not a general accuracy benchmark. Refusals and errors retained.",
+  "requests": 8,
+  "estimatedCostUsd": 0.035343,
+  "results": [
+    {
+      "id": "combined-thresholds",
+      "response": {
+        "supported": true,
+        "explanation": "Set total on-time to 23, per-house floor to 3, wait cap to 5, kept edits to one bridge move or one dispatch change.",
+        "unsupported": [],
+        "model": "muse-spark-1.3",
+        "instruction": "Require at least twenty-three water units on time, at least three at every home, and at most five total courier waiting turns. Permit either one bridge move or one dispatch change.",
+        "contract": {
+          "allowDispatch": true,
+          "bridgeIds": null,
+          "maximumWait": 5,
+          "minimumOnTime": 23,
+          "minimumPerHouse": 3,
+          "version": 1
+        }
+      },
+      "latencyMs": 4401
+    },
+    {
+      "id": "named-edit-permission",
+      "response": {
+        "supported": true,
+        "explanation": "All demand on time (minimumOnTime=null) with maximumWait=4. Only edit is moving Upper ford (ford-upper), so allowDispatch=false.",
+        "unsupported": [],
+        "model": "muse-spark-1.3",
+        "instruction": "Every unit must be on time with at most four total waiting turns. The only permitted edit is moving Upper ford.",
+        "contract": {
+          "allowDispatch": false,
+          "bridgeIds": ["ford-upper"],
+          "maximumWait": 4,
+          "minimumOnTime": null,
+          "minimumPerHouse": null,
+          "version": 1
+        }
+      },
+      "latencyMs": 4298
+    },
+    {
+      "id": "floor-without-total",
+      "response": {
+        "supported": true,
+        "explanation": "Set minimumOnTime=0 for ignore total, minimumPerHouse=2, maximumWait=9, and dispatch-only edits with bridges locked.",
+        "unsupported": [],
+        "model": "muse-spark-1.3",
+        "instruction": "Ignore the overall on-time count. Require at least two on-time water units at every home and at most nine total waiting turns. Only change the dispatch policy; do not move any bridge.",
+        "contract": {
+          "allowDispatch": true,
+          "bridgeIds": [],
+          "maximumWait": 9,
+          "minimumOnTime": 0,
+          "minimumPerHouse": 2,
+          "version": 1
+        }
+      },
+      "latencyMs": 3090
+    },
+    {
+      "id": "preserve-confirmed-values",
+      "response": {
+        "supported": true,
+        "explanation": "Updated maximumWait from 8 to 2, preserving all other contract values.",
+        "unsupported": [],
+        "model": "muse-spark-1.3",
+        "instruction": "Change only the maximum total courier waiting turns to two. Keep every other acceptance criterion and edit permission unchanged.",
+        "contract": {
+          "allowDispatch": false,
+          "bridgeIds": ["ford-upper"],
+          "maximumWait": 2,
+          "minimumOnTime": 23,
+          "minimumPerHouse": 3,
+          "version": 1
+        }
+      },
+      "latencyMs": 3467
+    },
+    {
+      "id": "measurable-but-infeasible",
+      "response": {
+        "supported": true,
+        "explanation": "Every unit on time keeps minimumOnTime=null, zero waiting sets maximumWait=0, and one bridge or dispatch edit keeps allowDispatch=true with bridgeIds=null.",
+        "unsupported": [],
+        "model": "muse-spark-1.3",
+        "instruction": "Every water unit on time and zero total courier waiting turns. One bridge move or one dispatch change is allowed.",
+        "contract": {
+          "allowDispatch": true,
+          "bridgeIds": null,
+          "maximumWait": 0,
+          "minimumOnTime": null,
+          "minimumPerHouse": null,
+          "version": 1
+        }
+      },
+      "latencyMs": 4002
+    },
+    {
+      "id": "unsupported-resource-change",
+      "response": {
+        "supported": false,
+        "explanation": "At least 23 on-time is interpretable as minimumOnTime=23, but adding a courier changes locked worker/courier count. No changes applied.",
+        "unsupported": [
+          "add one more courier: courier/worker count, production, demand, deadlines, schedule and capacity are always locked"
+        ],
+        "model": "muse-spark-1.3",
+        "instruction": "At least 23 units on time, and add one more courier so the test will pass."
+      },
+      "latencyMs": 4807
+    },
+    {
+      "id": "ambiguous-bridge",
+      "response": {
+        "supported": false,
+        "explanation": "Kept current contract unchanged because bridge name 'Crossing' is ambiguous: it matches two existing bridges (ford-upper and ford-meadow) and cannot be resolved to one exact ID.",
+        "unsupported": [
+          "ambiguous bridge name 'Crossing' matches multiple bridges"
+        ],
+        "model": "muse-spark-1.3",
+        "instruction": "Require every unit on time. Only move Crossing."
+      },
+      "latencyMs": 8969
+    },
+    {
+      "id": "reset-contract",
+      "response": {
+        "supported": true,
+        "explanation": "Reset to default: null total requires all 24 units on time, removed per-house floor and wait cap, allowed dispatch change and any bridge move.",
+        "unsupported": [],
+        "model": "muse-spark-1.3",
+        "instruction": "Reset to every unit on time. Remove the per-home floor and the waiting cap. Allow either one dispatch change or moving any existing bridge.",
+        "contract": {
+          "allowDispatch": true,
+          "bridgeIds": null,
+          "maximumWait": null,
+          "minimumOnTime": null,
+          "minimumPerHouse": null,
+          "version": 1
+        }
+      },
+      "latencyMs": 3205
+    }
+  ]
+}

@@ -14,7 +14,7 @@ for (const file of files) {
   )
     throw new Error(`Private path was staged: ${file}`);
   const data = execFileSync("git", ["show", `:${file}`], {
-    maxBuffer: 10_000_000,
+    maxBuffer: 128_000_000,
   });
   if (key.length > 8 && data.includes(Buffer.from(key)))
     throw new Error(`A credential was detected in staged file: ${file}`);

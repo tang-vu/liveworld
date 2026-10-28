@@ -12,6 +12,7 @@
     <link rel="icon" href="/mark.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/studio.css" />
     <link rel="stylesheet" href="/studio-theme.css" />
+    <link rel="stylesheet" href="/design-lab.css" />
     <script type="module" src="/app.js"></script>
   </head>
   <body>
@@ -88,6 +89,24 @@
       </div>
       <div class="workbench">
         <section class="simulation-panel panel">
+          <div id="creator-controls" class="creator-controls" hidden>
+            <div>
+              <span class="eyebrow">ONE TABLE · A CREATOR'S FAIRNESS BRIEF</span
+              ><small
+                >Recorded Meta interpretation and playtest · synthetic input ·
+                recomputed locally</small
+              >
+            </div>
+            <div class="creator-steps">
+              <button data-creator-step="table">01 · The table</button
+              ><button data-creator-step="brief">02 · The brief</button
+              ><button data-creator-step="counterexample">
+                03 · A tempting move</button
+              ><button data-creator-step="repair">04 · A fairer design</button
+              ><button data-creator-step="stress">05 · Test its limits</button>
+            </div>
+            <p id="creator-caption"></p>
+          </div>
           <div id="study-controls" class="study-controls" hidden>
             <div>
               <span class="eyebrow">A RECORDED META EXPERIMENT</span
@@ -222,10 +241,25 @@
             </select>
           </div>
           <div class="metrics" id="metrics"></div>
+          <section class="contract-strip" aria-label="Confirmed test brief">
+            <div>
+              <span class="eyebrow">CONFIRMED TEST BRIEF</span
+              ><strong id="brief-outcome"></strong>
+            </div>
+            <p id="brief-summary"></p>
+            <small id="brief-permissions"></small>
+            <details id="brief-details">
+              <summary>Inspect each condition</summary>
+              <ul id="brief-checks"></ul>
+            </details>
+            <button id="edit-brief" class="button secondary">
+              Set the test brief ↗
+            </button>
+          </section>
           <div class="experiment-strip">
             <div>
               <span class="eyebrow">THE QUESTION</span>
-              <p>Can every home get its water <em>on time?</em></p>
+              <p>Does the design meet <em>your confirmed brief?</em></p>
             </div>
             <div class="constraint-chips">
               <span id="courier-count">6 couriers</span
@@ -236,10 +270,53 @@
           <div class="bottom-tabs">
             <button class="active" data-tab="events">Event replay</button
             ><button data-tab="households">Household results</button
+            ><button id="receipts-tab" data-tab="receipts">
+              Delivery receipts</button
+            ><button data-tab="stress">Stress test</button
             ><span id="result-caption">Results across 120 turns</span>
           </div>
           <div id="event-log" class="event-log"></div>
           <div id="household-results" class="household-results" hidden></div>
+          <section id="receipts-panel" class="lab-panel" hidden>
+            <h3>Who gains? Who loses?</h3>
+            <p>
+              Compare every home, then inspect its delivery receipts. Outbound
+              waiting is measured from replay frames; total waiting also
+              includes return trips.
+            </p>
+            <div id="receipt-households" class="lab-table"></div>
+            <label for="receipt-house">Inspect a home</label
+            ><select id="receipt-house"></select>
+            <p class="lab-note">
+              Matched by home and arrival order, not by the same parcel or
+              courier. Select an arrival to replay both worlds at that exact
+              turn.
+            </p>
+            <div id="receipt-trips" class="lab-table"></div>
+            <p id="receipt-replay-note" role="status"></p>
+          </section>
+          <section id="stress-panel" class="lab-panel" hidden>
+            <h3>Where does this design stop working?</h3>
+            <div class="lab-controls">
+              <label
+                >Change the conditions<select id="stress-axis">
+                  <option value="deadlines">
+                    All deadlines: −3 to +3 turns
+                  </option>
+                  <option value="bridge-position">
+                    Bridge placement: −1 to +1 cell
+                  </option>
+                </select></label
+              ><label id="stress-bridge-label" hidden
+                >Bridge<select id="stress-bridge"></select></label
+              ><button id="run-stress" class="button secondary">
+                Test A and B</button
+              ><button id="export-stress" class="text-button" disabled>
+                ↓ Inputs & results
+              </button>
+            </div>
+            <div id="stress-results" aria-live="polite"></div>
+          </section>
         </section>
         <aside class="playtest-panel panel">
           <div class="panel-heading">
@@ -251,6 +328,15 @@
             Muse Spark investigates the world, tests ideas, and brings back a
             change with evidence.
           </p>
+          <button id="open-creator-study" class="study-entry">
+            <span class="study-entry-icon">↗</span
+            ><span
+              ><b>Explore a creator's brief</b
+              ><small
+                >One table. A fairness goal. Verified tradeoffs.</small
+              ></span
+            ><span>→</span>
+          </button>
           <button id="open-study" class="study-entry">
             <span class="study-entry-icon">↗</span
             ><span
@@ -260,7 +346,7 @@
               ></span
             ><span>→</span></button
           ><label class="field-label" for="goal"
-            >What should we investigate?</label
+            >Investigation notes · the confirmed brief stays locked</label
           >
           <textarea id="goal" rows="4" maxlength="2000">
 Find a change that gets every home its water on time. Keep the same workers and resources. Only one edit per trial.</textarea>
@@ -734,6 +820,83 @@ Find a change that gets every home its water on time. Keep the same workers and 
           ↓ Readable report
         </button>
       </div>
+    </dialog>
+    <dialog id="brief-dialog">
+      <div class="dialog-heading">
+        <div>
+          <span class="eyebrow">DESIGN INTENT → VERIFIED CONDITIONS</span>
+          <h2>What should a good design do?</h2>
+        </div>
+        <button
+          id="close-brief"
+          class="icon-button"
+          aria-label="Close test brief"
+        >
+          ×
+        </button>
+      </div>
+      <p>
+        Set success before testing. Each trial can change one dispatch policy or
+        move one permitted bridge. Workers, demand, deadlines, production and
+        schedule stay fixed.
+      </p>
+      <label for="brief-instruction">Describe the test brief</label
+      ><textarea id="brief-instruction" rows="3" maxlength="2000">
+At least 23 water units on time, at least 3 at every home, and at most 5 total courier waiting turns. Permit one bridge move or one dispatch change.</textarea>
+      <button id="compile-brief" class="button secondary">
+        Translate with Muse Spark ↗
+      </button>
+      <p class="lab-note">
+        Live Meta request. A proposal fills the fields below; confirm them to
+        apply. You can also enter conditions manually without API usage.
+      </p>
+      <div class="lab-controls">
+        <button id="brief-default" class="text-button">
+          Every unit on time</button
+        ><button id="brief-queues" class="text-button">
+          Keep queues short
+        </button>
+      </div>
+      <div class="brief-fields">
+        <label
+          >Minimum on-time units<input
+            id="brief-total"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="All demand" /></label
+        ><label
+          >Minimum at every home<input
+            id="brief-house"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="No extra floor" /></label
+        ><label
+          >Maximum total waiting turns<input
+            id="brief-wait"
+            type="number"
+            min="0"
+            step="1"
+            placeholder="No limit"
+        /></label>
+      </div>
+      <p class="lab-note">
+        Blank total means every unit must arrive on time. Enter 0 to remove the
+        total minimum. Waiting counts courier-turns, not queue episodes.
+      </p>
+      <label
+        ><input id="brief-dispatch" type="checkbox" /> Allow dispatch policy
+        changes</label
+      >
+      <fieldset>
+        <legend>Bridges permitted to move</legend>
+        <div id="brief-bridges" class="lab-controls"></div>
+      </fieldset>
+      <p id="brief-status" role="status"></p>
+      <button id="brief-apply" class="button primary">
+        Confirm brief & start fresh trials
+      </button>
     </dialog>
   </body>
 </html>

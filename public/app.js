@@ -21,6 +21,9 @@ import { loadAutosave, saveAutosave } from "./storage.js";
 import { experimentReport } from "./report.js";
 import { describeEvent } from "/shared/mechanics.js";
 import { createReplayClip, replayFormat } from "./replay-clip.js";
+import { setupDesignLab } from "./design-lab.js";
+import { searchLocal } from "/shared/experiments.js";
+import { evaluateContract } from "/shared/contract.js";
 
 const $ = (id) => document.getElementById(id);
 const escape = (text) =>
@@ -60,8 +63,12 @@ const state = {
   name: "My LiveWorld",
   photo: null,
   checkpoints: [],
+  receiptCourier: null,
+  creatorStudy: false,
+  briefInstruction: "",
 };
 let restoredProject = null;
+let designLab;
 let clipRecording = null;
 let clipUrls = [];
 let ambientClock = 0;
@@ -74,6 +81,7 @@ try {
       photo: restoredProject.photo,
       name: restoredProject.name,
       checkpoints: restoredProject.checkpoints,
+      briefInstruction: restoredProject.briefInstruction,
       trials: restoredProject.trials,
       tick: restoredProject.tick,
     });
@@ -90,6 +98,7 @@ function projectSnapshot() {
   return normalizeProject({
     format: PROJECT_FORMAT,
     name: state.name,
+    briefInstruction: state.briefInstruction,
     world: state.world,
     photo: state.photo,
     checkpoints: state.checkpoints,
@@ -152,10 +161,14 @@ function checkpoint(label = state.world.name) {
   return item;
 }
 function restoreProject(project) {
+  state.receiptCourier = null;
   Object.assign(state, {
     world: project.world,
     photo: project.photo,
     name: project.name,
+    briefInstruction:
+      project.briefInstruction ||
+      (project.world.contract ? (project.runSummary?.goal ?? "") : ""),
     checkpoints: project.checkpoints,
     trials: project.trials,
     tick: project.tick,
@@ -163,6 +176,10 @@ function restoreProject(project) {
     candidate: null,
     comparing: false,
     playing: false,
+    creatorStudy:
+      project.name === "A fair delivery brief" &&
+      project.world.contract?.minimumPerHouse === 3 &&
+      project.world.provenance?.type === "synthetic",
     result: project.runSummary
       ? { ...project.runSummary, experiments: project.trials }
       : null,
@@ -205,7 +222,12 @@ function updateLiveControls() {
   const reason = state.status?.budget?.blocked
     ? "Live calls are paused. Recorded studies and local changes are available."
     : "Live Meta is unavailable. Explore the recorded playtest or try local changes.";
-  for (const id of ["playtest", "compile-rules", "scan-photo"]) {
+  for (const id of [
+    "playtest",
+    "compile-rules",
+    "compile-brief",
+    "scan-photo",
+  ]) {
     $(id).disabled =
       state.busy || unavailable || (id === "scan-photo" && !state.scanImage);
     $(id).title = unavailable ? reason : "";
@@ -329,6 +351,7 @@ function setBusy(busy) {
     "checkpoints",
     "capture-hero",
     "open-study",
+    "open-creator-study",
     "design-hero",
     "preview-event",
     "clear-events",
@@ -346,15 +369,23 @@ function setBusy(busy) {
   document.querySelectorAll("[data-study]").forEach((button) => {
     button.disabled = busy;
   });
+  document.querySelectorAll("[data-creator-step]").forEach((button) => {
+    button.disabled = busy;
+  });
   $("clear-events").disabled = busy || !state.world.events?.length;
   $("rule-prompt-flood").disabled = busy || !state.world.bridges.length;
   updateLiveControls();
+  designLab?.render();
 }
-function commitWorld(world, { photo = state.photo, remember = true } = {}) {
+function commitWorld(
+  world,
+  { photo = state.photo, remember = true, briefInstruction = "" } = {},
+) {
   if (state.busy) return;
   const validated = validateWorld(world);
   if (remember) checkpoint("Before · " + state.world.name);
   state.world = validated;
+  state.briefInstruction = briefInstruction;
   state.photo = photo;
   state.run = simulate(state.world);
   state.candidate = null;
@@ -365,6 +396,8 @@ function commitWorld(world, { photo = state.photo, remember = true } = {}) {
   state.studyStep = null;
   state.playing = false;
   state.tick = 0;
+  state.receiptCourier = null;
+  state.creatorStudy = false;
   $("verdict").hidden = true;
   $("agent-activity").hidden = true;
   render();
@@ -569,12 +602,25 @@ function isValleyStudy() {
 function renderMetrics() {
   const a = state.run.metrics;
   const b = state.candidate?.run.metrics;
-  $("stage-score").innerHTML = b
-    ? `<span>${a.onTime}</span> → ${b.onTime}<span>/${b.demand}</span>`
-    : `${a.onTime}<span>/${a.demand}</span>`;
-  $("stage-score-label").textContent = b
-    ? "on time · A → B · full runs"
-    : "on time · full run";
+  const floor = state.world.contract?.minimumPerHouse;
+  const minA = Math.min(...state.run.houses.map((h) => h.onTime));
+  const minB = state.candidate
+    ? Math.min(...state.candidate.run.houses.map((h) => h.onTime))
+    : null;
+  $("stage-score").innerHTML =
+    floor != null
+      ? b
+        ? `<span>${minA}</span> → ${minB}`
+        : String(minA)
+      : b
+        ? `<span>${a.onTime}</span> → ${b.onTime}<span>/${b.demand}</span>`
+        : `${a.onTime}<span>/${a.demand}</span>`;
+  $("stage-score-label").textContent =
+    floor != null
+      ? `minimum on time per home · target ≥${floor}`
+      : b
+        ? "on time · A → B · full runs"
+        : "on time · full run";
   $("stage-score").classList.toggle(
     "worse",
     Boolean(b && b.onTime / b.demand < a.onTime / a.demand),
@@ -803,6 +849,8 @@ function render() {
   renderMetrics();
   renderEvents();
   renderTrials();
+  designLab?.render();
+  $("creator-controls").hidden = !state.creatorStudy;
   requestAnimationFrame(draw);
 }
 function draw() {
@@ -827,6 +875,8 @@ function draw() {
       originBridges: state.soloCandidate ? state.world.bridges : [],
       dragCell: state.dragCell,
       ambientTime: ambientClock,
+      selectedCourier:
+        state.receiptCourier?.side === "a" ? state.receiptCourier.id : null,
     },
   );
   if (state.comparing && state.candidate)
@@ -841,6 +891,8 @@ function draw() {
         changedIds,
         originBridges: state.world.bridges,
         ambientTime: ambientClock,
+        selectedCourier:
+          state.receiptCourier?.side === "b" ? state.receiptCourier.id : null,
       },
     );
   if (!$("table-preview").hidden)
@@ -877,6 +929,8 @@ function draw() {
 function selectTrial(id, { focus = false } = {}) {
   const t = state.trials.find((t) => t.id === id);
   if (!t) return;
+  state.receiptCourier = null;
+  $("receipt-replay-note").textContent = "";
   state.candidate = { ...t, run: simulate(t.world) };
   const narrow = matchMedia("(max-width: 560px)").matches;
   state.comparing = !narrow;
@@ -985,11 +1039,11 @@ function displayVerdict(result, local = false) {
   const text = currentMetrics.pendingUnits
     ? `The replay ends with ${currentMetrics.pendingUnits} deliveries still awaiting their deadlines. Extend the horizon to verify them.`
     : result.verdict === "goal_met"
-      ? "Every requested water unit arrived by its deadline with the same resources."
+      ? "Every condition of the confirmed test brief passed with the same resources. Inspect household changes and waiting tradeoffs."
       : result.verdict === "improved"
         ? "This trial improved the measured result. Some deadlines are still missed."
         : result.verdict === "already_met"
-          ? "All water deliveries already arrive on time."
+          ? "The original world already passes every condition of the confirmed brief."
           : result.selected
             ? "This trial did not meet the goal. Other tested candidates may do better."
             : "These trials did not meet the goal. This does not prove that no solution exists.";
@@ -1126,6 +1180,8 @@ document.querySelectorAll("[data-tab]").forEach((button) =>
       .forEach((b) => b.classList.toggle("active", b === button));
     $("event-log").hidden = button.dataset.tab !== "events";
     $("household-results").hidden = button.dataset.tab !== "households";
+    $("receipts-panel").hidden = button.dataset.tab !== "receipts";
+    $("stress-panel").hidden = button.dataset.tab !== "stress";
   }),
 );
 $("budget-button").addEventListener("click", () => {
@@ -1191,42 +1247,8 @@ $("world-canvas").addEventListener("pointercancel", () => {
 
 $("local-sweep").addEventListener("click", () => {
   if (state.busy) return;
-  const trials = [];
-  const patches = ["balanced", "deadline"].map((dispatch) => ({
-    patch: { dispatch },
-    label: `Use ${policyLabel[dispatch].toLowerCase()}`,
-  }));
-  for (const bridge of state.world.bridges)
-    for (let y = 0; y < state.world.height; y++)
-      if (y !== bridge.y)
-        patches.push({
-          patch: { bridgeMoves: [{ id: bridge.id, y }] },
-          label: `Move ${bridge.id.replace("bridge-", "")} bridge to row ${y + 1}`,
-        });
-  for (const { patch, label } of patches) {
-    if (trials.length >= 32) break;
-    try {
-      const world = applyPatch(state.world, patch).world;
-      const run = simulate(world);
-      trials.push({
-        id: `local-${trials.length + 1}`,
-        label,
-        kind: "local",
-        source: "local-sweep",
-        patch,
-        world,
-        comparison: compareRuns(state.run, run),
-        evidence: evidence(run),
-      });
-    } catch {
-      /* Overlapping bridge positions are invalid candidates. */
-    }
-  }
-  trials.sort(
-    (a, b) =>
-      a.evidence.metrics.lateUnits - b.evidence.metrics.lateUnits ||
-      a.evidence.metrics.waitTicks - b.evidence.metrics.waitTicks,
-  );
+  const search = searchLocal(state.world);
+  const trials = search.trials;
   state.trials = trials;
   const best = trials.find(
     (t) => t.comparison.improved || t.comparison.goalMet,
@@ -1237,8 +1259,15 @@ $("local-sweep").addEventListener("click", () => {
       ? "goal_met"
       : best?.comparison.improved
         ? "improved"
-        : "no_improvement",
+        : evaluateContract(state.run).passed
+          ? "already_met"
+          : "no_improvement",
     experiments: trials,
+    search: {
+      checked: search.checked,
+      validCandidates: search.validCandidates,
+      complete: search.complete,
+    },
     verification: {
       goalMet: Boolean(best?.comparison.goalMet),
       testsRun: trials.length,
@@ -1251,7 +1280,7 @@ $("local-sweep").addEventListener("click", () => {
   $("agent-activity").hidden = true;
   autosave();
   toast(
-    `Checked ${trials.length} local changes${trials.length === 32 ? " (32-trial limit)" : ""}. No API credit used.`,
+    `Checked ${search.checked}/${search.validCandidates} permitted local changes${search.complete ? " ? complete for this one-edit space" : " ? trial limit reached"}. No API credit used.`,
   );
 });
 
@@ -1309,11 +1338,9 @@ $("playtest").addEventListener("click", async () => {
         if (event.type === "complete") {
           completed = true;
           state.result = event.result;
-          state.trials = event.result.experiments.map((t) => ({
-            ...t,
-            kind: "agent",
-            source: "meta",
-          }));
+          state.trials = event.result.experiments.map((t) =>
+            verifyTrial(state.world, { ...t, kind: "agent", source: "meta" }),
+          );
           if (event.result.best)
             selectTrial(event.result.best.id, { focus: true });
           else render();
@@ -2085,6 +2112,107 @@ $("confirm-scan").addEventListener("click", () => {
 });
 
 let previousTime = 0;
+let creatorBestId = null;
+function creatorStep(step) {
+  if (state.busy || !state.creatorStudy) return;
+  state.playing = false;
+  state.receiptCourier = null;
+  const captions = {
+    table:
+      "One generated tabletop, processed by Muse Spark and SAM. Review its fixed-grid placements. A has 20/24 on time, 22 waiting turns, and one home gets zero on-time deliveries.",
+    brief:
+      "The creator's confirmed brief: at least 20/24 on time, at least 3 at EVERY home, and no more than 10 waiting turns. One permitted edit; the same workers, deadlines and schedule.",
+    counterexample:
+      "Moving the lower stick reduces waiting 22 → 10, but transfers four late units to another home. Total on-time remains 20/24. This rescan fails the per-home floor.",
+    repair:
+      "Recorded Meta playtest: balanced dispatch gives 20/24 on time, 7 waiting turns and at least 3 on time at every home. Four late units remain; three previously fully served homes each give up one on-time unit.",
+    stress:
+      "Shift the lower bridge by one cell in both worlds: the balanced design fails the waiting cap in one direction and the on-time floor in the other. Passing the nominal brief is not a guarantee outside it.",
+  };
+  if (step === "table" || step === "brief") {
+    state.candidate = null;
+    state.comparing = false;
+    state.soloCandidate = false;
+    state.tick = 80;
+    $("verdict").hidden = true;
+    render();
+  } else
+    selectTrial(
+      step === "counterexample"
+        ? "rescan-counterexample"
+        : (creatorBestId ??
+            state.trials.find((t) => t.patch?.dispatch === "balanced")?.id),
+    );
+  $("creator-caption").textContent = captions[step];
+  document
+    .querySelectorAll("[data-creator-step]")
+    .forEach((button) =>
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.creatorStep === step),
+      ),
+    );
+  if (step === "counterexample" || step === "repair") $("receipts-tab").click();
+  if (step === "brief") $("brief-details").open = true;
+  if (step === "stress") {
+    document.querySelector('[data-tab="stress"]').click();
+    $("stress-axis").value = "bridge-position";
+    $("stress-axis").dispatchEvent(new Event("change"));
+    $("stress-bridge").value =
+      [...state.world.bridges].sort((a, b) => b.y - a.y)[0]?.id ?? "";
+    $("run-stress").click();
+  }
+  autosave();
+}
+$("open-creator-study").addEventListener("click", async () => {
+  if (state.busy) return;
+  setBusy(true);
+  try {
+    const project = normalizeProject(
+      await api("/examples/creator-brief-project.json"),
+    );
+    setBusy(false);
+    restoreProject(project);
+    $("brief-instruction").value = project.runSummary?.goal ?? "";
+    creatorBestId = project.selectedTrialId;
+    state.creatorStudy = true;
+    creatorStep("table");
+    toast(
+      "Recorded Meta creator study loaded. Every result is recomputed; no new API calls.",
+    );
+  } catch (error) {
+    toast(error.message);
+  } finally {
+    setBusy(false);
+  }
+});
+document
+  .querySelectorAll("[data-creator-step]")
+  .forEach((button) =>
+    button.addEventListener("click", () =>
+      creatorStep(button.dataset.creatorStep),
+    ),
+  );
+designLab = setupDesignLab({
+  getState: () => state,
+  commit: commitWorld,
+  api,
+  ensureLiveAccess,
+  setBusy,
+  refreshStatus,
+  notify: toast,
+  replay: ({ houseId, tick, courierId, side }) => {
+    state.selected = houseId;
+    state.tick = tick;
+    state.playing = false;
+    state.receiptCourier = { id: courierId, side };
+    state.comparing = Boolean(state.candidate);
+    state.soloCandidate = false;
+    $("receipt-replay-note").textContent =
+      `Replaying ${side.toUpperCase()} at turn ${tick}: ${courierId}, home ${houseId}. Both worlds share this replay turn.`;
+    render();
+  },
+});
 let lastAmbientDraw = 0;
 function animate(time) {
   ambientClock = time / 1000;

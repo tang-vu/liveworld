@@ -1,4 +1,4 @@
-param([string]$Voice = 'Microsoft Zira Desktop', [string]$Storyboard = 'demo/storyboard.json', [string]$CaptureDirectory = '.liveworld/studio-film')
+param([string]$Voice = 'Microsoft Zira Desktop', [string]$Storyboard = 'demo/creator-storyboard.json', [string]$CaptureDirectory = '.liveworld/creator-film')
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $story = Get-Content -LiteralPath (Join-Path $projectRoot $Storyboard) -Raw -Encoding UTF8 | ConvertFrom-Json

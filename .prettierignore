@@ -5,3 +5,5 @@ captures/
 docs/*.jpg
 package-lock.json
 public/vendor/
+# Preserve the exact UI download bytes referenced by the film's evidence card.
+demo/creator-example-project.json

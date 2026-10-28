@@ -8,6 +8,7 @@ import { BudgetLedger } from "./src/budget.mjs";
 import { MetaClient, scanTabletop } from "./src/meta.mjs";
 import { runPlaytest } from "./src/agent.mjs";
 import { compileRuleChange } from "./src/rules.mjs";
+import { compileContract } from "./src/contracts.mjs";
 import { validateWorld } from "./shared/world.js";
 import { simulate } from "./shared/engine.js";
 import { readRuntimeConfig, DemoAccess } from "./src/access.mjs";
@@ -116,7 +117,9 @@ const server = createServer(async (req, res) => {
     }
     if (
       req.method === "POST" &&
-      ["/api/playtest", "/api/scan", "/api/rules"].includes(url.pathname)
+      ["/api/playtest", "/api/scan", "/api/rules", "/api/contract"].includes(
+        url.pathname,
+      )
     ) {
       if (!access.authorized(req))
         return json(res, 403, {
@@ -147,6 +150,8 @@ const server = createServer(async (req, res) => {
           );
           return json(res, 200, result);
         }
+        if (url.pathname === "/api/contract")
+          return json(res, 200, await compileContract(client, body));
         res.writeHead(200, {
           "Content-Type": "text/event-stream",
           "Cache-Control": "no-store",

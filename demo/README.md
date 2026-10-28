@@ -1,32 +1,39 @@
 # Three-minute local demo
 
-The finished video is [`public/demo/liveworld-demo.mp4`](../public/demo/liveworld-demo.mp4). It is 1920×1080, approximately 180 seconds, with English narration and an embedded English subtitle track. After starting the app, open **http://127.0.0.1:4173/demo/** for the local player and optional English subtitles.
+The current film is [public/demo/liveworld-demo.mp4](../public/demo/liveworld-demo.mp4): 1920×1080, 30 fps, 179.988 seconds, with English synthetic narration and embedded subtitles. Start the app and open **http://127.0.0.1:4173/demo/** for the chapter player.
 
-The movie combines actual application screenshots with native simulation replay exports encoded at 30 fps. Tabletop input images are generated and labelled synthetic. Segmentation uses an actual Muse Spark and SAM response. Playtests and the timed rule proposal use saved Meta outputs, with recording labels visible. Generic English narration was synthesized locally with an installed Windows voice.
+The film follows **one synthetic tabletop world** through a creator's fairness brief, a failed moved-stick rescan, verified balanced dispatch, delivery receipts, sensitivity and project handoff. Its result is **20/24 on time, seven waiting turns, and at least three on time at every home**. Four units still arrive late. It does not borrow the authored valley's 24/24 result.
 
-| Start | Scene                                                   |
-| ----- | ------------------------------------------------------- |
-| 00:00 | One bridge change: 20/24 → 24/24 on time                |
-| 00:12 | Generated tabletop input                                |
-| 00:22 | Actual masks, role review and the resulting photo world |
-| 00:36 | Switch to the authored valley: 20/24 on time            |
-| 00:54 | Failed recorded hypothesis: balanced dispatch, 14/24    |
-| 01:12 | Verified bridge repair: 24/24, with more waiting        |
-| 01:36 | Timed rule: close the north crossing, 20/24 → 16/24     |
-| 01:58 | Playtest under that closure: 16/24 → 22/24, not solved  |
-| 02:16 | Save, reopen and share reproducible evidence            |
-| 02:40 | Scope, attribution and the next validation step         |
+The edit combines actual UI captures, native simulation replay exports and clearly labelled engine-evidence diagrams. The diagrams are not application screenshots: they visualize recomputed events and measurements from the same saved project. Input images are generated; Meta outputs are recorded and recomputed. Inference waiting is omitted. This authored showcase is not a physical-camera test, held-out benchmark or creator productivity study.
 
-The video demonstrates this fixed-grid prototype, rather than physical camera reliability, productivity gains or a general game engine. Model waiting time is omitted. The narrated measurements are scoped to the particular examples shown.
+| Start | Scene                                                                  |
+| ----- | ---------------------------------------------------------------------- |
+| 00:00 | Same total; minimum home on-time changes 0 → 3                         |
+| 00:12 | Generated tabletop and confirmed fixed-grid world                      |
+| 00:30 | Meta translation into the creator's 20/3/10 brief                      |
+| 00:48 | Moved stick reduces waiting but transfers four late units              |
+| 01:08 | Event-backed delivery receipts, shown as a labelled diagram            |
+| 01:30 | Recorded Meta playtest: balanced dispatch meets the brief              |
+| 01:52 | Lower bridge ±1 cell: nominal passes, both neighboring conditions fail |
+| 02:12 | Actual UI export, reopening and a recomputed artifact summary          |
+| 02:40 | Scope, authorship and next validation                                  |
 
-`example-project.json` is the actual six-courier UI export shown in the sharing scene. It retains two checkpoints, 22 trials and the selected 24/24 candidate. Open it in LiveWorld to recompute the results. `example-report.html` is the corresponding report exported after reopening that project. The same review kit is available from the local video page as downloadable project inputs and a styled report.
+`creator-storyboard.json` is the current edit. `storyboard.json` records the earlier valley film. `creator-example-project.json` preserves the exact UI download used in the sharing scene; it was opened again in the actual app. `public/examples/creator-brief-project.json` is the reproducible recorded-study package. The corresponding report is available as standalone `creator-brief-report.html` and as public HTML/CSS under `public/examples/` for the app's strict content policy. Imported results are recalculated and source labels do not authenticate provider activity.
 
-## Rebuild the edit
+## Rebuild and verify
 
-`storyboard.json` contains the timings, narration and summary captions. `liveworld-demo.srt` contains the English subtitles. `render-manifest.json` records the output dimensions, duration and source frame counts.
+The current raw sources, registry, narration WAVs and prepared scenes are in ignored `.liveworld/creator-film/`. Older valley captures remain separately in `.liveworld/studio-film/`. These private source captures are not required to run the app or watch the bundled MP4.
 
-The original screenshots, native WebM exports, source hashes and narration WAVs remain in ignored `.liveworld/studio-film/`. These source captures are not required to run the app or watch the bundled movie. The renderer checks each source hash and checks that native replay inputs contain 30 fps video. The manifest identifies still images and native replays separately.
+`scripts/render-creator-evidence.mjs` recomputes the diagram facts and calls the Pillow renderer. It requires a local Segoe UI font on the recording machine; that font file is not shipped in the repository. The native 1080p clips were rendered and downloaded through the actual replay-export UI. Each still and replay has a source hash; diagram records also retain their facts hash.
 
-Rebuilding requires those original captures plus FFmpeg and FFprobe on `PATH` (or in `LIVEWORLD_FFMPEG_DIR`). On Windows, `scripts/render-demo-voice.ps1` creates the narration from an installed generic voice if the machine's existing script policy permits it. Do not change that policy for this task; existing WAVs or equivalent locally generated narration can be supplied. Run `node scripts/render-demo.mjs` to encode and verify the MP4. The capture directory defaults to `.liveworld/studio-film/` and can be passed as the first argument. A `font.ttf` in that directory is used, or the renderer copies Windows Segoe UI when available.
+The film renderer checks source hashes, native frame timing, narration length, final duration, dimensions and tracks. Mixed-resolution stills are normalized before concatenation so ffmpeg cannot drop a preceding shot when its filter graph reinitializes. The final MP4 is copied to the public player only after verification.
 
-The renderer verifies duration, resolution and audio/subtitle tracks. Visual review still matters: inspect the model masks, A/B metrics, failed trial, verified fix and final evidence view before using the video in a submission.
+```powershell
+$env:LIVEWORLD_FFMPEG_DIR = 'D:\Apps\FFmpeg-9.0.2\bin'
+node scripts/render-demo.mjs
+node scripts/check-creator-film.mjs --contact
+```
+
+`render-demo.mjs` defaults to the current creator storyboard and capture directory. Set `LIVEWORLD_STORYBOARD=demo/storyboard.json` and pass `.liveworld/studio-film` only to rebuild the older edit. `render-demo-voice.ps1` supports a storyboard and capture directory; do not change execution policy to run it. The current WAVs were synthesized locally with the installed generic Microsoft Zira voice.
+
+`render-manifest.json` records the final hash, frame counts and source types. `liveworld-demo.srt` and the public VTT match the narration. Review the contact sheet and representative frames before using the movie in a submission.

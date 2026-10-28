@@ -1,6 +1,9 @@
 import { createHash, randomUUID } from "node:crypto";
 import { applyPatch, validateWorld } from "../shared/world.js";
 import { simulate, evidence, compareRuns } from "../shared/engine.js";
+import { evaluateContract, rankRuns } from "../shared/contract.js";
+import { candidatePatches } from "../shared/experiments.js";
+import { deliveryReceipts } from "../shared/receipts.js";
 
 const objectParameters = (properties) => ({
   type: "object",
@@ -9,6 +12,16 @@ const objectParameters = (properties) => ({
   additionalProperties: false,
 });
 export const agentTools = [
+  {
+    type: "function",
+    function: {
+      name: "inspect_deliveries",
+      description:
+        "Read verified outbound delivery receipts for one household in A: dispatch, arrival, waiting, bridge visits and exact event references. These facts do not establish a unique causal explanation.",
+      strict: true,
+      parameters: objectParameters({ house_id: { type: "string" } }),
+    },
+  },
   {
     type: "function",
     function: {
@@ -67,6 +80,19 @@ export async function runPlaytest(client, input, emit = () => {}) {
   )
     throw new Error("Enter a goal of 1–2000 characters.");
   const baseline = simulate(world);
+  const rank = (a, b) =>
+    rankRuns(
+      {
+        world: a.world,
+        metrics: a.evidence.metrics,
+        houses: a.evidence.households,
+      },
+      {
+        world: b.world,
+        metrics: b.evidence.metrics,
+        houses: b.evidence.households,
+      },
+    );
   const tools = structuredClone(agentTools);
   const changeParameters = tools.find((t) => t.function.name === "test_change")
     .function.parameters.properties;
@@ -98,6 +124,13 @@ export async function runPlaytest(client, input, emit = () => {}) {
   ];
   messages[0].content +=
     "\nScheduled bridge closures and production pauses are part of the design and are LOCKED during every repair trial. Do not remove, shorten or alter them. Closure intervals are inclusive; occupants finish crossing, other couriers reroute or wait. Production pauses preserve stock and the production clock. For test_change: to change dispatch, set BOTH bridge_id and bridge_row to null. To move a bridge, set dispatch to null and provide an exact permitted bridge_id plus its ZERO-BASED bridge_row. Never combine both kinds of edit.";
+  if (world.contract) {
+    messages[0].content = messages[0].content.replace(
+      "Success means EVERY requested water unit reaches its house by that house's deadline.",
+      "Success means ALL conditions of the confirmed executable test brief pass. This can permit late deliveries if its thresholds allow them.",
+    );
+    messages[0].content += `\nCONFIRMED TEST BRIEF: ${JSON.stringify(evaluateContract(baseline))}. This brief and its edit permissions are LOCKED during trials. User goal text is investigation context; it does not override this confirmed contract. Report household regressions and waiting tradeoffs. inspect_deliveries provides receipts if needed. Never attribute a change to reduced queues without evidence.`;
+  }
   function evaluate(patch, label) {
     const changed = applyPatch(world, patch);
     if (!changed.edits) throw new Error("This proposal changes nothing.");
@@ -149,7 +182,15 @@ export async function runPlaytest(client, input, emit = () => {}) {
       let result;
       try {
         const args = JSON.parse(call.function.arguments);
-        if (call.function.name === "inspect_trace") {
+        if (call.function.name === "inspect_deliveries") {
+          if (!world.houses.some((h) => h.id === args.house_id))
+            throw new Error("Unknown household.");
+          result = { receipts: deliveryReceipts(baseline, args.house_id) };
+          publish({
+            type: "inspection",
+            message: `Read verified deliveries for ${args.house_id}.`,
+          });
+        } else if (call.function.name === "inspect_trace") {
           if (
             !Number.isInteger(args.from_tick) ||
             !Number.isInteger(args.to_tick) ||
@@ -188,22 +229,7 @@ export async function runPlaytest(client, input, emit = () => {}) {
         } else if (call.function.name === "search_one_edit") {
           if (!["bridges", "dispatch", "all"].includes(args.scope))
             throw new Error("Invalid search scope.");
-          const patches = [];
-          if (args.scope !== "bridges")
-            for (const dispatch of ["nearest", "balanced", "deadline"])
-              if (dispatch !== world.rules.dispatch)
-                patches.push({
-                  patch: { dispatch },
-                  label: `Use ${dispatch} dispatch`,
-                });
-          if (args.scope !== "dispatch")
-            for (let y = 0; y < world.height; y++)
-              for (const bridge of world.bridges)
-                if (y !== bridge.y)
-                  patches.push({
-                    patch: { bridgeMoves: [{ id: bridge.id, y }] },
-                    label: `Move ${bridge.id} to row ${y + 1}`,
-                  });
+          const patches = candidatePatches(world, args.scope);
           let checked = 0;
           let truncated = false;
           const searched = [];
@@ -218,12 +244,7 @@ export async function runPlaytest(client, input, emit = () => {}) {
               } /* Occupied bridge rows are invalid. */
             }
           }
-          searched.sort(
-            (a, b) =>
-              a.evidence.metrics.lateUnits - b.evidence.metrics.lateUnits ||
-              a.evidence.metrics.unmetUnits - b.evidence.metrics.unmetUnits ||
-              a.evidence.metrics.waitTicks - b.evidence.metrics.waitTicks,
-          );
+          searched.sort(rank);
           result = {
             checked,
             searchComplete: !truncated,
@@ -257,19 +278,14 @@ export async function runPlaytest(client, input, emit = () => {}) {
     }
     if (turn === 5) stoppedByLimit = true;
   }
-  const ranked = [...experiments].sort(
-    (a, b) =>
-      a.evidence.metrics.lateUnits - b.evidence.metrics.lateUnits ||
-      a.evidence.metrics.unmetUnits - b.evidence.metrics.unmetUnits ||
-      a.evidence.metrics.waitTicks - b.evidence.metrics.waitTicks,
-  );
+  const ranked = [...experiments].sort(rank);
   const best =
     ranked.find((e) => e.comparison.improved || e.comparison.goalMet) ?? null;
   const verdict = best?.comparison.goalMet
     ? "goal_met"
     : best?.comparison.improved
       ? "improved"
-      : baseline.metrics.allOnTime
+      : evaluateContract(baseline).passed
         ? "already_met"
         : "no_improvement";
   return {

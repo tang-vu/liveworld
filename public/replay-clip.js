@@ -2,6 +2,7 @@ import { drawWorld } from "./diorama.js";
 import { simulate } from "/shared/engine.js";
 import { normalizeProject, describeWorldChanges } from "/shared/project.js";
 import { describeEvent } from "/shared/mechanics.js";
+import { evaluateContract } from "/shared/contract.js";
 
 const W = 1920,
   H = 1080;
@@ -196,10 +197,19 @@ export function createReplayClip(
         x,
         911,
         57,
-        m.allOnTime ? "#177c65" : "#a56b31",
+        evaluateContract(item.run, original.world.contract).passed
+          ? "#177c65"
+          : "#a56b31",
         700,
       );
-      text(ctx, "on time · full run", x + 175, 907, 22, "#516750");
+      text(
+        ctx,
+        `on time · brief ${evaluateContract(item.run, original.world.contract).passed ? "PASS" : "FAIL"}`,
+        x + 175,
+        907,
+        22,
+        "#516750",
+      );
       text(
         ctx,
         `At this turn: ${f.delivered}/${m.demand} delivered`,

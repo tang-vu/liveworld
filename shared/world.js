@@ -1,4 +1,5 @@
 import { validateSchedule } from "./mechanics.js";
+import { validateContract, assertPermittedPatch } from "./contract.js";
 
 export const POLICIES = ["nearest", "balanced", "deadline"];
 export const WIDTH = 18;
@@ -87,6 +88,7 @@ export function validateWorld(input) {
       "rules",
       "provenance",
       "events",
+      "contract",
     ],
     "World",
   );
@@ -173,6 +175,8 @@ export function validateWorld(input) {
   integer(world.rules.horizon, 10, 240, "Horizon");
   if (world.events !== undefined)
     world.events = validateSchedule(world.events, world);
+  if (world.contract !== undefined)
+    world.contract = validateContract(world.contract, world);
   if (world.provenance !== undefined) {
     const p = world.provenance;
     fields(
@@ -240,6 +244,9 @@ export function applyPatch(input, patch, maxEdits = 1) {
     Object.keys(patch).some((key) => !["dispatch", "bridgeMoves"].includes(key))
   )
     throw new Error("Only dispatch policy and bridge positions may change.");
+  if (patch.bridgeMoves != null && !Array.isArray(patch.bridgeMoves))
+    throw new Error("Bridge moves must be an array.");
+  assertPermittedPatch(world, patch);
   let edits = 0;
   if (patch.dispatch !== undefined && patch.dispatch !== null) {
     if (!POLICIES.includes(patch.dispatch))

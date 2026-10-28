@@ -128,7 +128,12 @@ test("public HTTP flow protects paid calls, revokes access and retains accountin
   let status = JSON.parse((await call(port, "/api/status")).text);
   assert.equal(status.accessRequired, true);
   assert.equal(status.authorized, false);
-  for (const path of ["/api/scan", "/api/rules", "/api/playtest"])
+  for (const path of [
+    "/api/scan",
+    "/api/rules",
+    "/api/playtest",
+    "/api/contract",
+  ])
     assert.equal(
       (await call(port, path, { method: "POST", body: {} })).status,
       403,

@@ -10,6 +10,8 @@ Muse Spark proposes object roles and locations; SAM 3.1 supplies the segmentatio
 
 Creators can rescan a changed tabletop, schedule a bridge closure or production pause, compare A and B, apply a candidate, return to checkpoints and save a portable project. Imported trials are recomputed. Evidence exports retain the inputs and measurements; the studio can also render a 1080p replay clip with its reproducible inputs.
 
+Creators can now define an executable test brief: a total on-time target, a minimum for every home, a waiting cap and edit permissions. Muse Spark translates intent into a proposal; the creator confirms it, and code checks every condition. Delivery receipts connect outcomes to dispatch/arrival events and replay frames. A sensitivity check applies identical declared perturbations to A and B, retaining invalid conditions and reproducible inputs rather than presenting the cases as a statistical reliability score.
+
 This prototype has not been validated in a creator study. Its photo mapping uses a fixed grid and heuristic object matching, rather than metric reconstruction. The included generated images are labelled synthetic; they are not real camera tests.
 
 ## What was built during the event
@@ -19,6 +21,10 @@ This repository began on October 27, 2026. The world format, simulator, studio, 
 Meta provides Muse Spark, SAM 3.1 and the official `@meta-sam/parser` dependency. The tabletop example images are generated test assets; their prompts and limitations are recorded in `public/examples/generated-inputs.json`. Replay media packaging uses Mediabunny; 3D rendering uses Three.js. These unmodified libraries are identified in `THIRD_PARTY_NOTICES.md`. Existing models and dependencies are not original project contributions.
 
 ## Reproducible examples
+
+**Creator fairness brief on one synthetic world.** Open `public/examples/creator-brief-project.json` or choose **Explore a creator's brief**. The confirmed objective is at least 20/24 units on time, at least three at every home, and at most ten waiting turns. A has 20/24, 22 waiting turns, and one home with zero on-time units. The recorded moved-stick rescan keeps 20/24 and cuts waiting to ten but leaves another home with zero, so it fails the floor. The recorded Meta playtest selects balanced dispatch: 20/24, seven waiting turns, and every home at least three. Four units remain late; three previously fully served homes each lose one on-time unit. Moving the lower bridge ±1 cell in both worlds exposes limits of the balanced design. These are authored cases on previously observed generated inputs, not a held-out benchmark or physical-camera test.
+
+Eight separately predeclared contract interpretation requests matched their expected semantics or refusals, one attempt each. Replay `node scripts/evaluate-contracts.mjs` and `node scripts/record-creator-study.mjs` without API usage. The creator usability protocol is prepared at `docs/creator-validation.md`; no user sessions or productivity results are claimed.
 
 1. **Authored valley playtest.** Replay the recorded Meta run. Balanced dispatch is a failed proposal: 14 of 24 units arrive on time, compared with 20 originally. Moving the south bridge to zero-based row 6 produces 24 of 24 on time. Bridge waiting increases from 16 to 22 turns. The app retains that tradeoff.
 2. **Generated photo A/B.** Capture dialog → Replay recorded A/B capture. The saved outputs came from real Muse Spark and SAM requests on generated inputs. All 11 identities are retained, ten grid positions are unchanged and one bridge moves from row 10 to row 7. On-time delivery remains 20/24; waiting falls from 22 to 10 turns and completion from 99 to 91. This is an improvement in waiting, not a deadline success.
@@ -35,7 +41,7 @@ The recorded runs are explicitly labelled and do not call Meta again. Use the li
 - A project file can be opened without a key; imported success claims are discarded and recomputed.
 - Local budget accounting reserves before inference, retains usage across restarts and stops after an uncertain charge. It does not replace the provider's billing controls.
 
-The recording follows a complete design/playtest loop. Its exact scenes and timings are in `demo/storyboard.json`; native replay frames and actual UI screenshots are identified separately in the render manifest.
+The current recording follows one synthetic tabletop world through a creator fairness brief, a failed rescan, a verified dispatch choice and a declared sensitivity check. Exact timings are in `demo/creator-storyboard.json`. The render manifest distinguishes native replay frames, actual UI captures and labelled engine-evidence diagrams; the diagrams are not presented as application screenshots.
 
 ## Items required before submission
 

@@ -1,0 +1,195 @@
+.contract-strip {
+  margin: 0 24px 22px;
+  padding: 20px 22px;
+  background: #eef0e3;
+  color: #193f40;
+  border: 1px solid #d3d9c7;
+  border-radius: 12px;
+}
+.contract-strip > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.contract-strip p {
+  margin: 10px 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+.contract-strip small {
+  display: block;
+  line-height: 1.6;
+}
+.contract-strip details {
+  margin: 10px 0;
+}
+.contract-strip summary {
+  cursor: pointer;
+}
+.contract-strip .button {
+  margin-top: 8px;
+}
+.lab-panel {
+  padding: 24px;
+  color: #254749;
+  background: #faf8ef;
+}
+.lab-panel h3 {
+  margin: 0;
+  font:
+    26px Georgia,
+    serif;
+}
+.lab-panel p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.lab-table {
+  overflow-x: auto;
+}
+.lab-table table {
+  min-width: 570px;
+}
+.lab-table .house-table td {
+  vertical-align: top;
+}
+.lab-table small {
+  display: block;
+  margin-top: 7px;
+  line-height: 1.7;
+}
+.lab-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+.lab-controls label {
+  display: grid;
+  gap: 7px;
+}
+.lab-note {
+  font-size: 13px;
+  color: #526365;
+  line-height: 1.6;
+}
+.receipt-regression {
+  background: #fce5d7;
+}
+.receipt-replay {
+  background: #e5ece2;
+  color: #174d47;
+  border: 1px solid #9db2a3;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+#brief-dialog {
+  max-width: 760px;
+  color: #254749;
+}
+#brief-dialog > p {
+  line-height: 1.65;
+}
+#brief-dialog textarea {
+  display: block;
+  width: 100%;
+  margin: 8px 0 12px;
+}
+#brief-dialog fieldset {
+  border: 1px solid #b5c4b5;
+  margin-top: 18px;
+}
+#brief-dialog input[type="checkbox"] {
+  width: auto;
+  min-height: auto;
+  accent-color: #1d6257;
+}
+.brief-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 18px 0;
+}
+.brief-fields label {
+  display: grid;
+  gap: 8px;
+}
+.brief-fields input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #adbdad;
+  border-radius: 7px;
+  background: #fffdf5;
+  color: #244b43;
+  font: inherit;
+}
+#brief-bridges label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lab-table .house-table {
+  font-size: 13px;
+}
+.bottom-tabs {
+  flex-wrap: wrap;
+}
+.creator-controls {
+  padding: 20px 24px;
+  background: #e8eadb;
+  color: #193f40;
+  border-bottom: 1px solid #c9d1ba;
+}
+.creator-controls small {
+  display: block;
+  margin-top: 5px;
+}
+.creator-controls p {
+  margin: 12px 0 0;
+  line-height: 1.6;
+}
+.creator-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.creator-steps button {
+  padding: 9px 12px;
+  background: #f8f6ec;
+  border: 1px solid #acbca8;
+  color: #204b44;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.creator-steps button[aria-pressed="true"] {
+  background: #205b51;
+  color: #fff5df;
+}
+@media (max-width: 600px) {
+  .contract-strip {
+    margin: 0 12px 16px;
+    padding: 16px;
+  }
+  .brief-fields {
+    grid-template-columns: 1fr;
+  }
+  .lab-panel {
+    padding: 16px;
+  }
+  .lab-controls {
+    align-items: stretch;
+  }
+  .lab-controls label,
+  .lab-controls select {
+    width: 100%;
+    min-width: 0;
+  }
+}

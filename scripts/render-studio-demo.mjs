@@ -6,10 +6,16 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const capture = path.resolve(
-  process.argv[2] ?? path.join(root, ".liveworld/studio-film"),
+  process.argv[2] ?? path.join(root, ".liveworld/creator-film"),
 );
 const story = JSON.parse(
-  await fs.readFile(path.join(root, "demo/storyboard.json"), "utf8"),
+  await fs.readFile(
+    path.join(
+      root,
+      process.env.LIVEWORLD_STORYBOARD ?? "demo/creator-storyboard.json",
+    ),
+    "utf8",
+  ),
 );
 const sources = JSON.parse(
   await fs.readFile(path.join(capture, "sources.json"), "utf8"),
@@ -50,6 +56,29 @@ const sha = async (file) =>
   createHash("sha256")
     .update(await fs.readFile(file))
     .digest("hex");
+const sourceTypes = [
+  "native-replay-export",
+  "CUA-screenshot",
+  "engine-evidence-diagram",
+];
+async function verifyOrigin(name) {
+  const origin = sources.sources[name.replace(/\.(webm|jpg)$/, "")];
+  if (
+    !origin ||
+    !sourceTypes.includes(origin.type) ||
+    (await sha(path.join(capture, name))) !== origin.sha256
+  )
+    throw new Error(`Missing or changed actual-source provenance: ${name}`);
+  if (
+    origin.type === "engine-evidence-diagram" &&
+    origin.factsSha256 !==
+      (await sha(path.join(capture, "evidence-facts.json")))
+  )
+    throw new Error(
+      "Evidence diagram facts changed; regenerate diagrams and their registry.",
+    );
+  return origin;
+}
 const stamp = (seconds) => {
   const n = Math.round(seconds * 1000);
   return `${String(Math.floor(n / 3600000)).padStart(2, "0")}:${String(Math.floor(n / 60000) % 60).padStart(2, "0")}:${String(Math.floor(n / 1000) % 60).padStart(2, "0")},${String(n % 1000).padStart(3, "0")}`;
@@ -89,21 +118,11 @@ for (const s of story.scenes) {
   const source = path.join(capture, s.source),
     input = probe(source, s.kind === "native");
   const video = input.streams.find((v) => v.codec_type === "video");
-  const origin = sources.sources[s.source.replace(/\.(webm|jpg)$/, "")];
-  if (
-    !origin ||
-    !["native-replay-export", "CUA-screenshot"].includes(origin.type)
-  )
-    throw new Error(`Missing actual-source provenance: ${s.source}`);
-  if ((await sha(source)) !== origin.sha256)
-    throw new Error("A captured source changed after its provenance record.");
+  const origin = await verifyOrigin(s.source);
   for (const name of s.shots ?? []) {
-    const shot = sources.sources[name.replace(/\.jpg$/, "")];
-    if (
-      shot?.type !== "CUA-screenshot" ||
-      (await sha(path.join(capture, name))) !== shot.sha256
-    )
-      throw new Error(`Missing verified UI shot: ${name}`);
+    const shot = await verifyOrigin(name);
+    if (!["CUA-screenshot", "engine-evidence-diagram"].includes(shot.type))
+      throw new Error(`Invalid still source: ${name}`);
   }
   if (
     s.kind === "native" &&
@@ -126,16 +145,38 @@ for (const s of story.scenes) {
   const font = "fontfile=font.ttf";
   if (s.kind === "native")
     filter = `scale=1920:1080:flags=lanczos,setsar=1,fps=30,tpad=stop_mode=clone:stop_duration=${s.seconds},trim=duration=${s.seconds},drawbox=x=0:y=1033:w=1920:h=47:color=0x153c2d@0.96:t=fill,drawtext=${font}:textfile=${s.id}-caption.txt:fontsize=22:fontcolor=0xf5f4e9:x=56:y=1044`;
+  else if (s.kind === "evidence")
+    filter = `scale=1920:1080:flags=lanczos,setsar=1,fps=30`;
   else
     filter = `scale=1760:820:force_original_aspect_ratio=decrease:flags=lanczos,pad=1920:1080:(ow-iw)/2:126:color=0xf3f2e9,setsar=1,fps=30,drawtext=${font}:textfile=${s.id}-heading.txt:fontsize=37:fontcolor=0x173d2c:x=80:y=48,drawtext=${font}:textfile=${s.id}-caption.txt:fontsize=25:fontcolor=0x37563e:x=80:y=980`;
   let inputArgs =
     s.kind === "native" ? ["-i", s.source] : ["-loop", "1", "-i", s.source];
   if (s.shots?.length) {
-    const shotList = s.shots.flatMap((name) => [
+    // A changing JPEG resolution reinitializes ffmpeg's filter graph and can
+    // discard the preceding frames. Normalize before concatenating screenshots
+    // with evidence diagrams; all derived stills share one image geometry.
+    const prepared = [];
+    for (const [index, name] of s.shots.entries()) {
+      const normalized = `render/${s.id}-shot-${index}.jpg`;
+      run("ffmpeg", [
+        "-v",
+        "error",
+        "-y",
+        "-i",
+        name,
+        "-vf",
+        "scale=1760:820:force_original_aspect_ratio=decrease:flags=lanczos,pad=1760:820:(ow-iw)/2:(oh-ih)/2:color=0xf3f2e9",
+        "-frames:v",
+        "1",
+        normalized,
+      ]);
+      prepared.push(normalized);
+    }
+    const shotList = prepared.flatMap((name) => [
       `file '${name}'`,
       `duration ${s.seconds / s.shots.length}`,
     ]);
-    shotList.push(`file '${s.shots.at(-1)}'`);
+    shotList.push(`file '${prepared.at(-1)}'`);
     await fs.writeFile(
       path.join(capture, s.id + "-shots.ffconcat"),
       shotList.join("\n"),
@@ -188,8 +229,13 @@ for (const s of story.scenes) {
     seconds: s.seconds,
     source: s.source,
     shots: s.shots ?? null,
+    shotTypes:
+      s.shots?.map(
+        (name) => sources.sources[name.replace(/\.(webm|jpg)$/, "")].type,
+      ) ?? null,
     sourceType: origin.type,
     sourceSha256: origin.sha256,
+    evidenceFactsSha256: origin.factsSha256 ?? null,
     sourceFrames:
       s.kind === "native"
         ? Number(video.nb_read_frames)
@@ -212,7 +258,8 @@ await fs.writeFile(
   path.join(capture, "movie.ffconcat"),
   story.scenes.map((s) => `file 'render/${s.id}.mp4'`).join("\n"),
 );
-const out = path.join(root, "public/demo/liveworld-demo.mp4");
+const out = path.join(capture, "render/liveworld-demo.mp4");
+const publishedVideo = path.join(root, "public/demo/liveworld-demo.mp4");
 run("ffmpeg", [
   "-hide_banner",
   "-loglevel",
@@ -249,7 +296,7 @@ run("ffmpeg", [
   "-metadata",
   "artist=Tang Vu",
   "-metadata",
-  "comment=Actual UI captures and native simulation replay exports. Synthetic tabletop inputs and narration. Recorded Meta outputs labelled.",
+  "comment=Actual UI captures, native simulation replays and labelled engine-evidence diagrams. Synthetic inputs and narration. Recorded Meta outputs labelled.",
   out,
 ]);
 const result = probe(out, true),
@@ -264,11 +311,14 @@ if (
   !result.streams.some((s) => s.codec_type === "subtitle")
 )
   throw new Error("Final video failed dimensions, timing or track checks.");
+await fs.copyFile(out, publishedVideo);
 await fs.writeFile(
   path.join(root, "demo/render-manifest.json"),
   JSON.stringify(
     {
-      format: "liveworld-demo-render-v2",
+      format: "liveworld-demo-render-v3",
+      storyboard:
+        process.env.LIVEWORLD_STORYBOARD ?? "demo/creator-storyboard.json",
       durationSeconds: Number(result.format.duration),
       width: v.width,
       height: v.height,
@@ -296,7 +346,7 @@ run("ffmpeg", [
 ]);
 console.log(
   JSON.stringify({
-    video: out,
+    video: publishedVideo,
     durationSeconds: result.format.duration,
     frameRate: v.avg_frame_rate,
     frames: v.nb_read_frames,

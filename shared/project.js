@@ -141,6 +141,7 @@ export function normalizeProject(input, { imported = false } = {}) {
   return {
     format: PROJECT_FORMAT,
     name: short(input.name, world.name ?? "My LiveWorld", 80),
+    briefInstruction: short(input.briefInstruction, "", 2000),
     world,
     photo: safePhoto(input.photo),
     checkpoints: checked,
@@ -212,6 +213,10 @@ export function describeWorldChanges(before, after) {
   for (const field of Object.keys(a.rules))
     if (a.rules[field] !== b.rules[field])
       changes.push(`${field}: ${a.rules[field]} → ${b.rules[field]}`);
+  if (JSON.stringify(a.contract ?? null) !== JSON.stringify(b.contract ?? null))
+    changes.push(
+      "Test brief changed: inspect its acceptance criteria and edit permissions.",
+    );
   if (JSON.stringify(a.events ?? []) !== JSON.stringify(b.events ?? [])) {
     const oldEvents = new Map((a.events ?? []).map((e) => [e.id, e]));
     const newEvents = new Map((b.events ?? []).map((e) => [e.id, e]));

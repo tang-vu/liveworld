@@ -1,2 +1,2 @@
-// Canonical entry point for the studio movie, using demo/storyboard.json.
+// Canonical entry point for the current creator-brief film.
 import "./render-studio-demo.mjs";

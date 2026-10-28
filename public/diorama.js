@@ -792,6 +792,26 @@ export function drawWorld(
   }
   wellLabels(ctx, g, world.source, frame.stock, frame.productionPaused);
   houseLabels(ctx, g, world, frame, tick);
+  if (options.selectedCourier) {
+    const agent = frame.agents.find((a) => a.id === options.selectedCourier);
+    if (agent) {
+      const p = q(agent.x + 0.5, agent.y + 0.5, 0.7);
+      const ground = q(agent.x + 0.5, agent.y + 0.5, 0.05);
+      ellipse(
+        ctx,
+        ground.x,
+        ground.y,
+        g.cell * 0.25,
+        g.cell * 0.12,
+        "#f4cc78b0",
+      );
+      tag(ctx, p.x + g.cell, p.y - 18, agent.id, {
+        fill: "#ffe8b8",
+        border: "#af7732",
+        color: "#433313",
+      });
+    }
+  }
   for (const b of world.bridges) {
     const origin = options.originBridges?.find(
       (a) => a.id === b.id && a.y !== b.y,
