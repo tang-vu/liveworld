@@ -6,6 +6,7 @@
     <title>LiveWorld — Three-minute demo</title>
     <link rel="icon" href="/mark.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/demo/tour.css" />
+    <script type="module" src="/demo/player.js"></script>
   </head>
   <body>
     <header>
@@ -47,12 +48,22 @@
         >
       </div>
       <div class="chapters">
-        <span><b>00:00</b> One bridge. Every home on time.</span
-        ><span><b>00:12</b> Objects → masks → confirmed world</span
-        ><span><b>00:54</b> A plausible hypothesis fails</span
-        ><span><b>01:12</b> A measured repair and its tradeoff</span
-        ><span><b>01:36</b> Design a timed crossing</span
-        ><span><b>02:16</b> Save, reopen and share the experiment</span>
+        <button data-seconds="0">
+          <b>00:00</b> One bridge. Every home on time.
+        </button>
+        <button data-seconds="12">
+          <b>00:12</b> Objects → masks → confirmed world
+        </button>
+        <button data-seconds="54">
+          <b>00:54</b> A plausible hypothesis fails
+        </button>
+        <button data-seconds="72">
+          <b>01:12</b> A measured repair and its tradeoff
+        </button>
+        <button data-seconds="96"><b>01:36</b> Design a timed crossing</button>
+        <button data-seconds="136">
+          <b>02:16</b> Save, reopen and share the experiment
+        </button>
       </div>
       <div class="review-links">
         <a class="action" href="/examples/studio-project.json" download

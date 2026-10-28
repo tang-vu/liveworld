@@ -3,3 +3,5 @@
 *.jpg binary
 *.png binary
 *.mp4 binary
+# Keep the pinned upstream Three.js distribution byte-for-byte, including indentation.
+public/vendor/three*.js -whitespace

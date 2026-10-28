@@ -64,6 +64,7 @@ const state = {
 let restoredProject = null;
 let clipRecording = null;
 let clipUrls = [];
+let ambientClock = 0;
 try {
   const saved = await loadAutosave();
   if (saved) {
@@ -825,6 +826,7 @@ function draw() {
       changedIds: state.soloCandidate || state.comparing ? changedIds : [],
       originBridges: state.soloCandidate ? state.world.bridges : [],
       dragCell: state.dragCell,
+      ambientTime: ambientClock,
     },
   );
   if (state.comparing && state.candidate)
@@ -835,7 +837,11 @@ function draw() {
       state.tick,
       state.selected,
       true,
-      { changedIds, originBridges: state.world.bridges },
+      {
+        changedIds,
+        originBridges: state.world.bridges,
+        ambientTime: ambientClock,
+      },
     );
   if (!$("table-preview").hidden)
     drawTablePreview($("table-preview"), state.world);
@@ -1078,6 +1084,19 @@ $("jump-event").addEventListener("click", () => {
 $("show-inspector").addEventListener("click", () =>
   $("scene-dialog").showModal(),
 );
+function setFocusView(active) {
+  document.body.classList.toggle("focus-world", active);
+  $("focus-world").setAttribute("aria-pressed", String(active));
+  $("focus-world").textContent = active ? "↙ Exit focus" : "↗ Focus";
+  requestAnimationFrame(draw);
+}
+$("focus-world").addEventListener("click", () =>
+  setFocusView(!document.body.classList.contains("focus-world")),
+);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !document.querySelector("dialog[open]"))
+    setFocusView(false);
+});
 $("close-scene").addEventListener("click", () => $("scene-dialog").close());
 $("capture-hero").addEventListener("click", () => $("capture").click());
 $("design-hero").addEventListener("click", () => $("edit-rules").click());
@@ -2066,7 +2085,9 @@ $("confirm-scan").addEventListener("click", () => {
 });
 
 let previousTime = 0;
+let lastAmbientDraw = 0;
 function animate(time) {
+  ambientClock = time / 1000;
   if (state.playing && previousTime) {
     const horizon = Math.max(
       state.world.rules.horizon,
@@ -2081,6 +2102,14 @@ function animate(time) {
       autosave();
     }
     draw();
+  } else if (
+    !clipRecording &&
+    !document.hidden &&
+    time - lastAmbientDraw > 65 &&
+    !matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    lastAmbientDraw = time;
+    draw();
   }
   previousTime = time;
   requestAnimationFrame(animate);
@@ -2089,6 +2118,7 @@ new ResizeObserver(() => draw()).observe($("canvas-section"));
 if (restoredProject) restoreProject(restoredProject);
 else {
   $("project-name").value = state.name;
+  state.playing = !matchMedia("(prefers-reduced-motion: reduce)").matches;
   render();
 }
 document.querySelector("main").removeAttribute("inert");

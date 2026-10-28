@@ -3,6 +3,14 @@ import {
   projectPoint,
   unprojectPoint,
 } from "/shared/projection.js";
+import {
+  drawBackdrop,
+  drawStrata,
+  drawRiver,
+  sceneryFor,
+  drawTree,
+} from "./diorama-detail.js";
+import { drawDiorama3D } from "./diorama-three.js";
 
 export function boardGeometry(canvas, world, options = {}) {
   const width = options.width ?? (canvas.clientWidth || 900);
@@ -10,7 +18,7 @@ export function boardGeometry(canvas, world, options = {}) {
   const zoom =
     requested === "auto"
       ? width < 450
-        ? 1.7
+        ? 1.15
         : 1
       : Math.max(1, Math.min(2, Number(requested) || 1));
   return worldGeometry(
@@ -51,7 +59,7 @@ export function pickObject(canvas, world, event) {
       const isRock = world.obstacles.includes(o);
       return (
         Math.abs(p.x - x) < g.cell * 0.75 &&
-        y > p.y - g.cell * (isRock ? 0.65 : 1.25) &&
+        y > p.y - g.cell * (isRock ? 0.65 : 1.6) &&
         y < p.y + g.cell * 0.45
       );
     }) ?? null
@@ -171,8 +179,25 @@ function house(ctx, g, h, current, tick, selected) {
   }
   const x = h.x + 0.16,
     y = h.y + 0.16;
-  cuboid(ctx, g, x, y, 0.68, 0.68, 0, 0.57, ["#f3d79e", "#cfb47e", "#f5e0b6"]);
+  cuboid(ctx, g, h.x + 0.07, h.y + 0.07, 0.86, 0.86, 0, 0.07, [
+    "#b6aa82",
+    "#989876",
+    "#d5cba3",
+  ]);
+  cuboid(ctx, g, x, y, 0.68, 0.68, 0.04, 0.57, [
+    "#f7e5b8",
+    "#c6b58e",
+    "#fff1ce",
+  ]);
   const q = (a, b, z) => projectPoint(g, a, b, z);
+  const tone = [...h.id].reduce((sum, c) => sum + c.charCodeAt(0), 0) % 3;
+  const roof = missed
+    ? ["#d97750", "#ad5039"]
+    : [
+        ["#6995a0", "#3b6975"],
+        ["#d39566", "#9d634b"],
+        ["#729480", "#3b6e60"],
+      ][tone];
   poly(
     ctx,
     [
@@ -181,7 +206,7 @@ function house(ctx, g, h, current, tick, selected) {
       q(h.x + 0.5, h.y + 0.92, 1.03),
       q(h.x + 0.04, h.y + 0.92, 0.57),
     ],
-    missed ? "#cf6c44" : full ? "#397b6c" : "#668d78",
+    roof[0],
   );
   poly(
     ctx,
@@ -191,7 +216,25 @@ function house(ctx, g, h, current, tick, selected) {
       q(h.x + 0.96, h.y + 0.92, 0.57),
       q(h.x + 0.5, h.y + 0.92, 1.03),
     ],
-    missed ? "#a94830" : full ? "#215849" : "#436d5a",
+    roof[1],
+  );
+  for (let offset = 0.2; offset < 0.9; offset += 0.14) {
+    line(
+      ctx,
+      [
+        q(h.x + 0.06, h.y + offset, 0.59),
+        q(h.x + 0.5, h.y + offset, 1.05),
+        q(h.x + 0.94, h.y + offset, 0.59),
+      ],
+      "#fff1ca26",
+      Math.max(0.6, s * 0.018),
+    );
+  }
+  line(
+    ctx,
+    [q(h.x + 0.5, h.y + 0.05, 1.05), q(h.x + 0.5, h.y + 0.95, 1.05)],
+    "#f2d3a47a",
+    Math.max(1, s * 0.045),
   );
   poly(
     ctx,
@@ -211,7 +254,7 @@ function house(ctx, g, h, current, tick, selected) {
       q(x + 0.24, y + 0.685, 0.39),
       q(x + 0.09, y + 0.685, 0.39),
     ],
-    "#5c867e",
+    full ? "#edc77b" : "#81aaa2",
   );
   poly(
     ctx,
@@ -231,7 +274,7 @@ function house(ctx, g, h, current, tick, selected) {
       q(x + 0.685, y + 0.42, 0.38),
       q(x + 0.685, y + 0.23, 0.38),
     ],
-    "#54786f",
+    full ? "#dfbd7b" : "#658d88",
   );
   cuboid(ctx, g, h.x + 0.64, h.y + 0.2, 0.13, 0.15, 0.65, 0.32, [
     "#b58a65",
@@ -362,6 +405,10 @@ function well(ctx, g, source, stock, selected, paused = false) {
   );
   const a = projectPoint(g, source.x + 0.5, source.y + 0.5, 0.76);
   line(ctx, [a, { x: a.x, y: a.y + s * 0.42 }], "#d0be87", 1.5);
+}
+function wellLabels(ctx, g, source, stock, paused) {
+  const p = projectPoint(g, source.x + 0.5, source.y + 0.5),
+    s = g.cell;
   tag(ctx, p.x, p.y + s * 0.72, (source.label ?? "Well").slice(0, 16), {
     size: 12,
   });
@@ -562,11 +609,7 @@ export function drawWorld(
   const ctx = canvas.getContext("2d");
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, g.width, g.height);
-  const bg = ctx.createLinearGradient(0, 0, 0, g.height);
-  bg.addColorStop(0, "#f3f3e6");
-  bg.addColorStop(1, "#e3e9d4");
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, g.width, g.height);
+  drawBackdrop(ctx, g);
   const q = (x, y, z = 0) => projectPoint(g, x, y, z);
   const floorTick = Math.min(
     Math.max(0, Math.floor(tick)),
@@ -575,152 +618,179 @@ export function drawWorld(
   const frame = run.frames[floorTick],
     next = run.frames[Math.min(floorTick + 1, run.frames.length - 1)];
   const mix = Math.max(0, Math.min(1, tick - floorTick));
-  // Ground shadow, then the two exposed sides of the tabletop island.
-  ctx.save();
-  ctx.filter = "blur(18px)";
-  poly(
-    ctx,
-    [
-      q(0, 0),
-      q(world.width, 0),
-      q(world.width, world.height),
-      q(0, world.height),
-    ].map((p) => ({ x: p.x + 8, y: p.y + 28 })),
-    "#254d3335",
-  );
-  ctx.restore();
-  poly(
-    ctx,
-    [
-      q(0, world.height),
-      q(world.width, world.height),
-      q(world.width, world.height, -0.6),
-      q(0, world.height, -0.6),
-    ],
-    "#9f9d76",
-  );
-  poly(
-    ctx,
-    [
-      q(world.width, 0),
-      q(world.width, world.height),
-      q(world.width, world.height, -0.6),
-      q(world.width, 0, -0.6),
-    ],
-    "#7e8a66",
-  );
-  for (let depth = 0; depth < world.width + world.height; depth++)
-    for (let x = 0; x < world.width; x++) {
-      const y = depth - x;
-      if (y < 0 || y >= world.height) continue;
-      const water = x >= world.river.x && x < world.river.x + world.river.width;
-      const n = (x * 17 + y * 31 + (world.seed % 101)) % 13;
-      poly(
-        ctx,
-        [q(x, y), q(x + 1, y), q(x + 1, y + 1), q(x, y + 1)],
-        water
-          ? n % 2
-            ? "#4f9eb1"
-            : "#4594a8"
-          : ["#bccd96", "#c5d39f", "#b3c68c", "#bfd09a"][n % 4],
-        water ? "#73b3bf40" : "#e3e8c03a",
-      );
-      if (water && n % 2 === 0) {
-        const drift = Math.sin((x + y) * 1.5 + tick * 0.08) * 0.12;
-        line(
-          ctx,
-          [q(x + 0.23, y + 0.48 + drift), q(x + 0.7, y + 0.48 + drift)],
-          "#b3d9d25c",
-          1,
-        );
-      } else if (!water && n < 3) {
-        const p = q(x + 0.72, y + 0.58);
-        line(
-          ctx,
-          [
-            { x: p.x - 2, y: p.y },
-            { x: p.x - 2, y: p.y - 3 },
-          ],
-          "#809e5945",
-          0.8,
-        );
-        line(
-          ctx,
-          [
-            { x: p.x + 1, y: p.y + 1 },
-            { x: p.x + 2, y: p.y - 2 },
-          ],
-          "#809e5945",
-          0.8,
-        );
-      }
-    }
-  // All paths come from this simulation; highlighted paths show a selected home.
-  const routePhase = run.routeChanges?.findLast((phase) => phase.tick <= tick);
-  for (const [id, route] of Object.entries(routePhase?.routes ?? run.routes)) {
-    if (!route) continue;
-    line(
+  const rendered3d = drawDiorama3D(ctx, g, world, run, frame, next, mix, {
+    ...options,
+    tick,
+    selected,
+  });
+  canvas.dataset.renderMode = rendered3d ? "3d" : "2d";
+  if (!rendered3d) {
+    // Ground shadow, then the two exposed sides of the tabletop island.
+    ctx.save();
+    ctx.filter = "blur(24px)";
+    poly(
       ctx,
-      route.map((p) => q(p.x + 0.5, p.y + 0.5, 0.012)),
-      id === selected ? "#f6f2d7" : "#eee3b878",
-      id === selected ? s * 0.27 : s * 0.16,
+      [
+        q(0, 0),
+        q(world.width, 0),
+        q(world.width, world.height),
+        q(0, world.height),
+      ].map((p) => ({ x: p.x + s * 0.5, y: p.y + s * 1.5 })),
+      "#020e16b0",
     );
-    if (id === selected)
+    ctx.restore();
+    drawStrata(ctx, g, world);
+    for (let depth = 0; depth < world.width + world.height; depth++)
+      for (let x = 0; x < world.width; x++) {
+        const y = depth - x;
+        if (y < 0 || y >= world.height) continue;
+        const water =
+          x >= world.river.x && x < world.river.x + world.river.width;
+        const n = (x * 17 + y * 31 + (world.seed % 101)) % 13;
+        poly(
+          ctx,
+          [q(x, y), q(x + 1, y), q(x + 1, y + 1), q(x, y + 1)],
+          water
+            ? n % 2
+              ? "#3c9ca6"
+              : "#348c99"
+            : ["#b7ca91", "#bdce98", "#abc18a", "#b4c68e"][n % 4],
+          water ? "#86d8cf22" : "#dfdfb51a",
+        );
+        if (water && n % 2 === 0) {
+          const drift = Math.sin((x + y) * 1.5 + tick * 0.08) * 0.12;
+          line(
+            ctx,
+            [q(x + 0.23, y + 0.48 + drift), q(x + 0.7, y + 0.48 + drift)],
+            "#b3d9d25c",
+            1,
+          );
+        } else if (!water && n < 3) {
+          const p = q(x + 0.72, y + 0.58);
+          line(
+            ctx,
+            [
+              { x: p.x - 2, y: p.y },
+              { x: p.x - 2, y: p.y - 3 },
+            ],
+            "#809e5945",
+            0.8,
+          );
+          line(
+            ctx,
+            [
+              { x: p.x + 1, y: p.y + 1 },
+              { x: p.x + 2, y: p.y - 2 },
+            ],
+            "#809e5945",
+            0.8,
+          );
+        }
+      }
+    drawRiver(ctx, g, world, options.ambientTime ?? tick * 0.14);
+    // All paths come from this simulation; highlighted paths show a selected home.
+    const routePhase = run.routeChanges?.findLast(
+      (phase) => phase.tick <= tick,
+    );
+    for (const [id, route] of Object.entries(
+      routePhase?.routes ?? run.routes,
+    )) {
+      if (!route) continue;
       line(
         ctx,
-        route.map((p) => q(p.x + 0.5, p.y + 0.5, 0.018)),
-        "#a9803a",
-        Math.max(1, s * 0.035),
+        route.map((p) => q(p.x + 0.5, p.y + 0.5, 0.012)),
+        id === selected ? "#fff0bc" : "#ecd4a5aa",
+        id === selected ? s * 0.27 : s * 0.2,
       );
-  }
-  for (const b of world.bridges)
-    bridge(
-      ctx,
-      g,
-      world,
-      b,
-      selected === b.id,
-      options.changedIds?.includes(b.id),
-      frame.closedBridgeIds?.includes(b.id),
-    );
-  const entities = [
-    {
-      depth: world.source.x + world.source.y,
-      draw: () =>
-        well(
+      if (id === selected)
+        line(
           ctx,
-          g,
-          world.source,
-          frame.stock,
-          selected === world.source.id,
-          frame.productionPaused,
-        ),
-    },
-    ...world.obstacles.map((o) => ({
-      depth: o.x + o.y,
-      draw: () => rock(ctx, g, o, selected === o.id),
-    })),
-    ...world.houses.map((h) => ({
-      depth: h.x + h.y,
-      draw: () =>
-        house(
-          ctx,
-          g,
-          h,
-          frame.houses.find((a) => a.id === h.id),
-          tick,
-          selected === h.id,
-        ),
-    })),
-    ...frame.agents
-      .filter((a) => a.state !== "idle")
-      .map((a) => ({
-        depth: a.x + a.y + 0.1,
-        draw: () =>
-          courier(ctx, g, a, next.agents.find((b) => b.id === a.id) ?? a, mix),
+          route.map((p) => q(p.x + 0.5, p.y + 0.5, 0.018)),
+          "#a9803a",
+          Math.max(1, s * 0.035),
+        );
+    }
+    for (const b of world.bridges)
+      bridge(
+        ctx,
+        g,
+        world,
+        b,
+        selected === b.id,
+        options.changedIds?.includes(b.id),
+        frame.closedBridgeIds?.includes(b.id),
+      );
+    const entities = [
+      ...sceneryFor(world, run).map((tree) => ({
+        depth: tree.x + tree.y,
+        draw: () => drawTree(ctx, g, tree),
       })),
-  ];
-  entities.sort((a, b) => a.depth - b.depth).forEach((e) => e.draw());
+      {
+        depth: world.source.x + world.source.y,
+        draw: () =>
+          well(
+            ctx,
+            g,
+            world.source,
+            frame.stock,
+            selected === world.source.id,
+            frame.productionPaused,
+          ),
+      },
+      ...world.obstacles.map((o) => ({
+        depth: o.x + o.y,
+        draw: () => rock(ctx, g, o, selected === o.id),
+      })),
+      ...world.houses.map((h) => ({
+        depth: h.x + h.y,
+        draw: () =>
+          house(
+            ctx,
+            g,
+            h,
+            frame.houses.find((a) => a.id === h.id),
+            tick,
+            selected === h.id,
+          ),
+      })),
+      ...frame.agents
+        .filter((a) => a.state !== "idle")
+        .map((a) => ({
+          depth: a.x + a.y + 0.1,
+          draw: () =>
+            courier(
+              ctx,
+              g,
+              a,
+              next.agents.find((b) => b.id === a.id) ?? a,
+              mix,
+            ),
+        })),
+    ];
+    entities.sort((a, b) => a.depth - b.depth).forEach((e) => e.draw());
+  } else {
+    for (const b of world.bridges.filter((b) =>
+      frame.closedBridgeIds?.includes(b.id),
+    )) {
+      const p = q(world.river.x + world.river.width / 2, b.y + 0.5, 0.85);
+      line(ctx, [p, { x: p.x + s * 1.5, y: p.y - s * 0.7 }], "#cd9361", 1);
+      tag(ctx, p.x + s * 1.5, p.y - s * 0.7, "CLOSED", {
+        size: 10,
+        fill: "#b75e3d",
+        border: "#a95135",
+        color: "#fff3da",
+      });
+    }
+    for (const a of frame.agents.filter((a) => a.waiting)) {
+      const p = q(a.x + 0.5, a.y + 0.5, 0.95);
+      ellipse(ctx, p.x, p.y, 6, 6, "#ffe6a3");
+      ctx.fillStyle = "#8c6339";
+      ctx.font = "bold 10px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("!", p.x, p.y + 3);
+    }
+  }
+  wellLabels(ctx, g, world.source, frame.stock, frame.productionPaused);
   houseLabels(ctx, g, world, frame, tick);
   for (const b of world.bridges) {
     const origin = options.originBridges?.find(
@@ -774,8 +844,8 @@ export function drawWorld(
       );
   }
   ctx.textAlign = "left";
-  ctx.fillStyle = "#748570";
-  ctx.font = '11px "Segoe UI",Arial,sans-serif';
+  ctx.fillStyle = "#8eaaa4";
+  ctx.font = '10px "Segoe UI",Arial,sans-serif';
   ctx.fillText(
     options.replayClip
       ? "ENGINE REPLAY · INTERPOLATED MOVEMENT"

@@ -445,7 +445,7 @@
       "id": "trial-1",
       "label": "Use balanced dispatch",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -693,7 +693,7 @@
       "id": "trial-2",
       "label": "Use deadline dispatch",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -913,7 +913,7 @@
       "id": "trial-3",
       "label": "Move bridge-north to row 1",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -1135,7 +1135,7 @@
       "id": "trial-4",
       "label": "Move bridge-south to row 1",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -1357,7 +1357,7 @@
       "id": "trial-5",
       "label": "Move bridge-north to row 2",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -1579,7 +1579,7 @@
       "id": "trial-6",
       "label": "Move bridge-south to row 2",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -1801,7 +1801,7 @@
       "id": "trial-7",
       "label": "Move bridge-north to row 4",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -2016,7 +2016,7 @@
       "id": "trial-8",
       "label": "Move bridge-south to row 4",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -2238,7 +2238,7 @@
       "id": "trial-9",
       "label": "Move bridge-north to row 5",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -2456,7 +2456,7 @@
       "id": "trial-10",
       "label": "Move bridge-south to row 5",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -2671,7 +2671,7 @@
       "id": "trial-11",
       "label": "Move bridge-north to row 6",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -2886,7 +2886,7 @@
       "id": "trial-12",
       "label": "Move bridge-south to row 6",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -3104,7 +3104,7 @@
       "id": "trial-13",
       "label": "Move bridge-north to row 7",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -3326,7 +3326,7 @@
       "id": "trial-14",
       "label": "Move bridge-south to row 7",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -3537,7 +3537,7 @@
       "id": "trial-15",
       "label": "Move bridge-north to row 8",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -3759,7 +3759,7 @@
       "id": "trial-16",
       "label": "Move bridge-south to row 8",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -3984,7 +3984,7 @@
       "id": "trial-17",
       "label": "Move bridge-north to row 9",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -4199,7 +4199,7 @@
       "id": "trial-18",
       "label": "Move bridge-south to row 9",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -4424,7 +4424,7 @@
       "id": "trial-19",
       "label": "Move bridge-north to row 11",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -4646,7 +4646,7 @@
       "id": "trial-20",
       "label": "Move bridge-south to row 11",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -4868,7 +4868,7 @@
       "id": "trial-21",
       "label": "Move bridge-north to row 12",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -5090,7 +5090,7 @@
       "id": "trial-22",
       "label": "Move bridge-south to row 12",
       "kind": "agent",
-      "source": "recorded-meta-run",
+      "source": "imported",
       "model": "",
       "instruction": "",
       "world": {
@@ -5318,6 +5318,6 @@
     "goal": "Find a change that gets every home its water on time. Keep the same workers and resources. Only one edit per trial.",
     "model": "muse-spark-1.3",
     "summary": "Recommendation: Move **bridge-south from y=9 to y=7**, no other change.\n- Same workers/resources, same `nearest` dispatch, single bridge move.\n\nTool evidence - `search_one_edit scope=all` and `scope=bridges`, `searchComplete:true`:\n- Candidate `trial-14 Move bridge-south to row 7` reported `goalMet:true, verifiedBy: deterministic-engine-v1`\n- Metrics: `demand 24, delivered 24, onTime 24, lateUnits 0, unmetUnits 0, allOnTime:true, allDelivered:true, completedAt:94`\n- Households: all 4/4 onTime including Cedar firstDelivery 37 vs deadline 66 and Hilltop 87 vs 94\n- `significantEvents`: only `all_delivered at tick 94`, no `deadline_missed` vs baseline 4 late units, Cedar missed by 2, Hilltop missed by 2\n\nTradeoff: increased queue time.\n- `waitTicks 16 -> 22` (-6 reduced), bridgeQueues `north 8,south 2 -> north 6,south 12`\n- East-side trips via south bridge queue longer, but finishes earlier overall `100 -> 94` and meets all deadlines.\n",
-    "source": "recorded-meta-run"
+    "source": "imported"
   }
 }

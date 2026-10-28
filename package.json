@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "mediabunny": "1.62.1",
-    "prettier": "3.9.10"
+    "prettier": "3.9.10",
+    "three": "0.186.1"
   }
 }

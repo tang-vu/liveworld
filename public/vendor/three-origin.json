@@ -1,0 +1,18 @@
+{
+  "package": "three",
+  "version": "0.186.1",
+  "license": "MIT",
+  "source": "https://github.com/mrdoob/three.js",
+  "npm": "https://www.npmjs.com/package/three/v/0.186.1",
+  "distribution": "Unmodified npm browser modules",
+  "files": [
+    {
+      "name": "three.module.js",
+      "sha256": "9052042d676cb0fdc1ddfefe193053f34b7ac0513a616fdac4535d49987812ea"
+    },
+    {
+      "name": "three.core.js",
+      "sha256": "9edde002b066a9a05676a6127f67735b62baf399bdea529f2f7e31657da769e6"
+    }
+  ]
+}

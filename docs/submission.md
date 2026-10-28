@@ -14,9 +14,9 @@ This prototype has not been validated in a creator study. Its photo mapping uses
 
 ## What was built during the event
 
-This repository began on October 27, 2026. The world format, simulator, studio, angled canvas renderer, photo-to-grid mapping, object tracking, Meta API integration, agent tools, timed mechanics, rule validation, project persistence, evidence exports, replay composition and budget controls were developed for LiveWorld during the event. No Keryx application code is included.
+This repository began on October 27, 2026. The world format, simulator, studio, orthographic 3D renderer and canvas fallback, photo-to-grid mapping, object tracking, Meta API integration, agent tools, timed mechanics, rule validation, project persistence, evidence exports, replay composition and budget controls were developed for LiveWorld during the event. No Keryx application code is included.
 
-Meta provides Muse Spark, SAM 3.1 and the official `@meta-sam/parser` dependency. The tabletop example images are generated test assets; their prompts and limitations are recorded in `public/examples/generated-inputs.json`. Replay media packaging uses the unmodified Mediabunny library, identified in `THIRD_PARTY_NOTICES.md`. Existing models and dependencies are not original project contributions.
+Meta provides Muse Spark, SAM 3.1 and the official `@meta-sam/parser` dependency. The tabletop example images are generated test assets; their prompts and limitations are recorded in `public/examples/generated-inputs.json`. Replay media packaging uses Mediabunny; 3D rendering uses Three.js. These unmodified libraries are identified in `THIRD_PARTY_NOTICES.md`. Existing models and dependencies are not original project contributions.
 
 ## Reproducible examples
 

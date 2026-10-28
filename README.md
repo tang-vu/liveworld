@@ -6,13 +6,13 @@ LiveWorld is a tabletop playtest studio for small logistics games. Turn objects 
 
 Built by Tang Vu for the Meta Global AI Developer Hackathon 2026, Indie Developer track.
 
-![LiveWorld studio: synchronized worlds show one bridge change taking delivery from 20 to 24 units on time](docs/studio-comparison.jpg)
+![LiveWorld's 3D playtest studio: a miniature world with lit buildings, bridges and replayable courier movement](docs/studio-focus.jpg)
 
 **[Watch the three-minute demo](public/demo/liveworld-demo.mp4)** · [Recording details and transcript](demo/README.md) · [Submission draft](docs/submission.md)
 
 ## Run locally
 
-Requires Node.js 24 or later. No GPU or external database is required.
+Requires Node.js 24 or later. No server GPU or external database is required.
 
 ```sh
 npm install
@@ -43,6 +43,8 @@ If a configured `.env.local` already exists, preserve it rather than copying ove
 **Explore a verified playtest** walks through three parts of a recorded Meta experiment: the original bottleneck, a plausible failed hypothesis, and a verified repair. Every trial is recomputed locally. **Write a game rule → Explore a recorded rule experiment** loads a second study: a timed bridge closure compiled by Meta. Neither walkthrough makes new API calls. Their recording labels stay visible.
 
 The default scene is an authored example, not a general benchmark. Changing the dispatch policy to balanced service is a plausible failed proposal. Moving the south bridge to zero-based row 6 meets the example's deadlines while increasing bridge waiting time: the comparison preserves that tradeoff.
+
+**Focus** gives the world more room for a presentation or detailed inspection; press Escape to leave it. The orthographic 3D scene uses the same ground projection as labels and object picking. Buildings, trees, materials and lighting are procedural project assets, rendered with Three.js. A canvas renderer remains available when WebGL is unavailable. Landscape decoration does not change simulation obstacles or routes. Ambient water movement leaves the simulation turn unchanged, and reduced-motion preferences disable ambient animation and initial autoplay.
 
 ## Use your own table
 

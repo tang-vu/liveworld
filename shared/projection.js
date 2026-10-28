@@ -31,3 +31,24 @@ export function unprojectPoint(g, x, y) {
   const dy = (y - g.top) / (g.cell * 0.44);
   return { x: (dx + dy) / 2, y: (dy - dx) / 2 };
 }
+
+// Camera parameters for the 3D scene, in the same screen space as picking and
+// evidence labels. x/z are grid coordinates; y is the rendered elevation.
+export function boardCameraFrame(g, world) {
+  const unit = Math.SQRT2 * g.cell;
+  return {
+    heightScale: 1 / (Math.SQRT2 * Math.sqrt(1 - 0.44 ** 2)),
+    eye: [
+      world.width / 2 + 30,
+      Math.SQRT2 * 30 * Math.tan(Math.asin(0.44)),
+      world.height / 2 + 30,
+    ],
+    target: [world.width / 2, 0, world.height / 2],
+    frustum: {
+      left: -g.width / 2 / unit,
+      right: g.width / 2 / unit,
+      top: (g.height / 2 - 5) / unit,
+      bottom: (-g.height / 2 - 5) / unit,
+    },
+  };
+}

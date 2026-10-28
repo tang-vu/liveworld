@@ -11,3 +11,11 @@ npm package. `node scripts/vendor-media.mjs` reproduces the copied distribution;
 Mediabunny provides media encoding/container support. The simulation, world and
 rule formats, renderer, agent tools, comparison logic and exporter composition
 were developed for LiveWorld. Meta provides the models and `@meta-sam/parser`.
+
+The studio's optional 3D renderer uses the unmodified browser modules of
+[Three.js 0.186.1](https://www.npmjs.com/package/three/v/0.186.1), under the MIT
+license included in `public/vendor/THREE-LICENSE.txt`. `scripts/vendor-three.mjs`
+copies the pinned distribution and records its hashes in `three-origin.json`.
+Three.js supplies graphics primitives and rendering. LiveWorld's scene models,
+lighting, framing, state mapping and interaction remain project code. A canvas
+renderer remains available when WebGL cannot be used.
