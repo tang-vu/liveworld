@@ -337,6 +337,15 @@ await fs.writeFile(
     2,
   ) + "\n",
 );
+spawnSync(
+  process.execPath,
+  [
+    path.join(root, "node_modules/prettier/bin/prettier.cjs"),
+    "--write",
+    path.join(root, "demo/render-manifest.json"),
+  ],
+  { stdio: "inherit" },
+);
 run("ffmpeg", [
   "-v",
   "error",

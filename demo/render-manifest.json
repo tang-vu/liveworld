@@ -34,14 +34,8 @@
       "id": "02-table",
       "seconds": 18,
       "source": "02-table.jpg",
-      "shots": [
-        "02-table.jpg",
-        "02-world.jpg"
-      ],
-      "shotTypes": [
-        "CUA-screenshot",
-        "CUA-screenshot"
-      ],
+      "shots": ["02-table.jpg", "02-world.jpg"],
+      "shotTypes": ["CUA-screenshot", "CUA-screenshot"],
       "sourceType": "CUA-screenshot",
       "sourceSha256": "3f86ac2d843b80b1eb90a63fd0c060ce93bcbd72ffe82b1c7485ed88931bd42b",
       "evidenceFactsSha256": null,
@@ -68,14 +62,8 @@
       "id": "04-tempting",
       "seconds": 20,
       "source": "04-tempting.jpg",
-      "shots": [
-        "04-tempting.jpg",
-        "04-household-ui.jpg"
-      ],
-      "shotTypes": [
-        "CUA-screenshot",
-        "app-screenshot"
-      ],
+      "shots": ["04-tempting.jpg", "04-household-ui.jpg"],
+      "shotTypes": ["CUA-screenshot", "app-screenshot"],
       "sourceType": "CUA-screenshot",
       "sourceSha256": "19fc54d552eab32ef7db1a21634b7b4e174e4b8a2dfde172684e507e0427e0f3",
       "evidenceFactsSha256": null,
@@ -88,14 +76,8 @@
       "id": "05-receipts",
       "seconds": 22,
       "source": "05-receipts-ui.jpg",
-      "shots": [
-        "05-receipts-ui.jpg",
-        "05-receipt-replay.jpg"
-      ],
-      "shotTypes": [
-        "app-screenshot",
-        "app-screenshot"
-      ],
+      "shots": ["05-receipts-ui.jpg", "05-receipt-replay.jpg"],
+      "shotTypes": ["app-screenshot", "app-screenshot"],
       "sourceType": "app-screenshot",
       "sourceSha256": "e2cca251879f52b43e4a0db5a8e831607bec57788158d0ee00d29b3f4b256021",
       "evidenceFactsSha256": null,
@@ -136,14 +118,8 @@
       "id": "08-share",
       "seconds": 28,
       "source": "08-reopened.jpg",
-      "shots": [
-        "08-reopened.jpg",
-        "08-report-ui.jpg"
-      ],
-      "shotTypes": [
-        "CUA-screenshot",
-        "app-screenshot"
-      ],
+      "shots": ["08-reopened.jpg", "08-report-ui.jpg"],
+      "shotTypes": ["CUA-screenshot", "app-screenshot"],
       "sourceType": "CUA-screenshot",
       "sourceSha256": "3d377a0d83412d175baeb5b5a98cfb04f29b976c86a061b9caad0342fa57f5b5",
       "evidenceFactsSha256": null,
