@@ -40,7 +40,7 @@ The three-minute film uses this path.
 2. Step through the table, the confirmed brief (at least 20/24 on time, at least 3 at every home, at most 10 waiting turns), and the tempting stick move. Waiting falls from 22 to 10, and four late units move to another home, so the brief fails.
 3. Open **A fairer design**. Balanced dispatch meets the brief: 20/24 on time, 7 waiting turns, and at least 3 at every home. Four units remain late. Three homes that were fully on time each give up one unit.
 4. On **Delivery receipts**, select a home and an arrival. Both worlds jump to that turn and the courier is highlighted.
-5. On **Test its limits**, the lower bridge shifts one cell in both worlds. One side breaks the waiting cap. The other breaks the on-time floor.
+5. On **Test its limits**, the lower bridge shifts one cell in both worlds. One side breaks the waiting cap. The other breaks the on-time floor. While A and B are open, drag a bridge on the proposal: A stays, and the brief is scored again.
 
 **The little valley** is the world the studio opens on, and it is a different example from the film. Baseline nearest dispatch is 20/24 on time with 16 waiting turns. Balanced dispatch there is a failed proposal at 14/24. Moving the south bridge to zero-based row 6 reaches 24/24 and raises waiting to 22. Do not mix that 24/24 result with the synthetic tabletop.
 

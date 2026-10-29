@@ -1,4 +1,4 @@
-import { applyPatch, POLICIES } from "./world.js";
+import { applyPatch, POLICIES, validateWorld } from "./world.js";
 import { simulate, compareRuns, evidence } from "./engine.js";
 import { rankRuns } from "./contract.js";
 
@@ -27,6 +27,16 @@ export function candidatePatches(world, scope = "all") {
             label: `Move ${bridge.label ?? bridge.id} to row ${y + 1}`,
           });
   return patches;
+}
+
+export function nudgeProposalBridge(proposal, bridgeId, y) {
+  const world = validateWorld(structuredClone(proposal));
+  const bridge = world.bridges.find((item) => item.id === bridgeId);
+  if (!bridge) throw new Error("That bridge does not exist.");
+  if (!Number.isInteger(y) || y < 0 || y >= world.height)
+    throw new Error("Drop the bridge on a row inside the map.");
+  bridge.y = y;
+  return validateWorld(world);
 }
 
 export function searchLocal(world, limit = 32) {

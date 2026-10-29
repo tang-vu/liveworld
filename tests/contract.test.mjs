@@ -3,7 +3,8 @@ import assert from "node:assert/strict";
 import { exampleWorld, applyPatch, validateWorld } from "../shared/world.js";
 import { simulate, compareRuns } from "../shared/engine.js";
 import { defaultContract, evaluateContract } from "../shared/contract.js";
-import { searchLocal } from "../shared/experiments.js";
+import { readFile } from "node:fs/promises";
+import { nudgeProposalBridge, searchLocal } from "../shared/experiments.js";
 import { deliveryReceipts, householdComparison } from "../shared/receipts.js";
 import { sensitivitySweep } from "../shared/sensitivity.js";
 import {
@@ -208,6 +209,38 @@ test("compiler refusal is atomic and returned contracts are validated", async ()
   assert.deepEqual(compiled.contract, brief());
 });
 
+test("nudging the selected proposal keeps the original world and rescores the brief", async () => {
+  const project = JSON.parse(
+    await readFile(
+      new URL("../public/examples/creator-brief-project.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const original = project.world;
+  const proposal = project.trials.find(
+    (trial) => trial.patch?.dispatch === "balanced",
+  ).world;
+  const saved = JSON.stringify([original, proposal]);
+  const bridge = proposal.bridges.reduce((lower, item) =>
+    item.y > lower.y ? item : lower,
+  );
+  const nudged = nudgeProposalBridge(proposal, bridge.id, bridge.y - 1);
+  assert.equal(JSON.stringify([original, proposal]), saved);
+  assert.equal(nudged.rules.dispatch, "balanced");
+  assert.equal(
+    nudged.bridges.find((item) => item.id === bridge.id).y,
+    bridge.y - 1,
+  );
+  assert.equal(
+    evaluateContract(simulate(proposal), original.contract).passed,
+    true,
+  );
+  assert.equal(
+    evaluateContract(simulate(nudged), original.contract).passed,
+    false,
+  );
+  assert.throws(() => nudgeProposalBridge(proposal, "missing", 1));
+});
 test("bridge sensitivity retains invalid conditions rather than hiding them from the denominator", () => {
   const a = exampleWorld();
   a.bridges[0].y = 0;

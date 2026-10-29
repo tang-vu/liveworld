@@ -90,7 +90,7 @@ if (process.argv.includes("--contact")) {
     });
     assert.equal(r.status, 0, r.stderr);
   };
-  for (const [i, time] of [6, 22, 38, 60, 79, 101, 122, 151, 169].entries())
+  for (const [i, time] of [8, 36, 70, 106, 138, 166].entries())
     run([
       "-ss",
       String(time),

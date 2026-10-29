@@ -100,6 +100,22 @@ export function setupDesignLab({
       $("brief-status").textContent = error.message;
     }
   });
+  $("replay-recorded-refusal").addEventListener("click", async () => {
+    if (getState().busy) return;
+    try {
+      const saved = await api("/examples/contract-evaluation.json");
+      const item = saved.results.find(
+        (result) => result.id === "unsupported-resource-change",
+      );
+      if (!item?.response || item.response.supported !== false)
+        throw new Error("The recorded refusal is missing.");
+      $("brief-instruction").value = item.response.instruction;
+      $("brief-status").textContent =
+        `Recorded Muse Spark refusal · no new API call. ${item.response.explanation} ${item.response.unsupported.join(" · ")} Nothing was applied.`;
+    } catch (error) {
+      $("brief-status").textContent = error.message;
+    }
+  });
   $("compile-brief").addEventListener("click", async () => {
     if (getState().busy || !(await ensureLiveAccess())) return;
     // The access dialog can replace this dialog in public mode.

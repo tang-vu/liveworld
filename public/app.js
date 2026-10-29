@@ -22,7 +22,7 @@ import { experimentReport } from "./report.js";
 import { describeEvent } from "/shared/mechanics.js";
 import { createReplayClip, replayFormat } from "./replay-clip.js";
 import { setupDesignLab } from "./design-lab.js";
-import { searchLocal } from "/shared/experiments.js";
+import { nudgeProposalBridge, searchLocal } from "/shared/experiments.js";
 import { evaluateContract } from "/shared/contract.js";
 
 const $ = (id) => document.getElementById(id);
@@ -51,6 +51,7 @@ const state = {
   comparing: false,
   soloCandidate: false,
   dragCell: null,
+  dragSide: null,
   studyStep: null,
   trials: [],
   candidate: null,
@@ -430,7 +431,7 @@ function renderObjects() {
   $("object-detail").hidden = !selected;
   if (selected)
     $("object-detail").innerHTML =
-      `<strong>${escape(selected.label ?? selected.id)}</strong><br>Cell ${selected.x + 1}, ${selected.y + 1}${selected.demand ? `<br>${selected.demand} water · deadline turn ${selected.deadline}` : ""}<br>Drag on the world to move.`;
+      `<strong>${escape(selected.label ?? selected.id)}</strong><br>Cell ${selected.x + 1}, ${selected.y + 1}${selected.demand ? `<br>${selected.demand} water · deadline turn ${selected.deadline}` : ""}<br>${state.comparing ? "Drag a bridge to nudge the selected proposal. A stays fixed." : "Drag on the world to move."}`;
 }
 function drawMechanics() {
   const a = state.world.events ?? [],
@@ -873,7 +874,7 @@ function draw() {
     {
       changedIds: state.soloCandidate || state.comparing ? changedIds : [],
       originBridges: state.soloCandidate ? state.world.bridges : [],
-      dragCell: state.dragCell,
+      dragCell: state.dragSide === "a" ? state.dragCell : null,
       ambientTime: ambientClock,
       selectedCourier:
         state.receiptCourier?.side === "a" ? state.receiptCourier.id : null,
@@ -890,6 +891,7 @@ function draw() {
       {
         changedIds,
         originBridges: state.world.bridges,
+        dragCell: state.dragSide === "b" ? state.dragCell : null,
         ambientTime: ambientClock,
         selectedCourier:
           state.receiptCourier?.side === "b" ? state.receiptCourier.id : null,
@@ -1191,59 +1193,123 @@ $("budget-button").addEventListener("click", () => {
 $("close-budget").addEventListener("click", () => $("budget-dialog").close());
 
 let dragged = null;
-$("world-canvas").addEventListener("pointerdown", (e) => {
-  if (state.busy) return;
-  if (state.soloCandidate)
-    return toast(
-      "Switch to Original to edit. Apply the proposal to make it your working world.",
-    );
-  const object = pickObject($("world-canvas"), state.world, e);
-  if (object) {
+function finishDrag() {
+  dragged = null;
+  state.dragCell = null;
+  state.dragSide = null;
+}
+function bindWorldDrag(canvas, side, getWorld) {
+  canvas.addEventListener("pointerdown", (e) => {
+    if (state.busy) return;
+    const world = getWorld();
+    if (!world) return;
+    if (state.soloCandidate && side === "a")
+      return toast(
+        "Switch to Original to edit. Apply the proposal to make it your working world.",
+      );
+    const object = pickObject(canvas, world, e);
+    if (!object) return;
     state.selected = object.id;
-    dragged = { id: object.id, startX: e.clientX, startY: e.clientY };
-    $("world-canvas").setPointerCapture(e.pointerId);
+    dragged = { id: object.id, startX: e.clientX, startY: e.clientY, side };
+    state.dragSide = side;
+    canvas.setPointerCapture(e.pointerId);
     renderObjects();
     draw();
-  }
-});
-$("world-canvas").addEventListener("pointermove", (e) => {
-  if (!dragged) return;
-  state.dragCell = cellFromPointer($("world-canvas"), state.world, e);
-  draw();
-});
-$("world-canvas").addEventListener("pointerup", (e) => {
-  if (!dragged) return;
-  state.dragCell = null;
-  const drag = dragged;
-  dragged = null;
-  if (Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) < 4)
-    return draw();
-  const cell = cellFromPointer($("world-canvas"), state.world, e);
-  const world = structuredClone(state.world);
-  const object = [
-    world.source,
-    ...world.houses,
-    ...world.bridges,
-    ...world.obstacles,
-  ].find((o) => o.id === drag.id);
-  if (world.bridges.includes(object)) object.y = cell.y;
-  else {
-    object.x = cell.x;
-    object.y = cell.y;
-  }
-  try {
-    commitWorld(world);
-    toast("Layout changed. A fresh replay is ready.");
-  } catch (error) {
-    toast(error.message);
+  });
+  canvas.addEventListener("pointermove", (e) => {
+    if (!dragged || dragged.side !== side) return;
+    const world = getWorld();
+    if (!world) return;
+    state.dragCell = cellFromPointer(canvas, world, e);
     draw();
-  }
-});
-$("world-canvas").addEventListener("pointercancel", () => {
-  dragged = null;
-  state.dragCell = null;
-  draw();
-});
+  });
+  canvas.addEventListener("pointerup", (e) => {
+    if (!dragged || dragged.side !== side) return;
+    const drag = dragged;
+    const world = getWorld();
+    finishDrag();
+    if (
+      !world ||
+      Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) < 4
+    )
+      return draw();
+    const cell = cellFromPointer(canvas, world, e);
+    if (state.comparing && state.candidate) {
+      const bridge = state.candidate.world.bridges.find(
+        (item) => item.id === drag.id,
+      );
+      if (!bridge)
+        return toast(
+          "During a comparison, drag a bridge. A stays fixed, and the selected proposal is scored again.",
+        );
+      try {
+        const nudged = nudgeProposalBridge(
+          state.candidate.world,
+          bridge.id,
+          cell.y,
+        );
+        if (nudged.bridges.find((item) => item.id === bridge.id).y === bridge.y)
+          return draw();
+        const study = state.creatorStudy;
+        previewWorld(nudged, {
+          kind: "capture",
+          label: `Move ${bridge.label ?? bridge.id} to row ${cell.y + 1} on the selected proposal`,
+          source: "layout-probe",
+        });
+        state.creatorStudy = study;
+        render();
+        const verdict = evaluateContract(
+          state.candidate.run,
+          state.world.contract,
+        );
+        const failed = verdict.checks
+          .filter((check) => !check.passed)
+          .map((check) => check.label);
+        toast(
+          verdict.passed
+            ? "A is unchanged. This nudge of the selected proposal still passes the brief."
+            : `A is unchanged. This nudge fails the brief: ${failed.join("; ")}.`,
+        );
+      } catch (error) {
+        toast(error.message);
+        draw();
+      }
+      return;
+    }
+    if (state.creatorStudy)
+      return toast(
+        "This recorded study keeps A fixed. Select a proposal, then drag a bridge to test it.",
+      );
+    const next = structuredClone(state.world);
+    const object = [
+      next.source,
+      ...next.houses,
+      ...next.bridges,
+      ...next.obstacles,
+    ].find((item) => item.id === drag.id);
+    if (next.bridges.includes(object)) object.y = cell.y;
+    else {
+      object.x = cell.x;
+      object.y = cell.y;
+    }
+    try {
+      commitWorld(next);
+      toast("Layout changed. A fresh replay is ready.");
+    } catch (error) {
+      toast(error.message);
+      draw();
+    }
+  });
+  canvas.addEventListener("pointercancel", () => {
+    if (!dragged || dragged.side !== side) return;
+    finishDrag();
+    draw();
+  });
+}
+bindWorldDrag($("world-canvas"), "a", () =>
+  state.soloCandidate ? state.candidate.world : state.world,
+);
+bindWorldDrag($("candidate-canvas"), "b", () => state.candidate?.world);
 
 $("local-sweep").addEventListener("click", () => {
   if (state.busy) return;

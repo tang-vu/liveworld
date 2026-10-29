@@ -1,135 +1,68 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:05.155
-Twenty deliveries on time in both worlds. But one
-leaves a home with
+00:00:00.000 --> 00:00:05.986
+Twenty deliveries on time, in both worlds. One home
+gets nothing. The other
 
-00:00:05.155 --> 00:00:10.310
-none. The other gives every home at least three.
-LiveWorld helps game creators
+00:00:05.986 --> 00:00:08.748
+gives every home at least three.
 
-00:00:10.310 --> 00:00:11.500
-test the difference.
+00:00:22.000 --> 00:00:27.640
+The creator asks for twenty on time, three at every
+home, and at
 
-00:00:12.000 --> 00:00:17.688
-A cup becomes the well, blocks become homes, and
-sticks become bridges. This
+00:00:27.640 --> 00:00:33.280
+most ten turns of waiting. Muse Spark writes the
+contract. The creator confirms
 
-00:00:17.688 --> 00:00:23.375
-input is generated. Recorded Muse Spark and SAM
-outputs supplied the objects and
+00:00:33.280 --> 00:00:38.920
+it. Ask for another courier, and Muse Spark refuses
+the whole request. The
 
-00:00:23.375 --> 00:00:29.063
-shapes. Confirmed roles and image-relative positions
-become a fixed-grid world, not a metric
+00:00:38.920 --> 00:00:40.221
+workers stay locked.
 
-00:00:29.063 --> 00:00:29.500
-reconstruction.
+00:00:54.000 --> 00:00:59.873
+Moving the lower stick cuts waiting from twenty-two
+turns to ten. The total
 
-00:00:30.000 --> 00:00:35.549
-The creator asks for at least twenty on-time units,
-at least three at
+00:00:59.873 --> 00:01:05.745
+stays twenty of twenty-four. Four late deliveries
+move onto another home. That home
 
-00:00:35.549 --> 00:00:41.098
-every home, and at most ten waiting turns. Muse Spark
-translates this into
+00:01:05.745 --> 00:01:08.907
+gets nothing on time. The brief fails.
 
-00:00:41.098 --> 00:00:46.646
-a contract. The creator confirms it. Each repair
-keeps workers, demand, deadlines and
+00:01:28.000 --> 00:01:33.344
+Select the late arrival. It reaches the home at turn
+eighty-four, four turns
 
-00:00:46.646 --> 00:00:47.500
-production locked.
+00:01:33.344 --> 00:01:38.688
+late. The courier lights up on the map. The receipt
+names the bridge
 
-00:00:48.000 --> 00:00:53.857
-Moving the lower stick looks promising: waiting falls
-from twenty-two to ten turns.
+00:01:38.688 --> 00:01:40.333
+and the simulator events.
 
-00:00:53.857 --> 00:00:59.713
-Yet the total stays twenty of twenty-four. The
-household comparison reveals the problem.
+00:02:04.000 --> 00:02:09.363
+Move the lower bridge by one cell. Waiting breaks the
+cap in one
 
-00:00:59.713 --> 00:01:05.570
-Four late units move from one home to another. This
-proposal fails the
+00:02:09.363 --> 00:02:14.725
+direction. On-time deliveries break it in the other.
+The passing layout has a
 
-00:01:05.570 --> 00:01:06.921
-confirmed per-home floor.
+00:02:14.725 --> 00:02:15.138
+boundary.
 
-00:01:08.000 --> 00:01:13.590
-Inspect a home and its delivery receipts. Each
-receipt records dispatch, arrival, bridge
+00:02:32.000 --> 00:02:38.371
+Save the project and open it again. The brief and the
+measurements come
 
-00:01:13.590 --> 00:01:19.180
-visits and waiting, with references to the
-simulator's events. Select an arrival to
+00:02:38.371 --> 00:02:44.741
+back, recomputed. LiveWorld was built by Tang Vu.
+Meta reads the request. The
 
-00:01:19.180 --> 00:01:24.770
-replay the exact turn and highlight its courier.
-Across worlds, deliveries are matched
-
-00:01:24.770 --> 00:01:29.500
-by home and order, not assumed to be the same parcel.
-
-00:01:30.000 --> 00:01:35.480
-The recorded Meta playtester tests a dispatch change
-and uses a systematic simulator
-
-00:01:35.480 --> 00:01:40.961
-search. Balanced dispatch meets every condition:
-twenty units on time, waiting seven turns,
-
-00:01:40.961 --> 00:01:46.441
-and at least three on time at every home. Four units
-still arrive
-
-00:01:46.441 --> 00:01:51.500
-late. Three previously fully served homes each give
-up one on-time unit.
-
-00:01:52.000 --> 00:01:57.281
-Now shift the lower bridge one cell in either
-direction in both worlds.
-
-00:01:57.281 --> 00:02:02.563
-The nominal balanced design passes. One direction
-breaks its waiting cap; the other
-
-00:02:02.563 --> 00:02:07.844
-breaks its on-time target. These are selected
-deterministic conditions, not a statistical
-reliability
-
-00:02:07.844 --> 00:02:11.500
-score. No model calls are needed for the sweep.
-
-00:02:12.000 --> 00:02:17.283
-Save the project and open it again. The brief, the
-trials and the
-
-00:02:17.283 --> 00:02:22.565
-checkpoints come with it, and every result is
-recomputed. The exported report shows
-
-00:02:22.565 --> 00:02:27.848
-the same measurements: A fails the brief, and
-balanced dispatch passes. A saved
-
-00:02:27.848 --> 00:02:31.911
-file cannot grant a success the engine did not
-measure.
-
-00:02:40.000 --> 00:02:46.036
-LiveWorld was built by Tang Vu for indie creators.
-Meta interprets the scene
-
-00:02:46.036 --> 00:02:52.071
-and design intent, and orchestrates experiments. The
-simulator verifies outcomes. Three.js renders the
-
-00:02:52.071 --> 00:02:58.107
-world. This is a generated-input local prototype.
-Physical capture and creator usability still
-
-00:02:58.107 --> 00:02:59.500
-need broader validation.
+00:02:44.741 --> 00:02:48.662
+simulator decides. This demo uses a generated
+tabletop.

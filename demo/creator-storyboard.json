@@ -7,95 +7,68 @@
     "Actual application screenshots and native 30 fps simulation replay exports",
     "Receipt, household, sensitivity and report frames are the running studio or its exported report",
     "One previously observed AI-generated tabletop input and its recorded rescan",
-    "Recorded Meta contract translation and playtest, independently recomputed",
+    "Recorded Meta contract translation, refusal and playtest, independently recomputed",
     "Authored showcase, not a held-out benchmark or physical-camera test",
     "Inference waiting time omitted; generic synthetic English narration"
   ],
   "scenes": [
     {
       "id": "01-hook",
-      "seconds": 12,
-      "source": "06-repair.webm",
-      "kind": "native",
+      "seconds": 22,
+      "source": "01-hook.jpg",
+      "kind": "ui",
       "heading": "The same total can hide a very different game.",
-      "caption": "Same synthetic world · minimum on-time deliveries per home: 0 → 3 · four units remain late",
-      "narration": "Twenty deliveries on time in both worlds. But one leaves a home with none. The other gives every home at least three. LiveWorld helps game creators test the difference."
+      "caption": "Same synthetic world · 20/24 on time in both · one home gets nothing · the other gives every home at least 3",
+      "narration": "Twenty deliveries on time, in both worlds. One home gets nothing. The other gives every home at least three."
     },
     {
-      "id": "02-table",
-      "seconds": 18,
-      "source": "02-table.jpg",
-      "shots": ["02-table.jpg", "02-world.jpg"],
-      "kind": "ui",
-      "heading": "One table becomes one playable experiment.",
-      "caption": "AI-generated input · saved Muse Spark + SAM capture · confirmed roles on a fixed grid",
-      "narration": "A cup becomes the well, blocks become homes, and sticks become bridges. This input is generated. Recorded Muse Spark and SAM outputs supplied the objects and shapes. Confirmed roles and image-relative positions become a fixed-grid world, not a metric reconstruction."
-    },
-    {
-      "id": "03-brief",
-      "seconds": 18,
+      "id": "02-brief",
+      "seconds": 32,
       "source": "03-brief.jpg",
+      "shots": ["03-brief.jpg", "02-refusal.jpg"],
       "kind": "ui",
-      "heading": "Say what a good design should do.",
-      "caption": "Recorded Meta translation · at least 20 total, at least 3 per home, at most 10 waiting turns",
-      "narration": "The creator asks for at least twenty on-time units, at least three at every home, and at most ten waiting turns. Muse Spark translates this into a contract. The creator confirms it. Each repair keeps workers, demand, deadlines and production locked."
+      "heading": "Say the rule. Confirm it. Or get a refusal.",
+      "caption": "Recorded translation of the 20/3/10 brief · recorded refusal of a request to add a courier · nothing applied",
+      "narration": "The creator asks for twenty on time, three at every home, and at most ten turns of waiting. Muse Spark writes the contract. The creator confirms it. Ask for another courier, and Muse Spark refuses the whole request. The workers stay locked."
     },
     {
-      "id": "04-tempting",
-      "seconds": 20,
+      "id": "03-tempting",
+      "seconds": 34,
       "source": "04-tempting.jpg",
       "shots": ["04-tempting.jpg", "04-household-ui.jpg"],
       "kind": "ui",
       "heading": "A shorter queue can hide a losing household.",
-      "caption": "Recorded rescan · studio household table · waiting 22 → 10 · total stays 20/24 · per-home floor FAILS",
-      "narration": "Moving the lower stick looks promising: waiting falls from twenty-two to ten turns. Yet the total stays twenty of twenty-four. The household comparison reveals the problem. Four late units move from one home to another. This proposal fails the confirmed per-home floor."
+      "caption": "Moved stick · waiting 22 to 10 · total stays 20/24 · four late units move onto one home · brief fails",
+      "narration": "Moving the lower stick cuts waiting from twenty-two turns to ten. The total stays twenty of twenty-four. Four late deliveries move onto another home. That home gets nothing on time. The brief fails."
     },
     {
-      "id": "05-receipts",
-      "seconds": 22,
+      "id": "04-receipt",
+      "seconds": 36,
       "source": "05-receipts-ui.jpg",
       "shots": ["05-receipts-ui.jpg", "05-receipt-replay.jpg"],
       "kind": "ui",
-      "heading": "Every explanation has a receipt.",
-      "caption": "Studio receipt for one home · B arrives at turn 84, four turns late · courier-1 highlighted",
-      "narration": "Inspect a home and its delivery receipts. Each receipt records dispatch, arrival, bridge visits and waiting, with references to the simulator's events. Select an arrival to replay the exact turn and highlight its courier. Across worlds, deliveries are matched by home and order, not assumed to be the same parcel."
+      "heading": "The late trip is on the map.",
+      "caption": "Receipt for one home · arrival at turn 84 · four turns late · courier-1 highlighted",
+      "narration": "Select the late arrival. It reaches the home at turn eighty-four, four turns late. The courier lights up on the map. The receipt names the bridge and the simulator events."
     },
     {
-      "id": "06-repair",
-      "seconds": 22,
-      "source": "06-repair.webm",
-      "kind": "native",
-      "heading": "A fairer design, verified against the brief.",
-      "caption": "Recorded Meta playtest · balanced dispatch · 20/24 on time · wait 7 · every home ≥3",
-      "narration": "The recorded Meta playtester tests a dispatch change and uses a systematic simulator search. Balanced dispatch meets every condition: twenty units on time, waiting seven turns, and at least three on time at every home. Four units still arrive late. Three previously fully served homes each give up one on-time unit."
-    },
-    {
-      "id": "07-limits",
-      "seconds": 20,
+      "id": "05-limits",
+      "seconds": 28,
       "source": "07-stress-ui.jpg",
       "kind": "ui",
-      "heading": "Find where the design stops working.",
-      "caption": "Studio stress test · lower popsicle stick −1 / 0 / +1 · nominal passes · both neighbors fail",
-      "narration": "Now shift the lower bridge one cell in either direction in both worlds. The nominal balanced design passes. One direction breaks its waiting cap; the other breaks its on-time target. These are selected deterministic conditions, not a statistical reliability score. No model calls are needed for the sweep."
+      "heading": "One cell breaks the passing layout.",
+      "caption": "Lower bridge moved one cell in both worlds · nominal passes · both neighbors fail the same brief",
+      "narration": "Move the lower bridge by one cell. Waiting breaks the cap in one direction. On-time deliveries break it in the other. The passing layout has a boundary."
     },
     {
-      "id": "08-share",
+      "id": "06-close",
       "seconds": 28,
       "source": "08-reopened.jpg",
       "shots": ["08-reopened.jpg", "08-report-ui.jpg"],
       "kind": "ui",
-      "heading": "Keep the design, the brief and the evidence.",
-      "caption": "Actual save and reopen · exported report recomputed · A fails the brief and B passes",
-      "narration": "Save the project and open it again. The brief, the trials and the checkpoints come with it, and every result is recomputed. The exported report shows the same measurements: A fails the brief, and balanced dispatch passes. A saved file cannot grant a success the engine did not measure."
-    },
-    {
-      "id": "09-scope",
-      "seconds": 20,
-      "source": "02-original.webm",
-      "kind": "native",
-      "heading": "Build a world. State the goal. Test the tradeoff.",
-      "caption": "Tang Vu · Meta interprets; the engine verifies · local generated-input prototype",
-      "narration": "LiveWorld was built by Tang Vu for indie creators. Meta interprets the scene and design intent, and orchestrates experiments. The simulator verifies outcomes. Three.js renders the world. This is a generated-input local prototype. Physical capture and creator usability still need broader validation."
+      "heading": "Save the test. The engine still decides.",
+      "caption": "Tang Vu · Meta reads the request · the simulator scores it · generated tabletop · A fails and B passes",
+      "narration": "Save the project and open it again. The brief and the measurements come back, recomputed. LiveWorld was built by Tang Vu. Meta reads the request. The simulator decides. This demo uses a generated tabletop."
     }
   ]
 }

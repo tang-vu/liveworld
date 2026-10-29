@@ -6,61 +6,47 @@
   "height": 1080,
   "frameRate": "30/1",
   "frames": 5399,
-  "videoSha256": "8587cefd771f6525912d26d42dd25f4848761eda2d746a6036eb38960f16b211",
+  "videoSha256": "a3a3aed9364b284d7b0a961fce42d3f0ead08a280a29774c48790c7c94224c93",
   "disclosures": [
     "Actual application screenshots and native 30 fps simulation replay exports",
     "Receipt, household, sensitivity and report frames are the running studio or its exported report",
     "One previously observed AI-generated tabletop input and its recorded rescan",
-    "Recorded Meta contract translation and playtest, independently recomputed",
+    "Recorded Meta contract translation, refusal and playtest, independently recomputed",
     "Authored showcase, not a held-out benchmark or physical-camera test",
     "Inference waiting time omitted; generic synthetic English narration"
   ],
   "scenes": [
     {
       "id": "01-hook",
-      "seconds": 12,
-      "source": "06-repair.webm",
+      "seconds": 22,
+      "source": "01-hook.jpg",
       "shots": null,
       "shotTypes": null,
-      "sourceType": "native-replay-export",
-      "sourceSha256": "ad57fe936abab0fbce51ed6a2daf7daf4b23277b4d7d10efb4b697ae6534968e",
-      "evidenceFactsSha256": null,
-      "sourceFrames": 600,
-      "sourceFrameRate": "30/1",
-      "narrationSeconds": 12.092426,
-      "tempo": 1.051515304347826
-    },
-    {
-      "id": "02-table",
-      "seconds": 18,
-      "source": "02-table.jpg",
-      "shots": ["02-table.jpg", "02-world.jpg"],
-      "shotTypes": ["CUA-screenshot", "CUA-screenshot"],
-      "sourceType": "CUA-screenshot",
-      "sourceSha256": "3f86ac2d843b80b1eb90a63fd0c060ce93bcbd72ffe82b1c7485ed88931bd42b",
-      "evidenceFactsSha256": null,
-      "sourceFrames": 2,
-      "sourceFrameRate": "25/1",
-      "narrationSeconds": 19.176054,
-      "tempo": 1.0957745142857143
-    },
-    {
-      "id": "03-brief",
-      "seconds": 18,
-      "source": "03-brief.jpg",
-      "shots": null,
-      "shotTypes": null,
-      "sourceType": "CUA-screenshot",
-      "sourceSha256": "676cf85af5c389672df48027f0a8831e7d44db6dc467c2ecb509beef4876206a",
+      "sourceType": "app-screenshot",
+      "sourceSha256": "c7c103e5181066ea776ade2c26717774d41974357ff33b5c4eca3c12f594d929",
       "evidenceFactsSha256": null,
       "sourceFrames": 1,
       "sourceFrameRate": "25/1",
-      "narrationSeconds": 18.15093,
-      "tempo": 1.037196
+      "narrationSeconds": 8.748299,
+      "tempo": 1
     },
     {
-      "id": "04-tempting",
-      "seconds": 20,
+      "id": "02-brief",
+      "seconds": 32,
+      "source": "03-brief.jpg",
+      "shots": ["03-brief.jpg", "02-refusal.jpg"],
+      "shotTypes": ["CUA-screenshot", "app-screenshot"],
+      "sourceType": "CUA-screenshot",
+      "sourceSha256": "676cf85af5c389672df48027f0a8831e7d44db6dc467c2ecb509beef4876206a",
+      "evidenceFactsSha256": null,
+      "sourceFrames": 2,
+      "sourceFrameRate": "25/1",
+      "narrationSeconds": 18.221406,
+      "tempo": 1
+    },
+    {
+      "id": "03-tempting",
+      "seconds": 34,
       "source": "04-tempting.jpg",
       "shots": ["04-tempting.jpg", "04-household-ui.jpg"],
       "shotTypes": ["CUA-screenshot", "app-screenshot"],
@@ -69,12 +55,12 @@
       "evidenceFactsSha256": null,
       "sourceFrames": 2,
       "sourceFrameRate": "25/1",
-      "narrationSeconds": 18.921179,
+      "narrationSeconds": 14.907211,
       "tempo": 1
     },
     {
-      "id": "05-receipts",
-      "seconds": 22,
+      "id": "04-receipt",
+      "seconds": 36,
       "source": "05-receipts-ui.jpg",
       "shots": ["05-receipts-ui.jpg", "05-receipt-replay.jpg"],
       "shotTypes": ["app-screenshot", "app-screenshot"],
@@ -83,26 +69,12 @@
       "evidenceFactsSha256": null,
       "sourceFrames": 2,
       "sourceFrameRate": "25/1",
-      "narrationSeconds": 21.660635,
-      "tempo": 1.0074713953488372
+      "narrationSeconds": 12.332517,
+      "tempo": 1
     },
     {
-      "id": "06-repair",
-      "seconds": 22,
-      "source": "06-repair.webm",
-      "shots": null,
-      "shotTypes": null,
-      "sourceType": "native-replay-export",
-      "sourceSha256": "ad57fe936abab0fbce51ed6a2daf7daf4b23277b4d7d10efb4b697ae6534968e",
-      "evidenceFactsSha256": null,
-      "sourceFrames": 600,
-      "sourceFrameRate": "30/1",
-      "narrationSeconds": 21.725714,
-      "tempo": 1.0104983255813953
-    },
-    {
-      "id": "07-limits",
-      "seconds": 20,
+      "id": "05-limits",
+      "seconds": 28,
       "source": "07-stress-ui.jpg",
       "shots": null,
       "shotTypes": null,
@@ -111,11 +83,11 @@
       "evidenceFactsSha256": null,
       "sourceFrames": 1,
       "sourceFrameRate": "25/1",
-      "narrationSeconds": 21.08068,
-      "tempo": 1.0810605128205129
+      "narrationSeconds": 11.137596,
+      "tempo": 1
     },
     {
-      "id": "08-share",
+      "id": "06-close",
       "seconds": 28,
       "source": "08-reopened.jpg",
       "shots": ["08-reopened.jpg", "08-report-ui.jpg"],
@@ -125,22 +97,8 @@
       "evidenceFactsSha256": null,
       "sourceFrames": 2,
       "sourceFrameRate": "25/1",
-      "narrationSeconds": 19.91102,
+      "narrationSeconds": 16.661678,
       "tempo": 1
-    },
-    {
-      "id": "09-scope",
-      "seconds": 20,
-      "source": "02-original.webm",
-      "shots": null,
-      "shotTypes": null,
-      "sourceType": "native-replay-export",
-      "sourceSha256": "dcec84d4d6bff5c48958816ffa1873348245a2d6e38aeebe729a2633869a4696",
-      "evidenceFactsSha256": null,
-      "sourceFrames": 600,
-      "sourceFrameRate": "30/1",
-      "narrationSeconds": 22.600363,
-      "tempo": 1.1589929743589744
     }
   ]
 }
