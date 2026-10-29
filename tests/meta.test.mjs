@@ -70,6 +70,30 @@ test("network failures are not retried and never expose the bearer key", async (
   );
   assert.equal(calls, 1);
 });
+test("an image edit reserves one image, sends the server prompt, and settles ten cents of a cent", async (t) => {
+  let captured;
+  const { client, ledger } = await setup(t, async (url, options) => {
+    captured = {
+      url,
+      body: JSON.parse(options.body),
+      authorization: options.headers.Authorization,
+    };
+    return Response.json({ data: [{ b64_json: "aGVsbG8=" }] });
+  });
+  const result = await client.editImage(
+    "data:image/png;base64,AAAA",
+    "Keep the pay button.",
+  );
+  assert.equal(captured.url, "https://api.meta.ai/v1/images/edits");
+  assert.equal(captured.body.model, "muse-image-1.0");
+  assert.equal(captured.body.prompt, "Keep the pay button.");
+  assert.equal(captured.body.n, 1);
+  assert.equal(captured.authorization.includes("unit-test-secret"), true);
+  assert.equal(result.imageDataUrl, "data:image/png;base64,aGVsbG8=");
+  assert.equal(result.costUsd, 0.01);
+  assert.equal((await ledger.summary()).heldUsd, 0);
+  assert.equal((await ledger.summary()).spentUsd, 0.01);
+});
 test("SSE transport handles event chunks without dropping Unicode", async () => {
   const payload = new TextEncoder().encode(
     'data: {"type":"message","text":"cầu"}\n\ndata: {"type":"response.completed"}\n\n',

@@ -6,6 +6,8 @@ LiveWorld is a tabletop playtest studio for small logistics games. Turn objects 
 
 Built by Tang Vu for the Meta Global AI Developer Hackathon 2026, Indie Developer track.
 
+**Kept**, at [/kept](public/kept/index.html), is the newer experiment. Muse Image may redesign a checkout. Code, not the model, decides whether the Pay button stayed visually distinct. One recorded edit made the button calmer and scored contrast 2.22, below the 4.5 bar. Open it locally at http://127.0.0.1:4173/kept/ after `npm start`. The logistics studio below is the earlier demo.
+
 ![LiveWorld's creator brief: the minimum number of on-time deliveries per home improves from zero to three on the same synthetic tabletop world](docs/creator-brief.jpg)
 
 **[Watch the three-minute demo](public/demo/liveworld-demo.mp4)** · [Recording details and transcript](demo/README.md) · [Submission draft](docs/submission.md)

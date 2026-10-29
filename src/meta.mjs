@@ -9,6 +9,7 @@ import {
   SPARK_INPUT_USD,
   SPARK_OUTPUT_USD,
   SAM_IMAGE_USD,
+  MUSE_IMAGE_USD,
 } from "./budget.mjs";
 
 export class MetaClient {
@@ -93,6 +94,65 @@ export class MetaClient {
       if (/^Meta /.test(error.message)) throw error;
       throw new Error(
         "The Meta request did not complete. Paid requests are paused if the charge is uncertain.",
+      );
+    }
+  }
+
+  async editImage(imageDataUrl, prompt) {
+    if (!this.config.key)
+      throw new Error("Add MODEL_API_KEY to .env.local to enable Meta.");
+    if (typeof prompt !== "string" || !prompt.trim())
+      throw new Error("The redesign instruction is empty.");
+    const reservation = await this.ledger.reserve("image", MUSE_IMAGE_USD, {
+      model: "muse-image-1.0",
+    });
+    let settled = false;
+    try {
+      const response = await this.transport(
+        `${this.config.baseURL}/images/edits`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.config.key}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "muse-image-1.0",
+            prompt,
+            images: [{ image_url: imageDataUrl }],
+            n: 1,
+            output_format: "png",
+            reasoning_strength: "low",
+            tool_enablement: {
+              enable_web_search: false,
+              enable_image_search: false,
+              enable_shell: false,
+            },
+          }),
+          signal: AbortSignal.timeout(180_000),
+          redirect: "error",
+        },
+      );
+      if (!response.ok)
+        throw new Error(
+          `Meta image edit returned HTTP ${response.status}. No automatic retry was made.`,
+        );
+      const data = await response.json();
+      const encoded = data.data?.[0]?.b64_json;
+      if (typeof encoded !== "string" || !encoded)
+        throw new Error("Meta image edit returned no image.");
+      await this.ledger.settle(reservation, MUSE_IMAGE_USD, { images: 1 });
+      settled = true;
+      return {
+        imageDataUrl: `data:image/png;base64,${encoded}`,
+        costUsd: MUSE_IMAGE_USD,
+        receiptId: reservation,
+      };
+    } catch (error) {
+      if (!settled) await this.ledger.settle(reservation, null).catch(() => {});
+      if (/^Meta /.test(error.message)) throw error;
+      throw new Error(
+        "The image edit did not complete. Paid requests are paused if the charge is uncertain.",
       );
     }
   }

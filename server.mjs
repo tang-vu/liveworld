@@ -9,6 +9,7 @@ import { MetaClient, scanTabletop } from "./src/meta.mjs";
 import { runPlaytest } from "./src/agent.mjs";
 import { compileRuleChange } from "./src/rules.mjs";
 import { compileContract } from "./src/contracts.mjs";
+import { keptEditRequest } from "./src/kept-edit.mjs";
 import { validateWorld } from "./shared/world.js";
 import { simulate } from "./shared/engine.js";
 import { readRuntimeConfig, DemoAccess } from "./src/access.mjs";
@@ -117,9 +118,13 @@ const server = createServer(async (req, res) => {
     }
     if (
       req.method === "POST" &&
-      ["/api/playtest", "/api/scan", "/api/rules", "/api/contract"].includes(
-        url.pathname,
-      )
+      [
+        "/api/playtest",
+        "/api/scan",
+        "/api/rules",
+        "/api/contract",
+        "/api/kept",
+      ].includes(url.pathname)
     ) {
       if (!access.authorized(req))
         return json(res, 403, {
@@ -152,6 +157,19 @@ const server = createServer(async (req, res) => {
         }
         if (url.pathname === "/api/contract")
           return json(res, 200, await compileContract(client, body));
+        if (url.pathname === "/api/kept") {
+          const request = keptEditRequest(body);
+          const edited = await client.editImage(
+            request.imageDataUrl,
+            request.prompt,
+          );
+          return json(res, 200, {
+            mode: request.mode,
+            imageDataUrl: edited.imageDataUrl,
+            costUsd: edited.costUsd,
+            budget: await ledger.summary(),
+          });
+        }
         res.writeHead(200, {
           "Content-Type": "text/event-stream",
           "Cache-Control": "no-store",
@@ -180,10 +198,14 @@ const server = createServer(async (req, res) => {
     const shared = url.pathname.startsWith("/shared/");
     const directory = join(root, shared ? "shared" : "public");
     const relative =
-      url.pathname === "/" || url.pathname === "/demo/"
+      url.pathname === "/" ||
+      url.pathname === "/demo/" ||
+      url.pathname === "/kept/"
         ? url.pathname === "/"
           ? "index.html"
-          : "demo/index.html"
+          : url.pathname === "/demo/"
+            ? "demo/index.html"
+            : "kept/index.html"
         : decodeURIComponent(url.pathname).replace(
             shared ? /^\/shared\// : /^\//,
             "",

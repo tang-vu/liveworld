@@ -13,6 +13,7 @@ const micro = (usd) => Math.ceil(usd * 1_000_000);
 export const SPARK_INPUT_USD = 1.25 / 1_000_000;
 export const SPARK_OUTPUT_USD = 4.25 / 1_000_000;
 export const SAM_IMAGE_USD = 2.5 / 1000;
+export const MUSE_IMAGE_USD = 0.01;
 // Reserve a full context window rather than guessing an image's token count.
 export const sparkReservation = (maxOutput) =>
   1_048_576 * SPARK_INPUT_USD + maxOutput * SPARK_OUTPUT_USD;
