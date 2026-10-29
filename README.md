@@ -34,15 +34,19 @@ If a configured `.env.local` already exists, preserve it rather than copying ove
 
 ## Try the first experiment
 
-1. Open **The little valley**. All six homes are connected, but some water deliveries miss their deadlines.
-2. Play or scrub the replay. Select a home to highlight its route; replay a deadline event to inspect the relevant turn.
-3. Select **Find & test a fix** for a real Muse Spark playtest, or **Try local changes** for an explicitly labelled deterministic search without API usage.
-4. Compare a tested candidate against the original. Every trial starts from the original world; changes do not accumulate between trials.
-5. Select **Use B as my world** to continue building from a candidate. A is retained as a checkpoint. Save the project or export evidence to retain the inputs and measurements.
+The three-minute film uses this path.
 
-**Explore a verified playtest** walks through three parts of a recorded Meta experiment: the original bottleneck, a plausible failed hypothesis, and a verified repair. Every trial is recomputed locally. **Write a game rule → Explore a recorded rule experiment** loads a second study: a timed bridge closure compiled by Meta. Neither walkthrough makes new API calls. Their recording labels stay visible.
+1. Choose **Explore a creator's brief**. The recorded Meta study loads locally and makes no new API calls.
+2. Step through the table, the confirmed brief (at least 20/24 on time, at least 3 at every home, at most 10 waiting turns), and the tempting stick move. Waiting falls from 22 to 10, and four late units move to another home, so the brief fails.
+3. Open **A fairer design**. Balanced dispatch meets the brief: 20/24 on time, 7 waiting turns, and at least 3 at every home. Four units remain late. Three homes that were fully on time each give up one unit.
+4. On **Delivery receipts**, select a home and an arrival. Both worlds jump to that turn and the courier is highlighted.
+5. On **Test its limits**, the lower bridge shifts one cell in both worlds. One side breaks the waiting cap. The other breaks the on-time floor.
 
-The default scene is an authored example, not a general benchmark. Changing the dispatch policy to balanced service is a plausible failed proposal. Moving the south bridge to zero-based row 6 meets the example's deadlines while increasing bridge waiting time: the comparison preserves that tradeoff.
+**The little valley** is the world the studio opens on, and it is a different example from the film. Baseline nearest dispatch is 20/24 on time with 16 waiting turns. Balanced dispatch there is a failed proposal at 14/24. Moving the south bridge to zero-based row 6 reaches 24/24 and raises waiting to 22. Do not mix that 24/24 result with the synthetic tabletop.
+
+Play or scrub a replay and select a home to highlight its route. **Try local changes** runs a labelled deterministic search without API usage. **Find & test a fix** makes a live Muse Spark request. **Use B as my world** continues from a candidate and keeps A as a checkpoint.
+
+**Explore a verified playtest** walks through the valley recording: the original bottleneck, a plausible failed hypothesis, and a verified repair. **Write a game rule → Explore a recorded rule experiment** loads a timed bridge closure compiled by Meta. Neither walkthrough makes new API calls. Their recording labels stay visible.
 
 **Focus** gives the world more room for a presentation or detailed inspection; press Escape to leave it. The orthographic 3D scene uses the same ground projection as labels and object picking. Buildings, trees, materials and lighting are procedural project assets, rendered with Three.js. A canvas renderer remains available when WebGL is unavailable. Landscape decoration does not change simulation obstacles or routes. Ambient water movement leaves the simulation turn unchanged, and reduced-motion preferences disable ambient animation and initial autoplay.
 

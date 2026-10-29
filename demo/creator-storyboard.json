@@ -5,7 +5,7 @@
   "durationSeconds": 180,
   "disclosures": [
     "Actual application screenshots and native 30 fps simulation replay exports",
-    "Explicitly labelled diagrams derived from recomputed engine evidence; not application screenshots",
+    "Receipt, household, sensitivity and report frames are the running studio or its exported report",
     "One previously observed AI-generated tabletop input and its recorded rescan",
     "Recorded Meta contract translation and playtest, independently recomputed",
     "Authored showcase, not a held-out benchmark or physical-camera test",
@@ -44,19 +44,20 @@
       "id": "04-tempting",
       "seconds": 20,
       "source": "04-tempting.jpg",
-      "shots": ["04-tempting.jpg", "04-household-evidence.jpg"],
+      "shots": ["04-tempting.jpg", "04-household-ui.jpg"],
       "kind": "ui",
       "heading": "A shorter queue can hide a losing household.",
-      "caption": "Recorded rescan + engine evidence diagram · waiting 22 → 10 · total stays 20/24 · per-home floor FAILS",
+      "caption": "Recorded rescan · studio household table · waiting 22 → 10 · total stays 20/24 · per-home floor FAILS",
       "narration": "Moving the lower stick looks promising: waiting falls from twenty-two to ten turns. Yet the total stays twenty of twenty-four. The household comparison reveals the problem. Four late units move from one home to another. This proposal fails the confirmed per-home floor."
     },
     {
       "id": "05-receipts",
       "seconds": 22,
-      "source": "05-receipt-evidence.jpg",
-      "kind": "evidence",
+      "source": "05-receipts-ui.jpg",
+      "shots": ["05-receipts-ui.jpg", "05-receipt-replay.jpg"],
+      "kind": "ui",
       "heading": "Every explanation has a receipt.",
-      "caption": "Engine events + replay frames · dispatch, arrival, bridge visits and outbound waiting",
+      "caption": "Studio receipt for one home · B arrives at turn 84, four turns late · courier-1 highlighted",
       "narration": "Inspect a home and its delivery receipts. Each receipt records dispatch, arrival, bridge visits and waiting, with references to the simulator's events. Select an arrival to replay the exact turn and highlight its courier. Across worlds, deliveries are matched by home and order, not assumed to be the same parcel."
     },
     {
@@ -71,21 +72,21 @@
     {
       "id": "07-limits",
       "seconds": 20,
-      "source": "07-limit-evidence.jpg",
-      "kind": "evidence",
+      "source": "07-stress-ui.jpg",
+      "kind": "ui",
       "heading": "Find where the design stops working.",
-      "caption": "Lower bridge shifted equally in A and B · −1 cell breaks wait cap; +1 breaks on-time floor",
+      "caption": "Studio stress test · lower popsicle stick −1 / 0 / +1 · nominal passes · both neighbors fail",
       "narration": "Now shift the lower bridge one cell in either direction in both worlds. The nominal balanced design passes. One direction breaks its waiting cap; the other breaks its on-time target. These are selected deterministic conditions, not a statistical reliability score. No model calls are needed for the sweep."
     },
     {
       "id": "08-share",
       "seconds": 28,
       "source": "08-reopened.jpg",
-      "shots": ["08-reopened.jpg", "08-project-evidence.jpg"],
+      "shots": ["08-reopened.jpg", "08-report-ui.jpg"],
       "kind": "ui",
       "heading": "Keep the design, the brief and the evidence.",
-      "caption": "Actual save and reopen · contract, trials and checkpoints retained · imported results recomputed",
-      "narration": "Save the project, open it again, and recompute every trial. The contract and checkpoints travel with the world. Export household tradeoffs, delivery receipts and sensitivity conditions, or a replay with its inputs. Imported success claims are discarded. Eight predeclared interpretation checks matched the expected contracts or refusals, one attempt each. This small integration check is not a general accuracy benchmark."
+      "caption": "Actual save and reopen · exported report recomputed · A fails the brief and B passes",
+      "narration": "Save the project and open it again. The brief, the trials and the checkpoints come with it, and every result is recomputed. The exported report shows the same measurements: A fails the brief, and balanced dispatch passes. A saved file cannot grant a success the engine did not measure."
     },
     {
       "id": "09-scope",

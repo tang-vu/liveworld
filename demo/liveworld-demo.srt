@@ -129,46 +129,40 @@ reliability
 score. No model calls are needed for the sweep.
 
 28
-00:02:12,000 --> 00:02:17,958
-Save the project, open it again, and recompute every
-trial. The contract and
+00:02:12,000 --> 00:02:17,283
+Save the project and open it again. The brief, the
+trials and the
 
 29
-00:02:17,958 --> 00:02:23,917
-checkpoints travel with the world. Export household
-tradeoffs, delivery receipts and sensitivity
-conditions,
+00:02:17,283 --> 00:02:22,565
+checkpoints come with it, and every result is
+recomputed. The exported report shows
 
 30
-00:02:23,917 --> 00:02:29,875
-or a replay with its inputs. Imported success claims
-are discarded. Eight predeclared
+00:02:22,565 --> 00:02:27,848
+the same measurements: A fails the brief, and
+balanced dispatch passes. A saved
 
 31
-00:02:29,875 --> 00:02:35,833
-interpretation checks matched the expected contracts
-or refusals, one attempt each. This small
+00:02:27,848 --> 00:02:31,911
+file cannot grant a success the engine did not
+measure.
 
 32
-00:02:35,833 --> 00:02:39,500
-integration check is not a general accuracy
-benchmark.
-
-33
 00:02:40,000 --> 00:02:46,036
 LiveWorld was built by Tang Vu for indie creators.
 Meta interprets the scene
 
-34
+33
 00:02:46,036 --> 00:02:52,071
 and design intent, and orchestrates experiments. The
 simulator verifies outcomes. Three.js renders the
 
-35
+34
 00:02:52,071 --> 00:02:58,107
 world. This is a generated-input local prototype.
 Physical capture and creator usability still
 
-36
+35
 00:02:58,107 --> 00:02:59,500
 need broader validation.

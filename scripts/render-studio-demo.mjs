@@ -59,6 +59,7 @@ const sha = async (file) =>
 const sourceTypes = [
   "native-replay-export",
   "CUA-screenshot",
+  "app-screenshot",
   "engine-evidence-diagram",
 ];
 async function verifyOrigin(name) {
@@ -121,7 +122,11 @@ for (const s of story.scenes) {
   const origin = await verifyOrigin(s.source);
   for (const name of s.shots ?? []) {
     const shot = await verifyOrigin(name);
-    if (!["CUA-screenshot", "engine-evidence-diagram"].includes(shot.type))
+    if (
+      !["CUA-screenshot", "app-screenshot", "engine-evidence-diagram"].includes(
+        shot.type,
+      )
+    )
       throw new Error(`Invalid still source: ${name}`);
   }
   if (
@@ -296,7 +301,7 @@ run("ffmpeg", [
   "-metadata",
   "artist=Tang Vu",
   "-metadata",
-  "comment=Actual UI captures, native simulation replays and labelled engine-evidence diagrams. Synthetic inputs and narration. Recorded Meta outputs labelled.",
+  "comment=Actual UI captures, native simulation replays and the exported report. Synthetic inputs and narration. Recorded Meta outputs labelled.",
   out,
 ]);
 const result = probe(out, true),

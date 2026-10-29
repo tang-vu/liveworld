@@ -4,9 +4,9 @@ Owner: Tang Vu. Track: Indie Developer. Theme: Build for Your World.
 
 ## Project description
 
-LiveWorld turns objects on a desk into a small playable logistics world. A cup can become a water source, blocks become homes and wooden sticks become bridges. I built it for game creators who want to investigate the effect of a layout or rule change without editing simulation code for every experiment.
+LiveWorld lets a game creator turn a tabletop layout into a test the world can fail. Say what a fair design must do, watch a tempting change miss that test, and open the delivery that proves it.
 
-Muse Spark proposes object roles and locations; SAM 3.1 supplies the segmentation masks. The creator reviews those suggestions. Muse Spark also translates supported rule instructions into validated proposals and acts as a playtester, inspecting traces and running constrained experiments. A deterministic simulator computes every delivery, missed deadline and queue. The model cannot certify its own success.
+Muse Spark proposes object roles and translates the brief into conditions the creator confirms. As the playtester, it inspects the trace and chooses a constrained experiment; the search itself is a bounded simulator sweep, and that limit stays visible. SAM 3.1 supplies the segmentation masks. A separate simulator scores every condition. The model cannot mark its own work correct.
 
 Creators can rescan a changed tabletop, schedule a bridge closure or production pause, compare A and B, apply a candidate, return to checkpoints and save a portable project. Imported trials are recomputed. Evidence exports retain the inputs and measurements; the studio can also render a 1080p replay clip with its reproducible inputs.
 
@@ -41,7 +41,7 @@ The recorded runs are explicitly labelled and do not call Meta again. Use the li
 - A project file can be opened without a key; imported success claims are discarded and recomputed.
 - Local budget accounting reserves before inference, retains usage across restarts and stops after an uncertain charge. It does not replace the provider's billing controls.
 
-The current recording follows one synthetic tabletop world through a creator fairness brief, a failed rescan, a verified dispatch choice and a declared sensitivity check. Exact timings are in `demo/creator-storyboard.json`. The render manifest distinguishes native replay frames, actual UI captures and labelled engine-evidence diagrams; the diagrams are not presented as application screenshots.
+The current recording follows one synthetic tabletop world through a creator fairness brief, a failed rescan, a verified dispatch choice and a declared sensitivity check. Exact timings are in `demo/creator-storyboard.json`. The render manifest distinguishes native replay frames from studio screenshots, including the receipt table, the turn-84 replay, the stress-test panel and the exported report.
 
 ## Items required before submission
 

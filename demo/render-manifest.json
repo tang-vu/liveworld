@@ -1,14 +1,15 @@
 {
   "format": "liveworld-demo-render-v3",
+  "storyboard": "demo/creator-storyboard.json",
   "durationSeconds": 179.988021,
   "width": 1920,
   "height": 1080,
   "frameRate": "30/1",
   "frames": 5399,
-  "videoSha256": "a24b991cf62e43c1dcc409738c4652e50905861abef221f8c7302aa041ed2262",
+  "videoSha256": "8587cefd771f6525912d26d42dd25f4848761eda2d746a6036eb38960f16b211",
   "disclosures": [
     "Actual application screenshots and native 30 fps simulation replay exports",
-    "Explicitly labelled diagrams derived from recomputed engine evidence; not application screenshots",
+    "Receipt, household, sensitivity and report frames are the running studio or its exported report",
     "One previously observed AI-generated tabletop input and its recorded rescan",
     "Recorded Meta contract translation and playtest, independently recomputed",
     "Authored showcase, not a held-out benchmark or physical-camera test",
@@ -33,8 +34,14 @@
       "id": "02-table",
       "seconds": 18,
       "source": "02-table.jpg",
-      "shots": ["02-table.jpg", "02-world.jpg"],
-      "shotTypes": ["CUA-screenshot", "CUA-screenshot"],
+      "shots": [
+        "02-table.jpg",
+        "02-world.jpg"
+      ],
+      "shotTypes": [
+        "CUA-screenshot",
+        "CUA-screenshot"
+      ],
       "sourceType": "CUA-screenshot",
       "sourceSha256": "3f86ac2d843b80b1eb90a63fd0c060ce93bcbd72ffe82b1c7485ed88931bd42b",
       "evidenceFactsSha256": null,
@@ -61,8 +68,14 @@
       "id": "04-tempting",
       "seconds": 20,
       "source": "04-tempting.jpg",
-      "shots": ["04-tempting.jpg", "04-household-evidence.jpg"],
-      "shotTypes": ["CUA-screenshot", "engine-evidence-diagram"],
+      "shots": [
+        "04-tempting.jpg",
+        "04-household-ui.jpg"
+      ],
+      "shotTypes": [
+        "CUA-screenshot",
+        "app-screenshot"
+      ],
       "sourceType": "CUA-screenshot",
       "sourceSha256": "19fc54d552eab32ef7db1a21634b7b4e174e4b8a2dfde172684e507e0427e0f3",
       "evidenceFactsSha256": null,
@@ -74,13 +87,19 @@
     {
       "id": "05-receipts",
       "seconds": 22,
-      "source": "05-receipt-evidence.jpg",
-      "shots": null,
-      "shotTypes": null,
-      "sourceType": "engine-evidence-diagram",
-      "sourceSha256": "6fe698539a4d62e93839db76108ee70246aa07b0e59e3ddcc46611cbc47b23cc",
-      "evidenceFactsSha256": "a6d859877a072a6a0c3effcc24376d66004adeaf02647668f4ad70354f02d5ae",
-      "sourceFrames": 1,
+      "source": "05-receipts-ui.jpg",
+      "shots": [
+        "05-receipts-ui.jpg",
+        "05-receipt-replay.jpg"
+      ],
+      "shotTypes": [
+        "app-screenshot",
+        "app-screenshot"
+      ],
+      "sourceType": "app-screenshot",
+      "sourceSha256": "e2cca251879f52b43e4a0db5a8e831607bec57788158d0ee00d29b3f4b256021",
+      "evidenceFactsSha256": null,
+      "sourceFrames": 2,
       "sourceFrameRate": "25/1",
       "narrationSeconds": 21.660635,
       "tempo": 1.0074713953488372
@@ -102,12 +121,12 @@
     {
       "id": "07-limits",
       "seconds": 20,
-      "source": "07-limit-evidence.jpg",
+      "source": "07-stress-ui.jpg",
       "shots": null,
       "shotTypes": null,
-      "sourceType": "engine-evidence-diagram",
-      "sourceSha256": "beb96894fd25865c86a87abfb03777b9a7565c1c4d822c225315825d4c860e78",
-      "evidenceFactsSha256": "a6d859877a072a6a0c3effcc24376d66004adeaf02647668f4ad70354f02d5ae",
+      "sourceType": "app-screenshot",
+      "sourceSha256": "3729f348a09657ac67f4a205b5e38e086c358682c26bae4170af7c2e262499d0",
+      "evidenceFactsSha256": null,
       "sourceFrames": 1,
       "sourceFrameRate": "25/1",
       "narrationSeconds": 21.08068,
@@ -117,15 +136,21 @@
       "id": "08-share",
       "seconds": 28,
       "source": "08-reopened.jpg",
-      "shots": ["08-reopened.jpg", "08-project-evidence.jpg"],
-      "shotTypes": ["CUA-screenshot", "engine-evidence-diagram"],
+      "shots": [
+        "08-reopened.jpg",
+        "08-report-ui.jpg"
+      ],
+      "shotTypes": [
+        "CUA-screenshot",
+        "app-screenshot"
+      ],
       "sourceType": "CUA-screenshot",
       "sourceSha256": "3d377a0d83412d175baeb5b5a98cfb04f29b976c86a061b9caad0342fa57f5b5",
       "evidenceFactsSha256": null,
       "sourceFrames": 2,
       "sourceFrameRate": "25/1",
-      "narrationSeconds": 29.753651,
-      "tempo": 1.0819509454545455
+      "narrationSeconds": 19.91102,
+      "tempo": 1
     },
     {
       "id": "09-scope",
@@ -141,6 +166,5 @@
       "narrationSeconds": 22.600363,
       "tempo": 1.1589929743589744
     }
-  ],
-  "storyboard": "demo/creator-storyboard.json"
+  ]
 }

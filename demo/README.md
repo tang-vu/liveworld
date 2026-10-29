@@ -4,19 +4,19 @@ The current film is [public/demo/liveworld-demo.mp4](../public/demo/liveworld-de
 
 The film follows **one synthetic tabletop world** through a creator's fairness brief, a failed moved-stick rescan, verified balanced dispatch, delivery receipts, sensitivity and project handoff. Its result is **20/24 on time, seven waiting turns, and at least three on time at every home**. Four units still arrive late. It does not borrow the authored valley's 24/24 result.
 
-The edit combines actual UI captures, native simulation replay exports and clearly labelled engine-evidence diagrams. The diagrams are not application screenshots: they visualize recomputed events and measurements from the same saved project. Input images are generated; Meta outputs are recorded and recomputed. Inference waiting is omitted. This authored showcase is not a physical-camera test, held-out benchmark or creator productivity study.
+The edit combines actual studio screenshots, native simulation replay exports and the exported measurement report. Household comparison, delivery receipts, the turn-84 replay and the stress test are captured from the running local studio. Input images are generated; Meta outputs are recorded and recomputed. Inference waiting is omitted. This authored showcase is not a physical-camera test, held-out benchmark or creator productivity study.
 
-| Start | Scene                                                                  |
-| ----- | ---------------------------------------------------------------------- |
-| 00:00 | Same total; minimum home on-time changes 0 → 3                         |
-| 00:12 | Generated tabletop and confirmed fixed-grid world                      |
-| 00:30 | Meta translation into the creator's 20/3/10 brief                      |
-| 00:48 | Moved stick reduces waiting but transfers four late units              |
-| 01:08 | Event-backed delivery receipts, shown as a labelled diagram            |
-| 01:30 | Recorded Meta playtest: balanced dispatch meets the brief              |
-| 01:52 | Lower bridge ±1 cell: nominal passes, both neighboring conditions fail |
-| 02:12 | Actual UI export, reopening and a recomputed artifact summary          |
-| 02:40 | Scope, authorship and next validation                                  |
+| Start | Scene                                                                |
+| ----- | -------------------------------------------------------------------- |
+| 00:00 | Same total; minimum home on-time changes 0 → 3                       |
+| 00:12 | Generated tabletop and confirmed fixed-grid world                    |
+| 00:30 | Meta translation into the creator's 20/3/10 brief                    |
+| 00:48 | Moved stick reduces waiting but transfers four late units            |
+| 01:08 | Studio delivery receipt, then the turn-84 replay with its courier    |
+| 01:30 | Recorded Meta playtest: balanced dispatch meets the brief            |
+| 01:52 | Studio stress test: nominal passes, both neighboring placements fail |
+| 02:12 | Save, reopen, and the exported report: A fails the brief, B passes   |
+| 02:40 | Scope, authorship and next validation                                |
 
 `creator-storyboard.json` is the current edit. `storyboard.json` records the earlier valley film. `creator-example-project.json` preserves the exact UI download used in the sharing scene; it was opened again in the actual app. `public/examples/creator-brief-project.json` is the reproducible recorded-study package. The corresponding report is available as standalone `creator-brief-report.html` and as public HTML/CSS under `public/examples/` for the app's strict content policy. Imported results are recalculated and source labels do not authenticate provider activity.
 

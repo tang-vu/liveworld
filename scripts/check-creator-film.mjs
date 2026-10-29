@@ -55,12 +55,22 @@ assert.deepEqual(
     return n;
   }),
 );
+const screenshotTypes = new Set(["CUA-screenshot", "app-screenshot"]);
+let diagramScenes = 0;
 for (let i = 0; i < story.scenes.length; i++) {
   assert.equal(manifest.scenes[i].id, story.scenes[i].id);
   assert.equal(manifest.scenes[i].seconds, story.scenes[i].seconds);
-  if (story.scenes[i].kind === "evidence")
+  if (story.scenes[i].kind === "evidence") {
+    diagramScenes += 1;
     assert.equal(manifest.scenes[i].sourceType, "engine-evidence-diagram");
+  }
+  if (story.scenes[i].kind === "ui")
+    assert.ok(screenshotTypes.has(manifest.scenes[i].sourceType));
 }
+assert.equal(
+  story.disclosures.some((line) => /diagram/i.test(line)),
+  diagramScenes > 0,
+);
 if (process.argv.includes("--contact")) {
   const ffmpeg = process.env.LIVEWORLD_FFMPEG_DIR
     ? join(
@@ -112,6 +122,6 @@ console.log(
     duration: manifest.durationSeconds,
     chapters: chapters.length,
     transcriptMatches: true,
-    diagramsLabelled: true,
+    diagramScenes,
   }),
 );

@@ -22,9 +22,10 @@ renderer remains available when WebGL cannot be used.
 
 The offline film workflow uses FFmpeg to compose and encode media, and locally
 installed Microsoft Zira speech synthesis for generic English narration. The
-labelled evidence diagrams are project code rendered with Pillow 12.3.0
-(installed package metadata: MIT-CMU). These recording tools are not bundled
-with the runtime app. Segoe UI is read from the recording machine for rasterized
-text; the font file is not distributed in this repository. Diagram data comes
-from the project's independently recomputed simulator outcomes, not from
-generated application screenshots.
+current film is composed from studio screenshots, native replay exports and the
+exported report. A separate Pillow 12.3.0 script (installed package metadata:
+MIT-CMU) can render labelled evidence diagrams from recomputed simulator
+outcomes; those diagrams are not frames of the current film. These recording
+tools are not bundled with the runtime app. Segoe UI is read from the recording
+machine for rasterized text; the font file is not distributed in this
+repository.
